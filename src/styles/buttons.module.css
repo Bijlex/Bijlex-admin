@@ -1,0 +1,37 @@
+.addButton,
+.removeButton {
+    width: 12vw;
+    position: relative;
+    padding: 20px 10px !important;
+    color: white !important;
+}
+
+.addButton.disabled,
+.removeButton.disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+.primary_btn {
+    width: 12vw;
+    position: relative;
+    padding: 14px 5px !important;
+    color: white !important;
+    background-color: var(--primary);
+}
+
+.btnIcon {
+    position: absolute;
+    width: 20px;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+
+.btnIcon path {
+    color: white;
+}

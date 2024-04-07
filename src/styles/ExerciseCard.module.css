@@ -1,0 +1,23 @@
+.exercise_card {
+    background-color: var(--background);
+    width: 60vw;
+    min-height: 7vh;
+    padding: 10px;
+    border: 1px solid;
+    display: flex;
+}
+
+.exercise_btns {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card_info {
+    margin-right: auto;
+}
+
+.card_info p {
+    color: rgb(150, 150, 150);
+    font-size: 0.8rem;
+}

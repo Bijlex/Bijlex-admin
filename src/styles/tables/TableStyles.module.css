@@ -1,0 +1,88 @@
+.columnModificationButtons {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+
+.basicTable {
+    border-collapse: separate;
+    /* Adjusted to 'separate' for individual cell borders */
+    border-spacing: 2px;
+    /* Creates spacing between cells for black lines */
+    margin-bottom: 20px;
+}
+
+.basicTable th,
+.basicTable td {
+    border: 1px solid #000;
+    /* Black border for contrast and separation */
+    min-width: 50px;
+    /* Adjust as needed */
+    height: 50px;
+    /* Adjust as needed */
+    background-color: #ffffff;
+    /* White background for cells */
+    text-align: center;
+    color: #333;
+    /* Darker text for better readability */
+}
+
+.basicTable th {
+    background-color: #f0f0f0;
+    /* Light grey for header */
+    color: #333;
+    /* Ensuring text is readable */
+}
+
+.tableWithFilledBackground {
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    color: #000000;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -ms-border-radius: 5px 5px 0 0;
+    -o-border-radius: 5px 5px 0 0;
+}
+
+.tableWithFilledBackground tbody tr:first-child {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.tableWithFilledBackground th,
+.tableWithFilledBackground td {
+    padding: 12px 15px;
+}
+
+.tableWithFilledBackground tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.tableWithFilledBackground tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.tableWithFilledBackground tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.tableWithFilledBackground tbody tr input {
+    width: 80%;
+    max-width: 100%;
+    border: 1px solid;
+    text-align: center;
+    background-color: #ffffff;
+    color: black;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
