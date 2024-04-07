@@ -53,7 +53,7 @@ function TableExercise() {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/exercises/" + exerciseID
+          "https://bijlex-backend.onrender.com/exercises/" + exerciseID
         );
         console.log(response.data);
         if (response.status === 200) {

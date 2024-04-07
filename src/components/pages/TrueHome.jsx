@@ -12,7 +12,9 @@ const TrueHome = () => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/exercises/");
+        const response = await axios.get(
+          "https://bijlex-backend.onrender.com/exercises/"
+        );
         console.log(response.data);
         if (response.status === 200) {
           setExercises(response.data); // Assume the entire dataset is fetched at once
