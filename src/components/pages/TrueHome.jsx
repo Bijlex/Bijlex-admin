@@ -43,11 +43,11 @@ const TrueHome = () => {
 
   return (
     <div className="home">
-      {/* <SvgBtn
+      <SvgBtn
         handleClick={() => navigate("/table-exercise/create")}
         text="Add new exercise"
         SvgIcon={addIcon}
-      /> */}
+      />
       <div className="exercise_list">
         {currentExercises.length > 0 ? (
           currentExercises?.map((exercise) => (
