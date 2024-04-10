@@ -2,7 +2,7 @@
     background-color: var(--background);
     width: 60vw;
     min-height: 7vh;
-    padding: 10px;
+    padding: 1.2vh;
     border: 1px solid;
     display: flex;
 }

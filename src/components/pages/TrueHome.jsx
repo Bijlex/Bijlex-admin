@@ -40,11 +40,22 @@ const TrueHome = () => {
 
   // Calculate total pages
   const totalPages = Math.ceil(exercises?.length / exercisesPerPage);
-
+  const emptyFunc = () => {
+    return null;
+  };
   return (
     <div className="home">
       <div className="exercise_type_tabs_box">
-        <button className="exercise_type_tabs">Table Exercise</button>
+        <h2 className="exercise_tab_header">Choose Exercise</h2>
+        <div className="tab_container">
+          <button className="exercise_type_tabs">Table Exercise</button>
+          <button className="exercise_type_tabs">
+            Graph to Table Exercise
+          </button>
+          <button className="exercise_type_tabs">
+            Table to Graph Exercise
+          </button>
+        </div>
       </div>
       <div className="exercise_list">
         <SvgBtn
