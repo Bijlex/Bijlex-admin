@@ -13,7 +13,7 @@ const TrueHome = () => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
-          "http://bijlex-backend.onrender.com/exercises/type/table-exercise"
+          "https://bijlex-backend.onrender.com/exercises/type/table-exercise"
         );
         console.log(response.data);
         if (response.status === 200) {
