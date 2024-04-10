@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import styles from "../../../../styles/tables/TableExercise.module.css";
-import Table from "../../../general/Table.jsx";
-import SvgBtn from "../../../general/buttons/SvgBtn.jsx";
-import { checkIcon, documentIcon } from "../../../../constants/icons.jsx";
+import styles from "../../../styles/tables/TableExercise.module.css";
+import Table from "../../../components/general/Table.jsx";
+import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
+import { checkIcon, documentIcon } from "../../../constants/icons.jsx";
 import axios from "axios";
-import { useMessage } from "../../../../contexts/MessageContext.jsx";
+import { useMessage } from "../../../contexts/MessageContext.jsx";
 // Define the number of columns
 
 function TableExercise() {

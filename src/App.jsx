@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/globals.css";
 import { MessageProvider } from "./contexts/MessageContext";
 import Layout from "./components/layout";
-import TrueHome from "./components/pages/TrueHome";
-import CreateTableExercise from "./components/pages/Graph&Tables/admin/CreateTableExercise";
-import TableExercise from "./components/pages/Graph&Tables/client/TableExercise";
+import TrueHome from "./pages/TrueHome";
+import CreateTableExercise from "./pages/Graph&Tables/admin/CreateTableExercise";
+import TableExercise from "./pages/Graph&Tables/client/TableExercise";
 
 const App = () => {
   return (

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ExerciseCard from "../general/ExerciseCard";
-import SvgBtn from "../general/buttons/SvgBtn";
+import ExerciseCard from "../components/general/ExerciseCard";
+import SvgBtn from "../components/general/buttons/SvgBtn";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { addIcon } from "../../constants/icons";
+import { addIcon } from "../constants/icons";
 const TrueHome = () => {
   const [exercises, setExercises] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
