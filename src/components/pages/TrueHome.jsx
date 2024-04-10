@@ -13,7 +13,7 @@ const TrueHome = () => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
-          "https://bijlex-backend.onrender.com/exercises/"
+          "http://bijlex-backend.onrender.com/exercises/type/table-exercise"
         );
         console.log(response.data);
         if (response.status === 200) {
@@ -43,12 +43,20 @@ const TrueHome = () => {
 
   return (
     <div className="home">
-      <SvgBtn
-        handleClick={() => navigate("/table-exercise/create")}
-        text="Add new exercise"
-        SvgIcon={addIcon}
-      />
+      <div className="exercise_type_tabs_box">
+        <button className="exercise_type_tabs">Table Exercise</button>
+      </div>
       <div className="exercise_list">
+        <SvgBtn
+          handleClick={() => navigate("/table-exercise/create")}
+          text="Add new exercise"
+          SvgIcon={addIcon}
+          customStyles={{
+            marginLeft: "auto",
+            marginBottom: "2vh",
+            backgroundColor: "green",
+          }}
+        />
         {currentExercises.length > 0 ? (
           currentExercises?.map((exercise) => (
             <ExerciseCard key={exercise._id} exercise={exercise} />
@@ -56,17 +64,17 @@ const TrueHome = () => {
         ) : (
           <p>No exercises found.</p>
         )}
-      </div>
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => paginate(index + 1)}
-            style={{ margin: "0 5px" }}
-          >
-            {index + 1}
-          </button>
-        ))}
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              style={{ margin: "0 5px" }}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
