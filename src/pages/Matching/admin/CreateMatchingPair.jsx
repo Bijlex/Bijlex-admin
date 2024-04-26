@@ -74,7 +74,7 @@ const CreateMatchingPair = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3500/exercises/",
+        "https://bijlex-backend.onrender.com/exercises/",
         formData,
         {
           headers: {
