@@ -1,0 +1,35 @@
+.exercise_page {
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.question_area {
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.exercise_area {
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.question_area h2 {
+    display: inline-block;
+    width: 100vw;
+    max-width: 100%;
+    background-color: var(--background);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.loading_text {
+    color: white;
+    width: 100vw;
+    text-align: center;
+}

@@ -9,13 +9,12 @@ const Table = ({
   isDisabled = () => false,
   hiddenIndices = [],
   showBtns = true,
-  displayAxis,
-  setDisplayAxis,
+  displayAxis = ["x", "y"],
+  setDisplayAxis = () => false,
   tableStyle = "tableWithFilledBackground",
   customStyles = {},
   fixedTH = false,
   editAxis = true,
-  ...additionalProps
 }) => {
   const addColumn = () => {
     setData([...data, { x: "", y: "" }]);
@@ -24,7 +23,6 @@ const Table = ({
   const removeColumn = () => {
     setData(data.slice(0, -1));
   };
-  const disableStatus = isDisabled(additionalProps);
   return (
     <>
       {showBtns && (
@@ -99,8 +97,7 @@ const Table = ({
                         onChange={(e) =>
                           handleInputChange(axis, index, e.target.value)
                         }
-                        {...additionalProps}
-                        disabled={disableStatus}
+                        disabled={isDisabled(axis, index)}
                         style={customStyles?.tdInput}
                       />
                     </td>

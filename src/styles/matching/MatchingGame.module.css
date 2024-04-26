@@ -1,0 +1,43 @@
+.matching_game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /* Use the full height of the viewport */
+  width: 100vw;
+  background-color: white;
+  /* Use the full width of the viewport */
+}
+
+.matching_game button {
+  width: 100px;
+  /* Width of the buttons for the game */
+  margin: 10px;
+  background-color: black;
+  /* Button background color */
+  color: white;
+  /* Button text color */
+  border: none;
+  /* Removing any default border */
+  cursor: pointer;
+  /* Cursor as pointer to indicate clickability */
+  height: 70px;
+}
+
+.game_controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+}
+
+.game_controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  height: 70px;
+  background-color: rgb(79, 142, 224);
+}
+
+.space {
+  width: 20px;
+}

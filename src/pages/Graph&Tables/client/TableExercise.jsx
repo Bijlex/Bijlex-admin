@@ -8,13 +8,10 @@ import axios from "axios";
 import { useMessage } from "../../../contexts/MessageContext.jsx";
 // Define the number of columns
 
-function TableExercise() {
-  const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
-    useMessage();
-  const { id: exerciseID } = useParams();
-  const [fetchData, setFetchData] = useState([]);
-  const [tableData, setTableData] = useState(Array(7).fill({ x: "", y: "" }));
-  const [correct, setCorrect] = useState(true);
+function TableExercise({ customData }) {
+  const { addFullscreenConfirmationDialog } = useMessage();
+
+  const [tableData, setTableData] = useState([]);
 
   const handleInputChange = (axis, index, value) => {
     const newData = tableData.map((item, i) =>
@@ -26,7 +23,7 @@ function TableExercise() {
 
   const handleCheck = () => {
     let isCorrect = true;
-    fetchData.customData.hiddenIndices.forEach((item) => {
+    customData.hiddenIndices.forEach((item) => {
       if (item.number !== tableData[item.index][item.axis]) {
         isCorrect = false;
       }
@@ -44,48 +41,32 @@ function TableExercise() {
       );
     }
   };
-
-  const confirmAnswer = () => {};
-
-  const tryAgain = () => {};
-
   useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const response = await axios.get(
-          "https://bijlex-backend.onrender.com/exercises/" + exerciseID
-        );
-        console.log(response.data);
-        if (response.status === 200) {
-          const customData =
-            typeof response.data.customData === "string"
-              ? JSON.parse(response.data.customData)
-              : response.data.customData;
+    setTableData(customData?.tableData);
+  }, [customData]);
+  // Updated to disable inputs not in the hiddenIndices
+  const disableEdit = (axis, index) => {
+    const isEnabled = customData.hiddenIndices.some(
+      (condition) => condition.axis == axis && condition.index == index
+    );
+    console.log(
+      `Checking if editing should be disabled for ${axis}[${index}]: Not enabled is ${!isEnabled}`
+    );
+    return !isEnabled; // Invert the result
+  };
 
-          // Update your state with the parsed customData
-          setFetchData({ ...response.data, customData: customData });
-
-          // Assuming customData contains 'tableData' and needs to be parsed as well
-          setTableData(customData.tableData);
-        }
-      } catch (error) {
-        console.error("Failed to fetch exercises:", error);
-      }
-    };
-
-    fetchExercises();
-  }, []); // Fetch exercises once on component mount
   return (
     <div className={styles.exerciseTable}>
       <Table
         data={tableData}
         setData={setTableData}
         handleInputChange={handleInputChange}
-        hiddenIndices={fetchData.customData?.hiddenIndices || []}
-        displayAxis={fetchData.customData?.displayAxis || ["x", "y"]}
-        tableStyle={fetchData.customData?.tableStyle}
+        hiddenIndices={customData?.hiddenIndices || []}
+        displayAxis={customData?.displayAxis || ["x", "y"]}
+        tableStyle={customData?.tableStyle}
         showBtns={false}
         editAxis={false}
+        isDisabled={(axis, index) => disableEdit(axis, index)}
       />
 
       <SvgBtn

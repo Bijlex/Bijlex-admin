@@ -1,0 +1,35 @@
+.button_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+.grid_button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.grid_button.selected {
+  background-color: rgb(32, 99, 199);
+  /* or any color for selected */
+}
+
+.grid_button.matched {
+  background-color: green;
+  /* or any color for matched */
+}
+
+.flash_red {
+  animation: flashRed 1s;
+}
+
+@keyframes flashRed {
+  from {
+    background-color: red;
+  }
+
+  to {
+    background-color: initial;
+  }
+}

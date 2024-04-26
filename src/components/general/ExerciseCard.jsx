@@ -35,9 +35,7 @@ const ExerciseCard = ({ exercise }) => {
           customStyles={{ backgroundColor: "red" }}
         /> */}
         <SvgBtn
-          handleClick={() =>
-            navigate(`/${exercise.exerciseType}/${exercise._id}`)
-          }
+          handleClick={() => navigate(`/${exercise._id}`)}
           SvgIcon={documentIcon}
           text={"Test Exercise"}
         />

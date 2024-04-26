@@ -210,8 +210,8 @@ button {
     -o-transition: all 0.5s ease-out;
 }
 
-.exercise_type_tabs:first-of-type {
-    background-color: var(--accent-300);
+.active_exercise_tab {
+    background-color: var(--accent-300) !important;
     width: 15vw;
     padding: 1.2vh 1vw;
     color: var(--text-50);

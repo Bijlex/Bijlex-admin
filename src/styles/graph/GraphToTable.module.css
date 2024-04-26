@@ -1,0 +1,172 @@
+.graphToTable {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.graphBox {
+  width: 100vw;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  flex-wrap: wrap;
+  /* Allows content to wrap - adjust as needed */
+}
+
+.equation_display {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Slightly transparent white background */
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  /* Adjust the size to your preference */
+  color: #333;
+  text-align: center;
+  /* Dark text color for readability */
+}
+
+
+.lineGraph {
+  width: 50% !important;
+  max-height: 80vh;
+}
+
+.lineGraph canvas {
+  aspect-ratio: 1/1;
+}
+
+.arrowBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.arrowBox button {
+  width: 15vw;
+  padding: 10px 5px;
+  position: relative;
+}
+
+#up_arrow {
+  transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+}
+
+#down_arrow {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
+
+#left_arrow {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
+
+#right_arrow {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
+
+#up_arrow {
+  transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+}
+
+.question_container {
+  color: white;
+}
+
+.target_equation {
+  background-color: rgba(32, 32, 32, 0.8);
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+
+
+.tableContainer {
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.legendBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.btnIcon {
+  position: absolute;
+  width: 20px;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+}
+
+.centerContent {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexCenter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: white;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.inputStyle {
+  width: 80%;
+  max-width: 100%;
+  border: none;
+  text-align: center;
+  background-color: #ffffff;
+  color: black;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}

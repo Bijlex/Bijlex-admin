@@ -1,5 +1,6 @@
 .dialog_container {
     height: 100vh;
+    max-width: 100%;
     position: fixed;
     width: 100vw;
     top: 0;

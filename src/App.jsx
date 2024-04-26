@@ -6,7 +6,11 @@ import { MessageProvider } from "./contexts/MessageContext";
 import Layout from "./components/layout";
 import TrueHome from "./pages/TrueHome";
 import CreateTableExercise from "./pages/Graph&Tables/admin/CreateTableExercise";
-import TableExercise from "./pages/Graph&Tables/client/TableExercise";
+import ExercisePage from "./pages/ExercisePage";
+import CreateGraphToTable from "./pages/Graph&Tables/admin/CreateGraphToTable";
+import CreateParabola from "./pages/Graph&Tables/admin/CreateParabola";
+import CreateMatchingPair from "./pages/Matching/admin/CreateMatchingPair";
+import EditMatchingPair from "./pages/Matching/admin/EditMatchingPair";
 
 const App = () => {
   return (
@@ -21,7 +25,31 @@ const App = () => {
                 path="/table-exercise/create"
                 element={<CreateTableExercise />}
               />
-              <Route path="/table-exercise/:id" element={<TableExercise />} />
+            </Route>
+            <Route path="/graph-to-table">
+              <Route index element={<TrueHome />} />
+              <Route
+                path="/graph-to-table/create"
+                element={<CreateGraphToTable />}
+              />
+            </Route>
+            <Route path="/parabola">
+              <Route index element={<TrueHome />} />
+              <Route path="/parabola/create" element={<CreateParabola />} />
+            </Route>
+            <Route path="/matching-pairs">
+              <Route index element={<TrueHome />} />
+              <Route
+                path="/matching-pairs/create"
+                element={<CreateMatchingPair />}
+              />
+              <Route
+                path="/matching-pairs/edit/:id"
+                element={<EditMatchingPair />}
+              />
+            </Route>
+            <Route path="/:id">
+              <Route index element={<ExercisePage />} />
             </Route>
           </Route>
           {/* Set Home as the default route */}
