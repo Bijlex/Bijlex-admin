@@ -1,6 +1,6 @@
 .button_grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   justify-items: center;
 }
@@ -8,6 +8,7 @@
 .grid_button {
   padding: 10px;
   font-size: 16px;
+  background-color: rgb(151, 150, 69);
 }
 
 .grid_button.selected {

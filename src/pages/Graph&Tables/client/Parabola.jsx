@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Line, Scatter } from "react-chartjs-2";
 import "chart.js/auto";
 import styles from "../../../styles/graph/Parabola.module.css";
-import axios from "axios";
 import { useMessage } from "../../../contexts/MessageContext";
 
 const graphRange = 20; // Increased range for better visibility of parabolas
