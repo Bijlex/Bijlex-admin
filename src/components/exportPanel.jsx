@@ -9,7 +9,7 @@ const ExportPanel = ({ json, closeDialog, exerciseName }) => {
     const href = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = href;
-    link.download = "exercise-data.json";
+    link.download = exerciseName + ".json";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

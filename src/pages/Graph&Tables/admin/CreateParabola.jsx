@@ -71,8 +71,8 @@ function CreateParabola() {
         min: -graphRange,
         max: graphRange,
         grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Lighter grid lines
-          borderColor: "rgba(255, 255, 255, 0.25)", // Lighter axis border
+          color: "rgba(0, 0, 0, 0.1)", // Lighter grid lines
+          borderColor: "rgba(0, 0, 0, 0.25)", // Lighter axis border
           borderWidth: 2,
           display: true,
           drawBorder: true,
@@ -80,7 +80,7 @@ function CreateParabola() {
           drawTicks: true,
         },
         ticks: {
-          color: "rgba(255, 255, 255, 0.75)", // Lighter tick labels
+          color: "rgba(0, 0, 0, 0.75)", // Lighter tick labels
           stepSize: 1,
         },
       },
@@ -90,8 +90,8 @@ function CreateParabola() {
         min: -graphRange,
         max: graphRange,
         grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Lighter grid lines
-          borderColor: "rgba(255, 255, 255, 0.25)", // Lighter axis border
+          color: "rgba(0, 0, 0, 0.1)", // Lighter grid lines
+          borderColor: "rgba(0, 0, 0, 0.25)", // Lighter axis border
           borderWidth: 2,
           display: true,
           drawBorder: true,
@@ -99,7 +99,7 @@ function CreateParabola() {
           drawTicks: true,
         },
         ticks: {
-          color: "rgba(255, 255, 255, 0.75)", // Lighter tick labels
+          color: "rgba(0, 0, 0, 0.75)", // Lighter tick labels
           stepSize: 1,
         },
       },
@@ -252,7 +252,9 @@ function CreateParabola() {
             <button onClick={() => moveParabola("narrower")}>Narrower</button>
           </div>
           <div className={styles.arrow_box}>
-            <button onClick={createExercise}>Create Exercise</button>
+            <button style={{ width: "90%" }} onClick={createExercise}>
+              Create Exercise
+            </button>
           </div>
         </div>
       </div>
