@@ -11,7 +11,7 @@ import axios from "axios";
 import { useMessage } from "../contexts/MessageContext";
 
 const BijlexHome = () => {
-  const [currentSelect, setCurrentSelect] = useState("question_models");
+  const [currentSelect, setCurrentSelect] = useState("level");
   const [level, setLevel] = useState("");
   const [year, setYear] = useState("");
   const [chapter, setChapter] = useState("");
