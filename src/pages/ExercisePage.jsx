@@ -6,6 +6,7 @@ import styles from "../styles/ExercisePage.module.css";
 import GraphToTable from "./Graph&Tables/client/GraphToTable";
 import Parabola from "./Graph&Tables/client/Parabola";
 import MatchingGame from "./Matching/client/MatchingGame";
+import FractionBuckets from "./Fractions/client/FractionBuckets";
 
 const ExercisePage = () => {
   const [fetchData, setFetchData] = useState([]);
@@ -17,6 +18,7 @@ const ExercisePage = () => {
     "graph-to-table": GraphToTable,
     parabola: Parabola,
     "matching-pairs": MatchingGame,
+    "fraction-buckets": FractionBuckets,
   };
 
   useEffect(() => {
