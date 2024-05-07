@@ -11,6 +11,7 @@ import CreateGraphToTable from "./pages/Graph&Tables/admin/CreateGraphToTable";
 import CreateParabola from "./pages/Graph&Tables/admin/CreateParabola";
 import CreateMatchingPair from "./pages/Matching/admin/CreateMatchingPair";
 import EditMatchingPair from "./pages/Matching/admin/EditMatchingPair";
+import BijlexHome from "./pages/BijlexHome";
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
       <MessageProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<TrueHome />} />
+            <Route index element={<BijlexHome />} />
             <Route path="/table-exercise">
               <Route index element={<TrueHome />} />
               <Route

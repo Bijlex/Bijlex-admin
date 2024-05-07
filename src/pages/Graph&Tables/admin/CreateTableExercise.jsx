@@ -7,7 +7,7 @@ import axios from "axios";
 import { useMessage } from "../../../contexts/MessageContext.jsx";
 // Define the number of columns
 
-function CreateTableExercise() {
+function CreateTableExercise({ setCustomData }) {
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
 
@@ -15,6 +15,7 @@ function CreateTableExercise() {
   const [displayAxis, setDisplayAxis] = useState(["x", "y"]);
   const [hiddenIndices, setHiddenIndices] = useState([]);
   const [tableStyle, setTableStyle] = useState("basicTable");
+  const [prompt, setPrompt] = useState("");
 
   const prevDisplayAxisRef = useRef(displayAxis);
 
@@ -27,57 +28,16 @@ function CreateTableExercise() {
     console.log(`Updating ${axis}[${index}] to ${value}`);
   };
   const addExercise = async (hiddenIndices, tableData) => {
-    const formData = new FormData();
-    const loadingDialogId = addDialog({
-      type: "loading",
-      message: "Creating your exercise",
-    });
-    formData.append("chapter", "Chapter 2");
-    formData.append("difficulty", 1);
-    formData.append("prompt", "Please complete the table");
-    formData.append("category", "tables");
-    formData.append("exerciseType", "table-exercise");
     const customStyle = {};
     const customData = {
       hiddenIndices,
       tableData,
       displayAxis,
       tableStyle,
+      prompt,
       customStyle,
     };
-    console.log(customData);
-    formData.append("customData", JSON.stringify(customData));
-
-    try {
-      const response = await axios.post(
-        "https://bijlex-backend.onrender.com/exercises/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      removeDialog(loadingDialogId);
-
-      if (response.status === 201) {
-        addDialog({
-          type: "message",
-          messageType: "success", // can be 'default', 'success', or 'error'
-          message: "Exercise Listed!",
-          duration: 3000, // duration in milliseconds
-        });
-        return true;
-      }
-    } catch (error) {
-      let errMsg = "";
-      if (!error.response) {
-        console.error("Network error:", error.message);
-        errMsg = "Network error. Please try again later.";
-      } else {
-        errMsg = error.response.data.message;
-      }
-    }
+    setCustomData(customData);
   };
 
   const handleMakeExercise = async () => {
@@ -110,21 +70,7 @@ function CreateTableExercise() {
     });
     setHiddenIndices(newClearedIndex);
     setTableData(newData);
-    const success = await addExercise(newClearedIndex, newData);
-    if (success) {
-      const successDialog = addFullscreenConfirmationDialog(
-        "Exercise Created",
-        "Ok"
-      );
-    } else {
-      addDialog({
-        type: "message",
-        messageType: "error",
-        message: "Exercise Failed to Create",
-        duration: 3000,
-      });
-      confirmAnswer();
-    }
+    addExercise(newClearedIndex, newData);
   };
   useEffect(() => {
     const prevDisplayAxis = prevDisplayAxisRef.current;
@@ -162,6 +108,13 @@ function CreateTableExercise() {
   }, [displayAxis]);
   return (
     <div className={styles.exerciseTable}>
+      <label htmlFor="">Question Prompt</label>
+      <input
+        id="prompt_input"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        type="text"
+      />
       <Table
         data={tableData}
         setData={setTableData}

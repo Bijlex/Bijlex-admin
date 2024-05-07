@@ -8,7 +8,7 @@ import axios from "axios";
 import { useMessage } from "../../../contexts/MessageContext.jsx";
 // Define the number of columns
 
-function TableExercise({ customData }) {
+function TableExercise({ customData, preview = false }) {
   const { addFullscreenConfirmationDialog } = useMessage();
 
   const [tableData, setTableData] = useState([]);
@@ -57,6 +57,7 @@ function TableExercise({ customData }) {
 
   return (
     <div className={styles.exerciseTable}>
+      <span className="prompt_text">{customData?.prompt}</span>
       <Table
         data={tableData}
         setData={setTableData}
@@ -69,11 +70,13 @@ function TableExercise({ customData }) {
         isDisabled={(axis, index) => disableEdit(axis, index)}
       />
 
-      <SvgBtn
-        handleClick={handleCheck}
-        SvgIcon={checkIcon}
-        text={"Check Exercise"}
-      />
+      {!preview && (
+        <SvgBtn
+          handleClick={handleCheck}
+          SvgIcon={checkIcon}
+          text={"Check Exercise"}
+        />
+      )}
     </div>
   );
 }
