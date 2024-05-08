@@ -15,7 +15,7 @@ function CreateTableExercise({ setCustomData }) {
   const [displayAxis, setDisplayAxis] = useState(["x", "y"]);
   const [hiddenIndices, setHiddenIndices] = useState([]);
   const [tableStyle, setTableStyle] = useState("basicTable");
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState("Please fill in the missing data");
 
   const prevDisplayAxisRef = useRef(displayAxis);
 
