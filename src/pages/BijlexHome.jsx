@@ -30,12 +30,16 @@ const BijlexHome = () => {
     "graph-to-table": CreateGraphToTable,
     parabola: CreateParabola,
     "matching-pairs": CreateMatchingPair,
+    "numberline-completion": CreateNumberLine,
+    "fraction-buckets": CreateFractionBuckets,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
     "graph-to-table": GraphToTable,
     parabola: Parabola,
     "matching-pairs": MatchingGame,
+    "numberline-completion": NumberLine,
+    "fraction-buckets": FractionBuckets,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();

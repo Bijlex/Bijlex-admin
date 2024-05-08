@@ -3,7 +3,7 @@ import styles from "../../../styles/numberline/numberline.module.css";
 import { useMessage } from "../../../contexts/MessageContext";
 
 const NumberLine = ({ customData, preview = false }) => {
-  const [answers, setAnswers] = useState(customData.answers);
+  const [answers, setAnswers] = useState(customData?.answers || []);
   const [userInputs, setUserInputs] = useState({});
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -18,7 +18,6 @@ const NumberLine = ({ customData, preview = false }) => {
       [index]: value.trim(), // Trim whitespace
     });
   };
-
   // Function to check answers
   const checkAnswers = () => {
     const allCorrect = answers.every(
@@ -32,6 +31,9 @@ const NumberLine = ({ customData, preview = false }) => {
       addFullscreenConfirmationDialog("Onjuist. Probeer het opnieuw!", "Ok");
     }
   };
+  useEffect(() => {
+    setAnswers(customData.answers);
+  }, [customData]);
 
   return (
     <div className={styles.number_line}>
@@ -47,23 +49,24 @@ const NumberLine = ({ customData, preview = false }) => {
       </div>
       <p className={styles.instructions}>{customData.prompt}</p>
       <div className={styles.numbers_list}>
-        {answers.map((number, index) => (
-          // Making numbers draggable
-          <span
-            key={index}
-            className={`${styles.number} ${
-              Object.keys(userInputs).some((key) => userInputs[key] == number)
-                ? styles.activeNumber
-                : ""
-            }`}
-            draggable="true"
-            onDragStart={(e) =>
-              e.dataTransfer.setData("text", number.toString())
-            }
-          >
-            {formatNumber(number)}
-          </span>
-        ))}
+        {answers.length > 0 &&
+          answers.map((number, index) => (
+            // Making numbers draggable
+            <span
+              key={index}
+              className={`${styles.number} ${
+                Object.keys(userInputs).some((key) => userInputs[key] == number)
+                  ? styles.activeNumber
+                  : ""
+              }`}
+              draggable="true"
+              onDragStart={(e) =>
+                e.dataTransfer.setData("text", number.toString())
+              }
+            >
+              {formatNumber(number)}
+            </span>
+          ))}
       </div>
       {answers.map((position, index) => (
         <div
