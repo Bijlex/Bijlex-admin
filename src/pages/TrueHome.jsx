@@ -90,6 +90,18 @@ const TrueHome = () => {
           >
             Matching Pairs Exercise
           </button>
+
+          <button
+            className={
+              "exercise_type_tabs" +
+              " " +
+              `${exerciseType == "fraction-buckets" && "active_exercise_tab"}`
+            }
+            onClick={() => setExerciseType("fraction-buckets")}
+          >
+            Fraction Buckets Exercise
+          </button>
+          
           {/* <button className="exercise_type_tabs">
             Table to Graph Exercise
           </button> */}
