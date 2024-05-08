@@ -210,6 +210,7 @@ function CreateFractionBuckets({ setCustomData }) {
             fontSize: "16px",
             border: "1px solid #ccc",
             borderRadius: "4px",
+            color: "white",
           }}
         />
       </div>
