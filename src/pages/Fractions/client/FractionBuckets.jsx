@@ -171,7 +171,7 @@ function Fraction({ value, onDragStart }) {
   );
 }
 
-function FractionBuckets({ customData }) {
+function FractionBuckets({ customData, preview }) {
   const total = 10; // Total liters of water (could be passed as a prop)
   const [buckets, setBuckets] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -317,7 +317,7 @@ function FractionBuckets({ customData }) {
           ))}
         </div>
       )}
-      {showCheckButton && (
+      {showCheckButton && !preview && (
         <button
           onClick={checkAnswers}
           style={{
