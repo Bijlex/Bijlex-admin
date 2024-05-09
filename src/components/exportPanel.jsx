@@ -70,10 +70,16 @@ const ExportPanel = ({ json, closeDialog, exerciseName }) => {
       >
         {JSON.stringify(json, null, 2)}
       </pre>
-      <button style={{ marginTop: "2vh" }} onClick={downloadJson}>
+      <button
+        style={{ marginTop: "2vh", backgroundColor: "black", color: "white" }}
+        onClick={downloadJson}
+      >
         Download JSON
       </button>
-      <button style={{ marginLeft: "10px" }} onClick={copyToClipboard}>
+      <button
+        style={{ marginLeft: "10px", backgroundColor: "black", color: "white" }}
+        onClick={copyToClipboard}
+      >
         📋 Copy Data
       </button>
     </div>

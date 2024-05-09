@@ -13,6 +13,9 @@ import CreateFractionBuckets from "./Fractions/admin/CreateFractionBuckets";
 import FractionBuckets from "./Fractions/client/FractionBuckets";
 import CreateNumberLine from "./Numberline/admin/CreateNumberLine";
 import NumberLine from "./Numberline/client/NumberLine";
+import { exportDownloadIcon } from "../constants/icons";
+import SvgBtn from "../components/general/buttons/SvgBtn";
+import ExportPanel from "../components/exportPanel";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -23,7 +26,21 @@ const BijlexHome = () => {
   const [questions, setQuestions] = useState([]);
   const [question, setQuestion] = useState("");
   const [customData, setCustomData] = useState({});
-
+  const [exportExercise, setExportExercise] = useState({});
+  const [jsonExport, setJsonExport] = useState(false);
+  const exportDocument = (quest) => {
+    setExportExercise(quest);
+    setJsonExport(true);
+  };
+  // Utility to safely parse JSON if needed
+  const parseJsonIfNeeded = (data) => {
+    try {
+      return typeof data === "string" ? JSON.parse(data) : data;
+    } catch (error) {
+      console.error("Failed to parse JSON", error);
+      return {}; // Return an empty object or handle the error as needed
+    }
+  };
   const [exerciseType, setExerciseType] = useState("");
   const CreateComponents = {
     "table-exercise": CreateTableExercise,
@@ -430,6 +447,11 @@ const BijlexHome = () => {
                 <span>{quest.order}</span>
                 <span>{quest.name}</span>
                 <span>{quest.exerciseType}</span>
+                <SvgBtn
+                  handleClick={() => exportDocument(quest)}
+                  SvgIcon={exportDownloadIcon}
+                  text={"Export Exercise"}
+                />
                 <button
                   onClick={() => handleQuestionClick(quest._id)}
                   className="question_select_btn"
@@ -510,6 +532,7 @@ const BijlexHome = () => {
             <span>6</span>
             <span>AAA-GEO-001</span>
             <span>Numberline Completion Exercise</span>
+
             <button
               onClick={() => handleQuestionModelClick("numberline-completion")}
               className="question_select_btn"
@@ -518,6 +541,13 @@ const BijlexHome = () => {
             </button>
           </div>
         </div>
+      )}
+      {jsonExport && (
+        <ExportPanel
+          json={parseJsonIfNeeded(exportExercise.customData)}
+          closeDialog={() => setJsonExport(false)}
+          exerciseName={exportExercise.name}
+        />
       )}
       {exerciseType != "" && currentSelect == "Specific_model" && (
         <CreateComponent setCustomData={previewExercise} />
