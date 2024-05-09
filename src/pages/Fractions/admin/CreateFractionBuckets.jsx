@@ -8,21 +8,21 @@ function CreateFractionBuckets({ setCustomData }) {
     const [bucketCount, setBucketCount] = useState(3);
     const [fractions, setFractions] = useState(Array(3).fill(''));
     const [showBuckets, setShowBuckets] = useState(false);
-    const [questionPrompt, setQuestionPrompt] = useState('');
+    const [questionPrompt, setQuestionPrompt] = useState(''); // New state for the question prompt
     const { addDialog, removeDialog, addFullscreenConfirmationDialog } = useMessage();
 
-    const handleBucketCountChange = (event) => {
-        const count = parseInt(event.target.value, 10);
-        setBucketCount(count);
-        setFractions(Array(count).fill(''));
-        setShowBuckets(false);
-    };
+  const handleBucketCountChange = (event) => {
+    const count = parseInt(event.target.value, 10);
+    setBucketCount(count);
+    setFractions(Array(count).fill(""));
+    setShowBuckets(false);
+  };
 
-    const handleFractionChange = (index, value) => {
-        const newFractions = [...fractions];
-        newFractions[index] = value;
-        setFractions(newFractions);
-    };
+  const handleFractionChange = (index, value) => {
+    const newFractions = [...fractions];
+    newFractions[index] = value;
+    setFractions(newFractions);
+  };
 
     const handleQuestionPromptChange = (event) => {
         setQuestionPrompt(event.target.value);
@@ -60,7 +60,7 @@ function CreateFractionBuckets({ setCustomData }) {
 
     return (
         <div style={{ padding: '50px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ marginBottom: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ marginBottom: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <label style={{ marginBottom: '5px' }}>Question Prompt:</label>
                 <input
                     type="text"
@@ -104,16 +104,25 @@ function CreateFractionBuckets({ setCustomData }) {
                 style={{ marginBottom: '30px', alignSelf: 'center' }} // Center button, adjust margin if needed
             />
 
-            {showBuckets && (
-                <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
-                    {fractions.map((fraction, index) => {
-                        const fillLevel = fraction ? parseFloat(eval(fraction)) : 0;
-                        return fraction ? <AdminBucket key={index} fraction={fillLevel} total={1} /> : null;
-                    })}
-                </div>
-            )}
+      {showBuckets && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            width: "100%",
+          }}
+        >
+          {fractions.map((fraction, index) => {
+            const fillLevel = fraction ? parseFloat(eval(fraction)) : 0;
+            return fraction ? (
+              <AdminBucket key={index} fraction={fillLevel} total={1} />
+            ) : null;
+          })}
         </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default CreateFractionBuckets;

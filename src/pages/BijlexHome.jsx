@@ -11,6 +11,8 @@ import axios from "axios";
 import { useMessage } from "../contexts/MessageContext";
 import CreateFractionBuckets from "./Fractions/admin/CreateFractionBuckets";
 import FractionBuckets from "./Fractions/client/FractionBuckets";
+import CreateNumberLine from "./Numberline/admin/CreateNumberLine";
+import NumberLine from "./Numberline/client/NumberLine";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -28,6 +30,7 @@ const BijlexHome = () => {
     "graph-to-table": CreateGraphToTable,
     parabola: CreateParabola,
     "matching-pairs": CreateMatchingPair,
+    "numberline-completion": CreateNumberLine,
     "fraction-buckets": CreateFractionBuckets,
   };
   const exerciseComponents = {
@@ -35,6 +38,7 @@ const BijlexHome = () => {
     "graph-to-table": GraphToTable,
     parabola: Parabola,
     "matching-pairs": MatchingGame,
+    "numberline-completion": NumberLine,
     "fraction-buckets": FractionBuckets,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
@@ -497,6 +501,17 @@ const BijlexHome = () => {
             <span>Fraction Buckets Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("fraction-buckets")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>6</span>
+            <span>AAA-GEO-001</span>
+            <span>Numberline Completion Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("numberline-completion")}
               className="question_select_btn"
             >
               Select

@@ -1,0 +1,208 @@
+.number_line {
+    position: relative;
+    width: 100vw;
+    height: 50vh;
+    /* Provide enough space for marks and arrows */
+    background-color: white;
+}
+
+.line {
+    position: absolute;
+    width: 80%;
+    height: 3px;
+    /* Make the main line thicker for visibility */
+    background-color: black;
+    left: 10%;
+    /* Center the line with margin on both sides */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.mark {
+    position: absolute;
+    width: 2px;
+    /* Thin vertical line for the mark */
+    height: 15px;
+    /* Height of the major marks */
+    background-color: black;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+.mark::after {
+    content: attr(data-number);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #000000;
+}
+
+.arrow_and_input {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%) translateX(-50%);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.arrow {
+    height: 0;
+    width: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid red;
+    /*Largerredarrowforvisibility*/
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+
+.arrow::after {
+    content: '';
+    width: 1px;
+    height: 20px;
+    background-color: red;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+}
+
+.input_field {
+    width: 44px;
+    padding: 0px 3px;
+    height: 30px;
+    /*Setthewidthofyourinputfields*/
+    text-align: center;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.quarter {
+    left: 25%;
+}
+
+.half {
+    left: 50%;
+}
+
+.three_quarters {
+    left: 75%;
+}
+
+.check_button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+}
+
+.instructions {
+    color: black;
+    text-align: center;
+    margin: 2vh 0;
+    /* Center the instructions */
+}
+
+.numbers_list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    /* Space before the number line */
+}
+
+.number {
+    display: flex;
+    margin: 0 10px;
+    /*Spacebetweennumbers*/
+    color: black;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.number:hover {
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+
+.activeNumber {
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+
+.haveNumber {
+    background-color: #e6e6e6 !important;
+}
+
+.dialog_box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+}
+
+.finishedAnimation {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid black;
+}
+
+.finishedText {
+    color: black !important;
+}
+
+.dialog_message {
+    color: white;
+    font-weight: 100;
+}
