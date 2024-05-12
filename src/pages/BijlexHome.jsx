@@ -16,6 +16,8 @@ import NumberLine from "./Numberline/client/NumberLine";
 import { exportDownloadIcon } from "../constants/icons";
 import SvgBtn from "../components/general/buttons/SvgBtn";
 import ExportPanel from "../components/exportPanel";
+import CreateKnapsackExercise from "./Arithmetic/admin/CreateKnapsackExercise";
+import KnapsackExercise from "./Arithmetic/client/KnapsackExercise";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -49,6 +51,7 @@ const BijlexHome = () => {
     "matching-pairs": CreateMatchingPair,
     "numberline-completion": CreateNumberLine,
     "fraction-buckets": CreateFractionBuckets,
+    "knapsack-problem": CreateKnapsackExercise,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -57,6 +60,7 @@ const BijlexHome = () => {
     "matching-pairs": MatchingGame,
     "numberline-completion": NumberLine,
     "fraction-buckets": FractionBuckets,
+    "knapsack-problem": KnapsackExercise,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -516,7 +520,6 @@ const BijlexHome = () => {
               Select
             </button>
           </div>
-
           <div className="question_model_card">
             <span>5</span>
             <span>AAA-GEO-001</span>
@@ -535,6 +538,17 @@ const BijlexHome = () => {
 
             <button
               onClick={() => handleQuestionModelClick("numberline-completion")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>7</span>
+            <span>AAA-GEO-001</span>
+            <span>"Knapsack Problem" Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("knapsack-problem")}
               className="question_select_btn"
             >
               Select
