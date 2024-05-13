@@ -1,0 +1,88 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh; 
+  }
+  
+  .compass {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+  
+  .direction-button {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 1; 
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px; 
+    text-transform: uppercase; 
+  }
+  
+  .direction-button.selected {
+    background-color: yellow; 
+  }
+  
+  .direction-button.correct {
+    background-color: green;
+    color: white;
+  }  
+  
+  .direction-button.incorrect {
+    background-color: red; 
+    color: white; 
+  }  
+  
+  .compass-image {
+    margin-top: 20px;
+    position: absolute;
+    width: 80%; 
+    height: auto;
+    z-index: 0; 
+  }
+  
+  .N { top: 0; left: 50%; transform: translate(-50%, -50%); }
+  .NO { top: 0; right: 0; transform: translate(-90%, 100%); }
+  .O { top: 50%; right: 0; transform: translate(50%, -50%); }
+  .ZO { bottom: 0; right: 0; transform: translate(-100%, -90%); }
+  .Z { bottom: 0; left: 50%; transform: translate(-50%, 50%); }
+  .ZW { bottom: 0; left: 0; transform: translate(90%, -100%); }
+  .W { top: 50%; left: 0; transform: translate(-50%, -50%); }
+  .NW { top: 0; left: 0; transform: translate(100%, 90%); }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  
+  .start-button {
+    background-color: blue;
+    margin-bottom: 10px;
+  }
+  
+  .check-button {
+    background-color: green;
+    margin-bottom: 10px;
+  }

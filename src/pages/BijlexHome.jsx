@@ -18,6 +18,8 @@ import SvgBtn from "../components/general/buttons/SvgBtn";
 import ExportPanel from "../components/exportPanel";
 import CreateKnapsackExercise from "./Arithmetic/admin/CreateKnapsackExercise";
 import KnapsackExercise from "./Arithmetic/client/KnapsackExercise";
+import CreateCompassExercise from "./Degrees/admin/CreateCompassExercise";
+import CompassExercise from "./Degrees/client/CompassExercise";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -52,6 +54,7 @@ const BijlexHome = () => {
     "numberline-completion": CreateNumberLine,
     "fraction-buckets": CreateFractionBuckets,
     "knapsack-problem": CreateKnapsackExercise,
+    "compass": CreateCompassExercise,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -61,6 +64,7 @@ const BijlexHome = () => {
     "numberline-completion": NumberLine,
     "fraction-buckets": FractionBuckets,
     "knapsack-problem": KnapsackExercise,
+    "compass": CompassExercise,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -522,7 +526,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>5</span>
-            <span>AAA-GEO-001</span>
+            <span>WIB-BRK-901</span>
             <span>Fraction Buckets Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("fraction-buckets")}
@@ -549,6 +553,17 @@ const BijlexHome = () => {
             <span>"Knapsack Problem" Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("knapsack-problem")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>8</span>
+            <span>AAA-GEO-001</span>
+            <span>Compass Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("compass")}
               className="question_select_btn"
             >
               Select

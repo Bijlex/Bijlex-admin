@@ -8,7 +8,6 @@ function CreateFractionBuckets({ setCustomData }) {
     const [fractions, setFractions] = useState(Array(3).fill(''));
     const [showBuckets, setShowBuckets] = useState(false);
     const [questionPrompt, setQuestionPrompt] = useState(''); // New state for the question prompt
-    const { addDialog, removeDialog, addFullscreenConfirmationDialog } = useMessage();
 
   const handleBucketCountChange = (event) => {
     const count = parseInt(event.target.value, 10);
