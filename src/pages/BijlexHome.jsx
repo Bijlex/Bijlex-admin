@@ -20,6 +20,16 @@ import CreateKnapsackExercise from "./Arithmetic/admin/CreateKnapsackExercise";
 import KnapsackExercise from "./Arithmetic/client/KnapsackExercise";
 import CreateCompassExercise from "./Degrees/admin/CreateCompassExercise";
 import CompassExercise from "./Degrees/client/CompassExercise";
+import CreateParallelogramExercise from "./Parallelism/admin/CreateParallelogramExercise";
+import ParallelogramExercise from "./Parallelism/client/ParallelogramExercise";
+import CreateStarExercise from "./Parallelism/admin/CreateStarExercise";
+import StarExercise from "./Parallelism/client/StarExercise";
+import CreateCubeExercise from "./Parallelism/admin/CreateCubeExercise";
+import CubeExercise from "./Parallelism/client/CubeExercise";
+import CreateSquaresToDice from "./Cube/admin/CreateSquaresToDice";
+import SquaresToDice from "./Cube/client/SquaresToDice";
+import CreateCircleToOval from "./Circle/admin/CreateCircleToOval";
+import CircleToOval from "./Circle/client/CircleToOval";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -56,6 +66,11 @@ const BijlexHome = () => {
     "fraction-buckets": CreateFractionBuckets,
     "knapsack-problem": CreateKnapsackExercise,
     compass: CreateCompassExercise,
+    "parallel-parallelogram": CreateParallelogramExercise,
+    "parallel-star": CreateStarExercise,
+    "parallel-cube": CreateCubeExercise,
+    "squares-to-dice": CreateSquaresToDice,
+    "circle-to-oval": CreateCircleToOval,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -66,6 +81,11 @@ const BijlexHome = () => {
     "fraction-buckets": FractionBuckets,
     "knapsack-problem": KnapsackExercise,
     compass: CompassExercise,
+    "parallel-parallelogram": ParallelogramExercise,
+    "parallel-star": StarExercise,
+    "parallel-cube": CubeExercise,
+    "squares-to-dice": SquaresToDice,
+    "circle-to-oval": CircleToOval,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -650,6 +670,61 @@ const BijlexHome = () => {
             <span>Compass Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("compass")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>9</span>
+            <span>AAA-GEO-001</span>
+            <span>Parallel Parallelogram Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("parallel-parallelogram")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>10</span>
+            <span>AAA-GEO-001</span>
+            <span>Parallel Star Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("parallel-star")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>11</span>
+            <span>BIL-EVE-901</span>
+            <span>Parallel Cube Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("parallel-cube")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>12</span>
+            <span>LEN-MAA-900</span>
+            <span>Squares To Dice Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("squares-to-dice")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>13</span>
+            <span>FIG-BAS-905</span>
+            <span>Circle To Oval Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("circle-to-oval")}
               className="question_select_btn"
             >
               Select
