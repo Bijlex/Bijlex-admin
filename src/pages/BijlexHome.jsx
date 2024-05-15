@@ -23,6 +23,7 @@ import CompassExercise from "./Degrees/client/CompassExercise";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
+  const [mode, setMode] = useState("");
   const [level, setLevel] = useState("");
   const [year, setYear] = useState("");
   const [chapter, setChapter] = useState("");
@@ -54,7 +55,7 @@ const BijlexHome = () => {
     "numberline-completion": CreateNumberLine,
     "fraction-buckets": CreateFractionBuckets,
     "knapsack-problem": CreateKnapsackExercise,
-    "compass": CreateCompassExercise,
+    compass: CreateCompassExercise,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -64,7 +65,7 @@ const BijlexHome = () => {
     "numberline-completion": NumberLine,
     "fraction-buckets": FractionBuckets,
     "knapsack-problem": KnapsackExercise,
-    "compass": CompassExercise,
+    compass: CompassExercise,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -89,7 +90,14 @@ const BijlexHome = () => {
     setQuestion(question);
     setCurrentSelect("detail_question");
   };
+  const handleEditQuestionClick = (question) => {
+    setMode("Edit");
+    setQuestion(question);
+    setCurrentSelect("Edit_model");
+  };
   const handleQuestionModelClick = (exerciseType) => {
+    setMode("Create");
+    setCustomData({});
     setCurrentSelect("Specific_model");
     setExerciseType(exerciseType);
   };
@@ -97,6 +105,10 @@ const BijlexHome = () => {
   useEffect(() => {
     if (paragraph != "") {
       const fetchData = async () => {
+        const loadingDialogId = addDialog({
+          type: "loading",
+          message: "Fetching your exercises",
+        });
         try {
           const response = await axios.get(
             "https://bijlex-backend.onrender.com/exercises/getByALHP",
@@ -110,6 +122,7 @@ const BijlexHome = () => {
             }
           );
           if (response.status === 200) {
+            removeDialog(loadingDialogId);
             const customData =
               typeof response.data.customData === "string"
                 ? JSON.parse(response.data.customData)
@@ -120,6 +133,7 @@ const BijlexHome = () => {
             addFullscreenConfirmationDialog("No Data Found", "Ok");
           }
         } catch (error) {
+          removeDialog(loadingDialogId);
           addFullscreenConfirmationDialog(
             "Something went wrong on the server" + error.response
               ? error.response.data
@@ -134,12 +148,17 @@ const BijlexHome = () => {
   useEffect(() => {
     if (question != "") {
       const fetchExercises = async () => {
+        const loadingDialogId = addDialog({
+          type: "loading",
+          message: "Loading your exercise",
+        });
         try {
           const response = await axios.get(
             `https://bijlex-backend.onrender.com/exercises/${question}`
           );
           if (response.status === 200) {
             console.log(response);
+            removeDialog(loadingDialogId);
             const customData =
               typeof response.data.customData === "string"
                 ? JSON.parse(response.data.customData)
@@ -148,6 +167,7 @@ const BijlexHome = () => {
             setCustomData(customData);
           }
         } catch (error) {
+          removeDialog(loadingDialogId);
           console.error("Failed to fetch exercises:", error);
         }
       };
@@ -174,6 +194,7 @@ const BijlexHome = () => {
         break;
       default:
         setCurrentSelect("level");
+        setQuestion("");
         break;
     }
   };
@@ -233,6 +254,57 @@ const BijlexHome = () => {
       }
     } catch (error) {
       let errMsg = "";
+      if (!error.response) {
+        console.error("Network error:", error.message);
+        errMsg = "Network error. Please try again later.";
+      } else {
+        errMsg = error.response.data.message;
+      }
+    }
+  };
+
+  const editExercise = async () => {
+    const formData = new FormData();
+    const loadingDialogId = addDialog({
+      type: "loading",
+      message: "Updating your exercise",
+    });
+    formData.append("id", question);
+    formData.append("customData", JSON.stringify(customData));
+    console.log(formData);
+    try {
+      // const response = await axios.post(
+      //   "https://bijlex-backend.onrender.com/exercises/",
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      const response = await axios.patch(
+        "https://bijlex-backend.onrender.com/exercises/" + question,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      removeDialog(loadingDialogId);
+
+      if (response.status === 201) {
+        addDialog({
+          type: "message",
+          messageType: "success", // can be 'default', 'success', or 'error'
+          message: "Exercise Updated!",
+          duration: 3000, // duration in milliseconds
+        });
+        return true;
+      }
+    } catch (error) {
+      let errMsg = "";
+      removeDialog(loadingDialogId);
       if (!error.response) {
         console.error("Network error:", error.message);
         errMsg = "Network error. Please try again later.";
@@ -313,9 +385,17 @@ const BijlexHome = () => {
           </>
         )}
         {currentSelect == "preview" && (
-          <button onClick={addExercise} className="addQuestionBtn">
-            Save Exercise
-          </button>
+          <>
+            {mode === "Edit" ? (
+              <button onClick={editExercise} className="addQuestionBtn">
+                Update Exercise
+              </button>
+            ) : (
+              <button onClick={addExercise} className="addQuestionBtn">
+                Save Exercise
+              </button>
+            )}
+          </>
         )}
       </div>
       {currentSelect == "level" && (
@@ -461,6 +541,12 @@ const BijlexHome = () => {
                   text={"Export Exercise"}
                 />
                 <button
+                  onClick={() => handleEditQuestionClick(quest._id)}
+                  className="question_select_btn"
+                >
+                  Edit
+                </button>
+                <button
                   onClick={() => handleQuestionClick(quest._id)}
                   className="question_select_btn"
                 >
@@ -578,9 +664,14 @@ const BijlexHome = () => {
           exerciseName={exportExercise.name}
         />
       )}
-      {exerciseType != "" && currentSelect == "Specific_model" && (
-        <CreateComponent setCustomData={previewExercise} />
-      )}
+      {exerciseType != "" &&
+        (currentSelect == "Specific_model" ||
+          currentSelect == "Edit_model") && (
+          <CreateComponent
+            setCustomData={previewExercise}
+            customData={customData}
+          />
+        )}
       {currentSelect == "preview" && (
         <ExerciseComponent customData={customData} preview={true} />
       )}

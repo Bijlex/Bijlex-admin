@@ -7,16 +7,32 @@ import axios from "axios";
 import { useMessage } from "../../../contexts/MessageContext.jsx";
 // Define the number of columns
 
-function CreateTableExercise({ setCustomData }) {
+function CreateTableExercise({ setCustomData, customData }) {
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
 
-  const [tableData, setTableData] = useState(Array(7).fill({ x: "", y: "" }));
-  const [displayAxis, setDisplayAxis] = useState(["x", "y"]);
-  const [hiddenIndices, setHiddenIndices] = useState([]);
-  const [tableStyle, setTableStyle] = useState("basicTable");
-  const [prompt, setPrompt] = useState("Please fill in the missing data");
-
+  const [tableData, setTableData] = useState(
+    customData?.tableData || Array(7).fill({ x: "", y: "" })
+  );
+  const [displayAxis, setDisplayAxis] = useState(
+    customData?.displayAxis || ["x", "y"]
+  );
+  const [hiddenIndices, setHiddenIndices] = useState(
+    customData?.hiddenIndices || []
+  );
+  const [tableStyle, setTableStyle] = useState(
+    customData?.tableStyle || "basicTable"
+  );
+  const [prompt, setPrompt] = useState(
+    customData?.prompt || "Please fill in the missing data"
+  );
+  useEffect(() => {
+    setTableData(customData?.tableData || Array(7).fill({ x: "", y: "" }));
+    setDisplayAxis(customData?.displayAxis || ["x", "y"]);
+    setHiddenIndices(customData?.hiddenIndices || []);
+    setTableStyle(customData?.tableStyle || "basicTable");
+    setPrompt(customData?.prompt || "Please fill in the missing data");
+  }, [customData]);
   const prevDisplayAxisRef = useRef(displayAxis);
 
   const handleInputChange = (axis, index, value) => {
