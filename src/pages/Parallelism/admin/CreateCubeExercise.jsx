@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
 import { documentIcon } from "../../../constants/icons.jsx";
 
-function CreateCubeExercise({ setCustomData }) {
-    const [questionPrompt, setQuestionPrompt] = useState(''); 
+function CreateCubeExercise({ setCustomData, customData }) {
+    const [questionPrompt, setQuestionPrompt] = useState(
+        customData?.questionPrompt || ""
+    );
+
+    useEffect(() => {
+        setQuestionPrompt(customData?.questionPrompt || "");
+      }, [customData]);
 
     const handleQuestionPromptChange = (event) => {
         setQuestionPrompt(event.target.value);

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
 import { documentIcon } from "../../../constants/icons.jsx";
 
-function CreateCircleToOval({ setCustomData }) {
-    const [questionPrompt, setQuestionPrompt] = useState(''); 
+function CreateCircleToOval({ setCustomData, customData }) {
+    const [questionPrompt, setQuestionPrompt] = useState(
+        customData?.questionPrompt || ""
+    );
 
-    const handleQuestionPromptChange = (event) => {
-        setQuestionPrompt(event.target.value);
-    };
+    useEffect(() => {
+        setQuestionPrompt(customData?.questionPrompt || "");
+      }, [customData]);
 
     const saveExercise = async () => {
         const customData = {
@@ -23,7 +25,7 @@ function CreateCircleToOval({ setCustomData }) {
                 <input
                     type="text"
                     value={questionPrompt}
-                    onChange={handleQuestionPromptChange}
+                    onChange={(e) => setQuestionPrompt(e.target.value)}
                     placeholder="Enter the question prompt"
                     style={{ width: '400px', padding: '8px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
                 />

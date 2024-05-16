@@ -1,92 +1,117 @@
-// import React, { useState } from 'react';
-// import Draggable from 'react-draggable';
-
-// function CircleToOval({ customData }) {
-//     const [circleRadius, setCircleRadius] = useState(80);
-//     const [dragPosition, setDragPosition] = useState({ x: 100, y: 200 - circleRadius });
-//     const questionPrompt = customData?.questionPrompt || "No prompt provided";
-
-//     const handleDrag = (e, ui) => {
-//         const newY = dragPosition.y + ui.deltaY;
-//         const newRadius = 200 - newY;
-//         if (newRadius > 0 && newRadius <= 160) {
-//             setCircleRadius(newRadius);
-//             setDragPosition({ x: 100, y: newY });
-//         }
-//     };
-
-//     return (
-//         <div style={{ padding: '50px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//             <h2 style={{ marginBottom: '30px' }}>{questionPrompt}</h2>
-//             <svg width="200" height="400" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-//                 {/* Outer Oval */}
-//                 <ellipse cx="100" cy="200" rx="80" ry="160" stroke="black" strokeWidth="2" fill="none" />
-//                 {/* Inner Oval */}
-//                 <ellipse cx="100" cy="200" rx="70" ry="140" stroke="black" strokeWidth="1" fill="none" />
-                
-//                 {/* Circle */}
-//                 <circle cx="100" cy="200" r={circleRadius} stroke="black" strokeWidth="10" fill="none" />
-                
-//                 {/* Draggable Point on the circle */}
-//                 <Draggable
-//                     axis="y"
-//                     bounds={{ top: 40, bottom: 200 }}
-//                     position={dragPosition}
-//                     onDrag={handleDrag}
-//                 >
-//                     <circle cx={dragPosition.x - 100} cy={dragPosition.y - 120} r="10" fill="red" cursor="pointer" />
-//                 </Draggable>
-//             </svg>
-//         </div>
-//     );
-// }
-
-// export default CircleToOval;
-
-
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 
 function CircleToOval({ customData }) {
-    const [circleRadius, setCircleRadius] = useState(80);
+    const [height, setHeight] = useState(100);
+    const [width, setWidth] = useState(100);
+    const [isCorrect, setIsCorrect] = useState(null);
+    const [attempts, setAttempts] = useState(0);
     const questionPrompt = customData?.questionPrompt || "No prompt provided";
 
     const handleDrag = (e, ui) => {
-        const newRadius = circleRadius - ui.deltaY;
-        if (newRadius > 0 && newRadius <= 160) {
-            setCircleRadius(newRadius);
+        const newHeight = height - ui.deltaY;
+        const newWidth = 80 * (160 - newHeight) / 160 + 72;
+        if (newHeight > 0 && newHeight <= 180) {
+            setHeight(newHeight);
+            setWidth(newWidth);
         }
+        setIsCorrect(null); // Reset the message when dragging starts
+    };
+
+    const checkAnswer = () => {
+        if (parseInt(width) === 74) {
+            setIsCorrect(true);
+        } else {
+            setIsCorrect(false);
+            setAttempts(attempts + 1);
+        }
+    };
+
+    const reset = () => {
+        setHeight(100);
+        setWidth(100);
+        setIsCorrect(null);
     };
 
     return (
         <div style={{ padding: '50px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2 style={{ marginBottom: '30px' }}>{questionPrompt}</h2>
-            <svg width="200" height="400" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <svg width="400" height="400" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
                 {/* Outer Oval */}
                 <ellipse cx="100" cy="200" rx="80" ry="160" stroke="black" strokeWidth="2" fill="none" />
                 {/* Inner Oval */}
-                <ellipse cx="100" cy="200" rx="70" ry="140" stroke="black" strokeWidth="1" fill="none" />
+                <ellipse cx="100" cy="200" rx="71" ry="152" stroke="black" strokeWidth="1" fill="none" />
                 
-                {/* Circle */}
-                <circle cx="100" cy="200" r={circleRadius} stroke="black" strokeWidth="10" fill="none" />
+                {/* Dynamic Oval */}
+                <ellipse cx="100" cy="200" rx={width} ry={height} stroke="black" strokeWidth="10" fill="none" />
                 
-                {/* Draggable Point on the circle */}
+                {/* Draggable Point on the ellipse */}
                 <Draggable
                     axis="y"
-                    bounds={{ top: 200 - 160, bottom: 200 - 80 }}
-                    position={{ x: 100, y: 200 - circleRadius }}
+                    bounds={{ top: 200 - 180, bottom: 200 }}  // Adjust bounds to allow more dragging
+                    position={{ x: 100, y: 200 - height }}
                     onDrag={handleDrag}
-                    onStop={(_, data) => {
-                        const newY = data.y;
-                        const newRadius = 200 - newY;
-                        setCircleRadius(newRadius);
-                    }}
                 >
-                    <circle cx="0" cy={circleRadius - 80} r="10" fill="red" cursor="pointer" />
+                    <circle cx="0" cy="0" r="10" fill="red" cursor="pointer" />
                 </Draggable>
             </svg>
+            <button 
+                onClick={checkAnswer} 
+                style={{ 
+                    marginTop: '20px', 
+                    padding: '10px 20px', 
+                    fontSize: '16px', 
+                    cursor: 'pointer',
+                    backgroundColor: 'green',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px'
+                }}
+            >
+                Check Answer
+            </button>
+            {isCorrect !== null && (
+                <div style={{ marginTop: '20px', fontSize: '18px', color: 'black' }}>
+                    {isCorrect ? "Correct!" : "Incorrect!"}
+                </div>
+            )}
+            {isCorrect === false && attempts < 3 && (
+                <button 
+                    onClick={reset} 
+                    style={{ 
+                        marginTop: '20px', 
+                        padding: '10px 20px', 
+                        fontSize: '16px', 
+                        cursor: 'pointer',
+                        backgroundColor: 'orange',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px'
+                    }}
+                >
+                    Retry
+                </button>
+            )}
+            {attempts >= 3 && (
+                <button 
+                    onClick={() => setIsCorrect(null)} 
+                    style={{ 
+                        marginTop: '20px', 
+                        padding: '10px 20px', 
+                        fontSize: '16px', 
+                        cursor: 'pointer',
+                        backgroundColor: 'blue',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px'
+                    }}
+                >
+                    Continue
+                </button>
+            )}
         </div>
     );
 }
 
 export default CircleToOval;
+

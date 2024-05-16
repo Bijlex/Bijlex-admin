@@ -30,6 +30,8 @@ import CreateSquaresToDice from "./Cube/admin/CreateSquaresToDice";
 import SquaresToDice from "./Cube/client/SquaresToDice";
 import CreateCircleToOval from "./Circle/admin/CreateCircleToOval";
 import CircleToOval from "./Circle/client/CircleToOval";
+import CreateDiagonalsSquare from "./Square/admin/CreateDiagonalsSquare";
+import DiagonalsSquare from "./Square/client/DiagonalsSquare";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -71,6 +73,7 @@ const BijlexHome = () => {
     "parallel-cube": CreateCubeExercise,
     "squares-to-dice": CreateSquaresToDice,
     "circle-to-oval": CreateCircleToOval,
+    "diagonals-square": CreateDiagonalsSquare,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -86,6 +89,7 @@ const BijlexHome = () => {
     "parallel-cube": CubeExercise,
     "squares-to-dice": SquaresToDice,
     "circle-to-oval": CircleToOval,
+    "diagonals-square": DiagonalsSquare,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -725,6 +729,17 @@ const BijlexHome = () => {
             <span>Circle To Oval Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("circle-to-oval")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>14</span>
+            <span>FIG-BAS-902</span>
+            <span>Diagonals Square Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("diagonals-square")}
               className="question_select_btn"
             >
               Select
