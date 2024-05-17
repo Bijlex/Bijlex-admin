@@ -3,20 +3,18 @@ import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
 import { documentIcon } from "../../../constants/icons.jsx";
 
 function CreateSquaresToDice({ setCustomData, customData }) {
-    const [questionPrompt, setQuestionPrompt] = useState(
-        customData?.questionPrompt || ""
-      );
+    const [questionPrompt, setQuestionPrompt] = useState(customData?.questionPrompt || "");
     const [squareValues, setSquareValues] = useState(Array(6).fill(''));
 
-      useEffect(() => {
+    useEffect(() => {
         setQuestionPrompt(customData?.questionPrompt || "");
-        setSquareValues(customData?.squares.map(sq => sq.value) || Array(6).fill(''));
-      }, [customData]);
+        setSquareValues(customData?.squares?.map(sq => sq.value) || Array(6).fill(''));
+    }, [customData]);
 
     const handleQuestionPromptChange = (event) => {
         setQuestionPrompt(event.target.value);
-    }
-    
+    };
+
     const handleSquareChange = (index, event) => {
         const value = event.target.value;
         setSquareValues(prevValues => {
@@ -30,7 +28,7 @@ function CreateSquaresToDice({ setCustomData, customData }) {
         const customData = {
             questionPrompt: questionPrompt,
             squares: squareValues.map((value, index) => ({ index, value }))
-        }
+        };
         setCustomData(customData);
     };
 

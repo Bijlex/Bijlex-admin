@@ -28,10 +28,22 @@ import CreateCubeExercise from "./Parallelism/admin/CreateCubeExercise";
 import CubeExercise from "./Parallelism/client/CubeExercise";
 import CreateSquaresToDice from "./Cube/admin/CreateSquaresToDice";
 import SquaresToDice from "./Cube/client/SquaresToDice";
-import CreateCircleToOval from "./Circle/admin/CreateCircleToOval";
-import CircleToOval from "./Circle/client/CircleToOval";
-import CreateDiagonalsSquare from "./Square/admin/CreateDiagonalsSquare";
-import DiagonalsSquare from "./Square/client/DiagonalsSquare";
+import CreateCircleToOval from "./Draggable-Figures/admin/CreateCircleToOval";
+import CircleToOval from "./Draggable-Figures/client/CircleToOval";
+import CreateDiagonalsSquare from "./Diagonals/admin/CreateDiagonalsSquare";
+import DiagonalsSquare from "./Diagonals/client/DiagonalsSquare";
+import CreateDiagonalsRectangle from "./Diagonals/admin/CreateDiagonalsRectangle";
+import DiagonalsRectangle from "./Diagonals/client/DiagonalsRectangle";
+import CreateSquareToParallelogram from "./Draggable-Figures/admin/CreateSquareToParallelogram";
+import SquareToParallelogram from "./Draggable-Figures/client/SquareToParallelogram";
+import CreateSquareToRhombus from "./Draggable-Figures/admin/CreateSquareToRhombus";
+import SquareToRhombus from "./Draggable-Figures/client/SquareToRhombus";
+import CreateSquareToRectangle from "./Draggable-Figures/admin/CreateSquareToRectangle";
+import SquareToRectangle from "./Draggable-Figures/client/SquareToRectangle";
+import CreateSquareToTrapezium from "./Draggable-Figures/admin/CreateSquareToTrapezium";
+import SquareToTrapezium from "./Draggable-Figures/client/SquareToTrapezium";
+import CreateSquareToQuadrilateral from "./Draggable-Figures/admin/CreateSquareToQuadrilateral";
+import SquareToQuadrilateral from "./Draggable-Figures/client/SquareToQuadrilateral";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -74,6 +86,12 @@ const BijlexHome = () => {
     "squares-to-dice": CreateSquaresToDice,
     "circle-to-oval": CreateCircleToOval,
     "diagonals-square": CreateDiagonalsSquare,
+    "diagonals-rectangle": CreateDiagonalsRectangle,
+    "square-to-parallelogram": CreateSquareToParallelogram,
+    "square-to-rhombus": CreateSquareToRhombus,
+    "square-to-rectangle": CreateSquareToRectangle,
+    "square-to-trapezium": CreateSquareToTrapezium,
+    "square-to-quadrilateral": CreateSquareToQuadrilateral,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -90,6 +108,12 @@ const BijlexHome = () => {
     "squares-to-dice": SquaresToDice,
     "circle-to-oval": CircleToOval,
     "diagonals-square": DiagonalsSquare,
+    "diagonals-rectangle": DiagonalsRectangle,
+    "square-to-parallelogram": SquareToParallelogram,
+    "square-to-rhombus": SquareToRhombus,
+    "square-to-rectangle": SquareToRectangle,
+    "square-to-trapezium": SquareToTrapezium,
+    "square-to-quadrilateral": SquareToQuadrilateral,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -740,6 +764,72 @@ const BijlexHome = () => {
             <span>Diagonals Square Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("diagonals-square")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>15</span>
+            <span>FIG-BAS-902</span>
+            <span>Diagonals Rectangle Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("diagonals-rectangle")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>16</span>
+            <span>FIG-BAS-906</span>
+            <span>Square To Parallelogram Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("square-to-parallelogram")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>17</span>
+            <span>FIG-BAS-906</span>
+            <span>Square To Rhombus Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("square-to-rhombus")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>18</span>
+            <span>FIG-BAS-906</span>
+            <span>Square To Rectangle Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("square-to-rectangle")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>19</span>
+            <span>FIG-BAS-906</span>
+            <span>Square To Trapezium Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("square-to-trapezium")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>20</span>
+            <span>FIG-BAS-906</span>
+            <span>Square To Quadrilateral Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("square-to-quadrilateral")}
               className="question_select_btn"
             >
               Select

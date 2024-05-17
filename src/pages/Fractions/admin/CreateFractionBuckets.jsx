@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useMessage } from "../../../contexts/MessageContext"; // Adjust the path based on your project structure
+import React, { useState, useEffect } from "react";
 import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
 import { documentIcon } from "../../../constants/icons.jsx";
 
@@ -13,7 +12,7 @@ function CreateFractionBuckets({ setCustomData, customData }) {
   );
   const [questionPrompt, setQuestionPrompt] = useState(
     customData?.questionPrompt || ""
-  ); // New state for the question prompt
+  );
 
   useEffect(() => {
     setBucketCount(customData?.bucketCount || 3);
@@ -57,7 +56,7 @@ function CreateFractionBuckets({ setCustomData, customData }) {
     const customData = {
       bucketCount: bucketCount,
       fractions: fractions,
-      questionPrompt: questionPrompt, // Include the prompt in customData
+      questionPrompt: questionPrompt,
     };
     setCustomData(customData);
   };
@@ -121,7 +120,6 @@ function CreateFractionBuckets({ setCustomData, customData }) {
             fontSize: "16px",
             border: "1px solid #ccc",
             borderRadius: "4px",
-            color: "white",
           }}
         />
       </div>
@@ -186,7 +184,6 @@ function CreateFractionBuckets({ setCustomData, customData }) {
                 fontSize: "16px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
-                color: "white",
               }}
             />
           </div>
@@ -196,7 +193,7 @@ function CreateFractionBuckets({ setCustomData, customData }) {
         handleClick={saveExercise}
         SvgIcon={documentIcon}
         text={"Make Exercise"}
-        style={{ marginBottom: "30px", alignSelf: "center" }} // Center button, adjust margin if needed
+        style={{ marginBottom: "30px", alignSelf: "center" }}
       />
 
       {showBuckets && (
