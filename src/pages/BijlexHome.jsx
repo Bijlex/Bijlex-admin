@@ -44,6 +44,16 @@ import CreateSquareToTrapezium from "./Draggable-Figures/admin/CreateSquareToTra
 import SquareToTrapezium from "./Draggable-Figures/client/SquareToTrapezium";
 import CreateSquareToQuadrilateral from "./Draggable-Figures/admin/CreateSquareToQuadrilateral";
 import SquareToQuadrilateral from "./Draggable-Figures/client/SquareToQuadrilateral";
+import CreateCaptchaCircles from "./Captcha/admin/CreateCaptchaCircles";
+import CaptchaCircles from "./Captcha/client/CaptchaCircles";
+import CreateVennStory from "./Venn-Diagrams/admin/CreateVennStory";
+import VennStory from "./Venn-Diagrams/client/VennStory";
+import CreateFruitPercentageBasic from "./Percentages/admin/CreateFruitPercentageBasic";
+import FruitPercentageBasic from "./Percentages/client/FruitPercentageBasic";
+import CreateFruitPercentageAdvanced from "./Percentages/admin/CreateFruitPercentageAdvanced";
+import FruitPercentageAdvanced from "./Percentages/client/FruitPercentageAdvanced";
+import CreateFruitPercentageExpert from "./Percentages/admin/CreateFruitPercentageExpert";
+import FruitPercentageExpert from "./Percentages/client/FruitPercentageExpert";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -92,6 +102,11 @@ const BijlexHome = () => {
     "square-to-rectangle": CreateSquareToRectangle,
     "square-to-trapezium": CreateSquareToTrapezium,
     "square-to-quadrilateral": CreateSquareToQuadrilateral,
+    "captcha-circles": CreateCaptchaCircles,
+    "venn-story": CreateVennStory,
+    "fruit-percentage-basic": CreateFruitPercentageBasic,
+    "fruit-percentage-advanced": CreateFruitPercentageAdvanced,
+    "fruit-percentage-expert": CreateFruitPercentageExpert,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -114,6 +129,11 @@ const BijlexHome = () => {
     "square-to-rectangle": SquareToRectangle,
     "square-to-trapezium": SquareToTrapezium,
     "square-to-quadrilateral": SquareToQuadrilateral,
+    "captcha-circles": CaptchaCircles,
+    "venn-story": VennStory,
+    "fruit-percentage-basic": FruitPercentageBasic,
+    "fruit-percentage-advanced": FruitPercentageAdvanced,
+    "fruit-percentage-expert": FruitPercentageExpert,
   };
   const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
     useMessage();
@@ -830,6 +850,61 @@ const BijlexHome = () => {
             <span>Square To Quadrilateral Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("square-to-quadrilateral")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>21</span>
+            <span>FIG-BAS-904</span>
+            <span>Captcha Circles Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("captcha-circles")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>22</span>
+            <span>FIG-BAS-907</span>
+            <span>Venn Diagram Story Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("venn-story")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>23</span>
+            <span>---</span>
+            <span>Fruit Percentage Basic Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("fruit-percentage-basic")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>24</span>
+            <span>---</span>
+            <span>Fruit Percentage Advanced Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("fruit-percentage-advanced")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>25</span>
+            <span>---</span>
+            <span>Fruit Percentage Expert Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("fruit-percentage-expert")}
               className="question_select_btn"
             >
               Select
