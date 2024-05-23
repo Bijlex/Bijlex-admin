@@ -57,6 +57,7 @@ import FruitPercentageExpert from "./Percentages/client/FruitPercentageExpert";
 import StandardBtn from "../components/general/buttons/StandardBtn";
 import StandardBtn_small from "../components/general/buttons/StandardBtn_small";
 import StandardBtn_extra_small from "../components/general/buttons/StandardBtn_extra_small";
+import EditOrderPopup from "../components/general/EditOrderPopup";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -67,6 +68,15 @@ const BijlexHome = () => {
   const [paragraph, setParagraph] = useState("");
   const [questions, setQuestions] = useState([]);
   const [question, setQuestion] = useState("");
+
+  const [soloQuestion, setSoloQuestion] = useState({});
+  const [reOrder, setReOrder] = useState(false);
+
+  const handleReOrder = (q) => {
+    setSoloQuestion(q);
+    setReOrder(true);
+  };
+
   const [customData, setCustomData] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -415,6 +425,60 @@ const BijlexHome = () => {
       }
     }
   };
+  const reOrderExercise = async (id, q, v) => {
+    const formData = new FormData();
+    const loadingDialogId = addDialog({
+      type: "loading",
+      message: "Updating your exercise",
+    });
+    formData.append("id", id);
+    formData.append("question", q);
+    formData.append("variation", v);
+    console.log(formData);
+    try {
+      // const response = await axios.post(
+      //   "https://bijlex-backend.onrender.com/exercises/",
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      const response = await axios.patch(
+        "http://localhost:3500/exercises/reorder",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      removeDialog(loadingDialogId);
+
+      if (response.status === 201) {
+        addDialog({
+          type: "message",
+          messageType: "success", // can be 'default', 'success', or 'error'
+          message: "Exercise Updated!",
+          duration: 3000, //  duration in milliseconds
+        });
+        fetchData();
+        return true;
+      }
+    } catch (error) {
+      let errMsg = "";
+      removeDialog(loadingDialogId);
+      if (!error.response) {
+        console.error("Network error:", error.message);
+        errMsg = "Network error. Please try again later.";
+      } else {
+        errMsg = error.response.data.message;
+      }
+    } finally {
+      setReOrder(false);
+    }
+  };
   const deleteExercise = async (id) => {
     const formData = new FormData();
     const loadingDialogId = addDialog({
@@ -709,10 +773,10 @@ const BijlexHome = () => {
                   text={"Edit"}
                   handleClick={() => handleEditQuestionClick(quest._id)}
                 />
-                {/* <StandardBtn_extra_small
+                <StandardBtn_extra_small
                   text={"Reorder"}
-                  handleClick={() => handleEditQuestionClick(quest._id)}
-                /> */}
+                  handleClick={() => handleReOrder(quest)}
+                />
                 <StandardBtn_extra_small
                   text={"View"}
                   handleClick={() => handleQuestionClick(quest._id)}
@@ -1043,6 +1107,13 @@ const BijlexHome = () => {
           json={parseJsonIfNeeded(exportExercise.customData)}
           closeDialog={() => setJsonExport(false)}
           exerciseName={exportExercise.name}
+        />
+      )}
+      {reOrder && (
+        <EditOrderPopup
+          question={soloQuestion}
+          onClose={() => setReOrder(false)}
+          onUpdate={reOrderExercise}
         />
       )}
       {exerciseType != "" &&
