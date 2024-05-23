@@ -58,6 +58,7 @@ import StandardBtn from "../components/general/buttons/StandardBtn";
 import StandardBtn_small from "../components/general/buttons/StandardBtn_small";
 import StandardBtn_extra_small from "../components/general/buttons/StandardBtn_extra_small";
 import EditOrderPopup from "../components/general/EditOrderPopup";
+import { customSort } from "../utlis/general";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -233,7 +234,9 @@ const BijlexHome = () => {
             ? JSON.parse(response.data.customData)
             : response.data.customData;
         console.log(response.data);
-        setQuestions(response.data);
+        const sortedData = response.data.sort(customSort);
+        console.log(response.data);
+        setQuestions(sortedData);
       } else {
         addFullscreenConfirmationDialog("No Data Found", "Ok");
       }
@@ -446,7 +449,7 @@ const BijlexHome = () => {
       //   }
       // );
       const response = await axios.patch(
-        "http://localhost:3500/exercises/reorder",
+        "https://bijlex-backend.onrender.com/exercises/reorder",
         formData,
         {
           headers: {
