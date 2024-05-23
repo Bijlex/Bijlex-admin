@@ -44,6 +44,9 @@ import CreateSquareToTrapezium from "./Draggable-Figures/admin/CreateSquareToTra
 import SquareToTrapezium from "./Draggable-Figures/client/SquareToTrapezium";
 import CreateSquareToQuadrilateral from "./Draggable-Figures/admin/CreateSquareToQuadrilateral";
 import SquareToQuadrilateral from "./Draggable-Figures/client/SquareToQuadrilateral";
+import StandardBtn from "../components/general/buttons/StandardBtn";
+import StandardBtn_small from "../components/general/buttons/StandardBtn_small";
+import StandardBtn_extra_small from "../components/general/buttons/StandardBtn_extra_small";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -55,12 +58,35 @@ const BijlexHome = () => {
   const [questions, setQuestions] = useState([]);
   const [question, setQuestion] = useState("");
   const [customData, setCustomData] = useState({});
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 10; // Adjust as needed
+
+  const totalPages = Math.ceil(questions.length / questionsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+  const currentQuestions = questions.slice(
+    indexOfFirstQuestion,
+    indexOfLastQuestion
+  );
+
   const [exportExercise, setExportExercise] = useState({});
+
   const [jsonExport, setJsonExport] = useState(false);
   const exportDocument = (quest) => {
     setExportExercise(quest);
     setJsonExport(true);
   };
+
   // Utility to safely parse JSON if needed
   const parseJsonIfNeeded = (data) => {
     try {
@@ -115,8 +141,12 @@ const BijlexHome = () => {
     "square-to-trapezium": SquareToTrapezium,
     "square-to-quadrilateral": SquareToQuadrilateral,
   };
-  const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
-    useMessage();
+  const {
+    addDialog,
+    removeDialog,
+    addFullscreenConfirmationDialog,
+    addConfirmationDialog,
+  } = useMessage();
   const handleLevelClick = (level) => {
     console.log(level);
     setLevel(level);
@@ -149,52 +179,56 @@ const BijlexHome = () => {
     setCurrentSelect("Specific_model");
     setExerciseType(exerciseType);
   };
-
+  const fetchData = async () => {
+    const loadingDialogId = addDialog({
+      type: "loading",
+      message: "Fetching your exercises",
+    });
+    try {
+      const response = await axios.get(
+        "https://bijlex-backend.onrender.com/exercises/getByALHP",
+        {
+          params: {
+            chapter: chapter,
+            year: year,
+            level: level,
+            paragraph: paragraph,
+          },
+        }
+      );
+      if (response.status === 200) {
+        removeDialog(loadingDialogId);
+        const customData =
+          typeof response.data.customData === "string"
+            ? JSON.parse(response.data.customData)
+            : response.data.customData;
+        console.log(response.data);
+        setQuestions(response.data);
+      } else {
+        addFullscreenConfirmationDialog("No Data Found", "Ok");
+      }
+    } catch (error) {
+      removeDialog(loadingDialogId);
+      addFullscreenConfirmationDialog(
+        "Something went wrong on the server" + error.response
+          ? error.response.data
+          : error.message,
+        "Ok"
+      );
+    }
+  };
   useEffect(() => {
     if (paragraph != "") {
-      const fetchData = async () => {
-        const loadingDialogId = addDialog({
-          type: "loading",
-          message: "Fetching your exercises",
-        });
-        try {
-          const response = await axios.get(
-            "https://bijlex-backend.onrender.com/exercises/getByALHP",
-            {
-              params: {
-                chapter: chapter,
-                year: year,
-                level: level,
-                paragraph: paragraph,
-              },
-            }
-          );
-          if (response.status === 200) {
-            removeDialog(loadingDialogId);
-            const customData =
-              typeof response.data.customData === "string"
-                ? JSON.parse(response.data.customData)
-                : response.data.customData;
-            console.log(response.data);
-            setQuestions(response.data);
-          } else {
-            addFullscreenConfirmationDialog("No Data Found", "Ok");
-          }
-        } catch (error) {
-          removeDialog(loadingDialogId);
-          addFullscreenConfirmationDialog(
-            "Something went wrong on the server" + error.response
-              ? error.response.data
-              : error.message,
-            "Ok"
-          );
-        }
-      };
       fetchData();
     }
   }, [paragraph]);
   useEffect(() => {
-    if (question != "") {
+    if (
+      question != "" &&
+      (currentSelect == "preview" ||
+        currentSelect == "detail_question" ||
+        currentSelect == "Edit_model")
+    ) {
       const fetchExercises = async () => {
         const loadingDialogId = addDialog({
           type: "loading",
@@ -359,6 +393,69 @@ const BijlexHome = () => {
       } else {
         errMsg = error.response.data.message;
       }
+    }
+  };
+  const deleteExercise = async (id) => {
+    const formData = new FormData();
+    const loadingDialogId = addDialog({
+      type: "loading",
+      message: "Deleting your exercise",
+    });
+    formData.append("id", question);
+    formData.append("customData", JSON.stringify(customData));
+    console.log(formData);
+    try {
+      // const response = await axios.post(
+      //   "https://bijlex-backend.onrender.com/exercises/",
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      const response = await axios.delete(
+        "https://bijlex-backend.onrender.com/exercises/" + id,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      removeDialog(loadingDialogId);
+
+      if (response.status === 200) {
+        addDialog({
+          type: "message",
+          messageType: "success", // can be 'default', 'success', or 'error'
+          message: "Exercise Deleted!",
+          duration: 3000, // duration in milliseconds
+        });
+        fetchData();
+        return true;
+      }
+    } catch (error) {
+      let errMsg = "";
+      removeDialog(loadingDialogId);
+      if (!error.response) {
+        console.error("Network error:", error.message);
+        errMsg = "Network error. Please try again later.";
+      } else {
+        errMsg = error.response.data.message;
+      }
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const confirm = await addConfirmationDialog(
+      "Are you sure you want to delete this?"
+    );
+    if (confirm) {
+      deleteExercise(id);
+      // Proceed with delete action
+    } else {
+      // Handle cancellation
     }
   };
   useEffect(() => {
@@ -577,9 +674,9 @@ const BijlexHome = () => {
             <h2>Name</h2>
             <h2>Exercise Type</h2>
           </div>
-          {questions.length > 0 ? (
-            questions?.map((quest) => (
-              <div className="question_model_card">
+          {currentQuestions.length > 0 ? (
+            currentQuestions.map((quest) => (
+              <div key={quest._id} className="question_model_card">
                 <span>{quest.order}</span>
                 <span>{quest.name}</span>
                 <span>{quest.exerciseType}</span>
@@ -588,23 +685,44 @@ const BijlexHome = () => {
                   SvgIcon={exportDownloadIcon}
                   text={"Export Exercise"}
                 />
-                <button
-                  onClick={() => handleEditQuestionClick(quest._id)}
-                  className="question_select_btn"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleQuestionClick(quest._id)}
-                  className="question_select_btn"
-                >
-                  Select
-                </button>
+                <StandardBtn_extra_small
+                  text={"Edit"}
+                  handleClick={() => handleEditQuestionClick(quest._id)}
+                />
+                {/* <StandardBtn_extra_small
+                  text={"Reorder"}
+                  handleClick={() => handleEditQuestionClick(quest._id)}
+                /> */}
+                <StandardBtn_extra_small
+                  text={"View"}
+                  handleClick={() => handleQuestionClick(quest._id)}
+                />
+                <StandardBtn_extra_small
+                  text={"Delete"}
+                  handleClick={() => handleDelete(quest._id)}
+                />
               </div>
             ))
           ) : (
             <p>No exercises found.</p>
           )}
+
+          <div className="pagination_controls">
+            <StandardBtn_small
+              text={"Previous"}
+              handleClick={handlePrevPage}
+              isDisabled={currentPage === 1}
+            />
+
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <StandardBtn_small
+              text={"Next"}
+              handleClick={handleNextPage}
+              isDisabled={currentPage === totalPages}
+            />
+          </div>
         </div>
       )}
       {currentSelect == "question_models" && (
@@ -785,7 +903,9 @@ const BijlexHome = () => {
             <span>FIG-BAS-906</span>
             <span>Square To Parallelogram Exercise</span>
             <button
-              onClick={() => handleQuestionModelClick("square-to-parallelogram")}
+              onClick={() =>
+                handleQuestionModelClick("square-to-parallelogram")
+              }
               className="question_select_btn"
             >
               Select
@@ -829,7 +949,9 @@ const BijlexHome = () => {
             <span>FIG-BAS-906</span>
             <span>Square To Quadrilateral Exercise</span>
             <button
-              onClick={() => handleQuestionModelClick("square-to-quadrilateral")}
+              onClick={() =>
+                handleQuestionModelClick("square-to-quadrilateral")
+              }
               className="question_select_btn"
             >
               Select

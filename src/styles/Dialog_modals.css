@@ -13,7 +13,7 @@
     position: absolute;
     z-index: 999999;
     bottom: 10%;
-    background-color: var(--border-color);
+    background-color: var(--primary-200);
     padding: 12px 40px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -51,7 +51,7 @@
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
-    background-color: var(--border-color);
+    background-color: var(--primary-200);
     padding: 30px 40px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -65,7 +65,7 @@
     align-items: center;
     gap: 20px;
     background-color: var(--background);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--primary-200);
 }
 
 .loading_message {

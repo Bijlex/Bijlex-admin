@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 const ConfirmationDialog = ({
+  id,
   message,
   onRespond,
   okOption = "Yes",

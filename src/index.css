@@ -13,6 +13,55 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --text: #1c1c1c;
+  --light-text: #494949;
+  --lighter-text: #777777;
+  --lighest-text: #a4a4a4;
+  --white-text: #fefefe;
+  --background: #ffffff;
+  /* Electric Blue */
+  --primary-50: #e6f0ff;
+  --primary-100: #b0d8ff;
+  --primary-200: #8ac1ff;
+  --primary-300: #5473ff;
+  --primary-400: #3358ff;
+  --primary-500: #002eff;
+  --primary: #002eff;
+  --primary-600: #002ae8;
+  --primary-700: #0021b5;
+  --primary-800: #00198c;
+  --primary-900: #00136b;
+
+  /* Yellow */
+  --secondary-50: #ffffe6;
+  --secondary-100: #fffab0;
+  --secondary-200: #ffff78a;
+  --secondary-300: #fff454;
+  --secondary-400: #ffff33;
+  --secondary-500: #ffee00;
+  --secondary-600: #edb900;
+  --secondary-700: #b5a900;
+  --secondary-800: #8c8300;
+  --secondary-900: #6b6400;
+  --accent: #DA0080;
+
+
+  /* Red */
+  --tertiary-50: #fbf6f2;
+  --tertiary-100: #f4b0d8;
+  --tertiary-200: #e8bac5;
+  --tertiary-300: #e554aa;
+  --tertiary-400: #e13999;
+  --tertiary-500: #da0080;
+  --tertiary-600: #c60074;
+  --tertiary-700: #900050;
+  --tertiary-800: #780046;
+  --tertiary-900: #5c0036;
+
+
+}
+
 a {
   font-weight: 500;
   color: #646cff;

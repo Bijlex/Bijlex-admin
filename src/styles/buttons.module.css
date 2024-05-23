@@ -3,21 +3,36 @@
     width: 12vw;
     position: relative;
     padding: 20px 10px !important;
-    color: white !important;
+    color: var(--white-text) !important;
 }
 
 .addButton.disabled,
 .removeButton.disabled {
-    background-color: #ccc;
+    background-color: var(--lightest-text);
     cursor: default;
+}
+
+.primary_btn, .primary_btn_small, .primary_btn_extra_small {
+    padding: 12px 4px !important;
+    color: var(--white-text) !important;
+    background-color: var(--primary);
 }
 
 .primary_btn {
     width: 12vw;
-    position: relative;
-    padding: 14px 5px !important;
-    color: white !important;
-    background-color: var(--primary);
+}
+
+.primary_btn:disabled, .primary_btn_small:disabled, .primary_btn_extra_small:disabled {
+    background-color: var(--primary-200) !important;
+    pointer-events: none;
+}
+
+.primary_btn_small {
+    width: 8vw;
+}
+
+.primary_btn_extra_small {
+    width: 5vw;
 }
 
 .btnIcon {
@@ -33,5 +48,5 @@
 }
 
 .btnIcon path {
-    color: white;
+    color: var(--white-text);
 }
