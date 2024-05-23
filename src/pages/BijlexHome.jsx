@@ -233,7 +233,8 @@ const BijlexHome = () => {
           typeof response.data.customData === "string"
             ? JSON.parse(response.data.customData)
             : response.data.customData;
-        setQuestions(response.data);
+        const sortedData = response.data.sort(customSort);
+        setQuestions(sortedData);
       } else {
         addFullscreenConfirmationDialog("No Data Found", "Ok");
       }
