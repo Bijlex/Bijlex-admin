@@ -59,6 +59,8 @@ import StandardBtn_small from "../components/general/buttons/StandardBtn_small";
 import StandardBtn_extra_small from "../components/general/buttons/StandardBtn_extra_small";
 import EditOrderPopup from "../components/general/EditOrderPopup";
 import { customSort } from "../utlis/general";
+import CreateTimerQuestions from "./Arithmetic/admin/CreateTimerQuestions";
+import TimerQuestions from "./Arithmetic/client/TimerQuestions";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -144,6 +146,7 @@ const BijlexHome = () => {
     "fruit-percentage-basic": CreateFruitPercentageBasic,
     "fruit-percentage-advanced": CreateFruitPercentageAdvanced,
     "fruit-percentage-expert": CreateFruitPercentageExpert,
+    "timer-arithmetic-questions": CreateTimerQuestions,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -171,6 +174,7 @@ const BijlexHome = () => {
     "fruit-percentage-basic": FruitPercentageBasic,
     "fruit-percentage-advanced": FruitPercentageAdvanced,
     "fruit-percentage-expert": FruitPercentageExpert,
+    "timer-arithmetic-questions": TimerQuestions,
   };
   const {
     addDialog,
@@ -1096,6 +1100,17 @@ const BijlexHome = () => {
               onClick={() =>
                 handleQuestionModelClick("fruit-percentage-expert")
               }
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>26</span>
+            <span>WIB-BEW-901</span>
+            <span>Timer Arithmetic Questions Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("timer-arithmetic-questions")}
               className="question_select_btn"
             >
               Select
