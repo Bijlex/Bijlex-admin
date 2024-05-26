@@ -46,8 +46,8 @@ import CreateSquareToQuadrilateral from "./Draggable-Figures/admin/CreateSquareT
 import SquareToQuadrilateral from "./Draggable-Figures/client/SquareToQuadrilateral";
 import CreateCaptchaCircles from "./Captcha/admin/CreateCaptchaCircles";
 import CaptchaCircles from "./Captcha/client/CaptchaCircles";
-import CreateVennStory from "./Venn-Diagrams/admin/CreateVennStory";
-import VennStory from "./Venn-Diagrams/client/VennStory";
+import CreatePieChartStory from "./Pie-Chart/admin/CreatePieChartStory";
+import PieChartStory from "./Pie-Chart/client/PieChartStory";
 import CreateFruitPercentageBasic from "./Percentages/admin/CreateFruitPercentageBasic";
 import FruitPercentageBasic from "./Percentages/client/FruitPercentageBasic";
 import CreateFruitPercentageAdvanced from "./Percentages/admin/CreateFruitPercentageAdvanced";
@@ -142,7 +142,7 @@ const BijlexHome = () => {
     "square-to-trapezium": CreateSquareToTrapezium,
     "square-to-quadrilateral": CreateSquareToQuadrilateral,
     "captcha-circles": CreateCaptchaCircles,
-    "venn-story": CreateVennStory,
+    "pie-chart-story": CreatePieChartStory,
     "fruit-percentage-basic": CreateFruitPercentageBasic,
     "fruit-percentage-advanced": CreateFruitPercentageAdvanced,
     "fruit-percentage-expert": CreateFruitPercentageExpert,
@@ -170,7 +170,7 @@ const BijlexHome = () => {
     "square-to-trapezium": SquareToTrapezium,
     "square-to-quadrilateral": SquareToQuadrilateral,
     "captcha-circles": CaptchaCircles,
-    "venn-story": VennStory,
+    "pie-chart-story": PieChartStory,
     "fruit-percentage-basic": FruitPercentageBasic,
     "fruit-percentage-advanced": FruitPercentageAdvanced,
     "fruit-percentage-expert": FruitPercentageExpert,
@@ -1060,9 +1060,9 @@ const BijlexHome = () => {
           <div className="question_model_card">
             <span>22</span>
             <span>FIG-BAS-907</span>
-            <span>Venn Diagram Story Exercise</span>
+            <span>Pie Chart Story Exercise</span>
             <button
-              onClick={() => handleQuestionModelClick("venn-story")}
+              onClick={() => handleQuestionModelClick("pie-chart-story")}
               className="question_select_btn"
             >
               Select

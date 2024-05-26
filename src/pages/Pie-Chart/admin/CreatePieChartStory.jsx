@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SvgBtn from "../../../components/general/buttons/SvgBtn.jsx";
 import { documentIcon } from "../../../constants/icons.jsx";
 
-function CreateVennStory({ setCustomData, customData }) {
+function CreatePieChartStory({ setCustomData, customData }) {
     const [questionPrompt, setQuestionPrompt] = useState(customData?.questionPrompt || "");
     const [totalOfItems, setTotalOfItems] = useState(customData?.totalOfItems || 0);
     const [numberOfItems, setNumberOfItems] = useState(customData?.numberOfItems || 0);
@@ -119,4 +119,4 @@ function CreateVennStory({ setCustomData, customData }) {
     );
 }
 
-export default CreateVennStory;
+export default CreatePieChartStory;

@@ -4,7 +4,7 @@ import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-function VennStory({ customData }) {
+function PieChartStory({ customData }) {
     const [items, setItems] = useState(customData.items || []);
     const [placedItems, setPlacedItems] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
@@ -38,16 +38,29 @@ function VennStory({ customData }) {
     };
 
     const checkAnswers = () => {
+        const isEmptyDropTarget = Object.values(placedItems).some(item => !item);
+        if (isEmptyDropTarget) {
+            setFeedbackMessage("Every item has to be in the chart.");
+            return;
+        }
+    
+        const placedItemNames = Object.values(placedItems).map(item => item.name);
+        const uniquePlacedItemNames = new Set(placedItemNames);
+        if (placedItemNames.length !== uniquePlacedItemNames.size) {
+            setFeedbackMessage("Every item has to be in the chart.");
+            return;
+        }
+    
         const placedValues = Object.values(placedItems).map(item => item ? item.number : null);
         const itemValues = items.map(item => item.number);
-
+    
         const correct = itemValues.every((value, index) => {
             const placedValue = placedValues[index];
             return placedValue === value;
         });
-
+    
         setIsCorrect(correct);
-
+    
         if (correct) {
             setErrorMessage("");
             setFeedbackMessage("Correct!");
@@ -182,4 +195,4 @@ function VennStory({ customData }) {
     );
 }
 
-export default VennStory;
+export default PieChartStory;

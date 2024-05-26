@@ -14,13 +14,24 @@ function SquareToQuadrilateral({ customData }) {
 
     const handleDrag = (index, e, ui) => {
         const newCorners = [...corners];
-        newCorners[index] = {
-            x: newCorners[index].x + ui.deltaX,
-            y: newCorners[index].y + ui.deltaY,
-        };
+        const { x, y } = newCorners[index];
+        const newX = x + ui.deltaX;
+        const newY = y + ui.deltaY;
+    
+        const svgWidth = 500;
+        const svgHeight = 500;
+        const squareSize = 100; 
+        const minPosition = 0;
+        const maxPositionX = svgWidth - squareSize;
+        const maxPositionY = svgHeight - squareSize;
+    
+        const boundedX = Math.min(Math.max(newX, minPosition), maxPositionX);
+        const boundedY = Math.min(Math.max(newY, minPosition), maxPositionY);
+    
+        newCorners[index] = { x: boundedX, y: boundedY };
         setCorners(newCorners);
-        setIsCorrect(null); // Reset the message when dragging starts
-    };
+        setIsCorrect(null); 
+    };  
 
     const checkAnswer = () => {
         const correctCorners = [
@@ -29,19 +40,30 @@ function SquareToQuadrilateral({ customData }) {
             { x: 250, y: 250 }, // bottom-right
             { x: 80, y: 200 },  // bottom-left
         ];
-        const isCorrectAnswer = corners.every((corner, index) => {
-            const correctCorner = correctCorners[index];
+    
+        const sortedCorners = corners.slice().sort((a, b) => {
+            if (a.x !== b.x) return a.x - b.x;
+            return a.y - b.y;
+        });
+    
+        const sortedCorrectCorners = correctCorners.slice().sort((a, b) => {
+            if (a.x !== b.x) return a.x - b.x;
+            return a.y - b.y;
+        });
+    
+        const isCorrectAnswer = sortedCorners.every((corner, index) => {
+            const correctCorner = sortedCorrectCorners[index];
             return (
                 Math.abs(corner.x - correctCorner.x) < 5 &&
                 Math.abs(corner.y - correctCorner.y) < 5
             );
         });
-
+    
         setIsCorrect(isCorrectAnswer);
         if (!isCorrectAnswer) {
             setAttempts(attempts + 1);
         }
-    };
+    };   
 
     const reset = () => {
         setCorners([
