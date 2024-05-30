@@ -3,11 +3,14 @@ import React, { useState, useEffect } from 'react';
 function FruitPercentageAdvanced({ customData }) {
   const [applesCount, setApplesCount] = useState(generateRandomNumber());
   const [orangesCount, setOrangesCount] = useState(generateRandomNumber());
+  const [initialApplesCount, setInitialApplesCount] = useState(applesCount);
+  const [initialOrangesCount, setInitialOrangesCount] = useState(orangesCount);
   const [basket1, setBasket1] = useState({ apples: [], oranges: [] });
   const [basket2, setBasket2] = useState({ apples: [], oranges: [] });
+  const [allApples, setAllApples] = useState(Array.from({ length: applesCount }, (_, index) => `apple-${index}`));
+  const [allOranges, setAllOranges] = useState(Array.from({ length: orangesCount }, (_, index) => `orange-${index}`));
   const [randomPercentageApples, setRandomPercentageApples] = useState({ basket1: '', basket2: '' });
   const [randomPercentageOranges, setRandomPercentageOranges] = useState({ basket1: '', basket2: '' });
-  const [draggedFruits, setDraggedFruits] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [correct, setCorrect] = useState(false);
   const questionPrompt = customData?.questionPrompt || "No prompt provided";
@@ -28,83 +31,99 @@ function FruitPercentageAdvanced({ customData }) {
   }
 
   useEffect(() => {
-    const possiblePercentagesA = calculatePossiblePercentages(applesCount);
+    const possiblePercentagesA = calculatePossiblePercentages(initialApplesCount);
     const indexA = Math.floor(Math.random() * possiblePercentagesA.length);
     setRandomPercentageApples(possiblePercentagesA[indexA]);
-    const possiblePercentagesO = calculatePossiblePercentages(orangesCount);
+    const possiblePercentagesO = calculatePossiblePercentages(initialOrangesCount);
     const indexO = Math.floor(Math.random() * possiblePercentagesO.length);
     setRandomPercentageOranges(possiblePercentagesO[indexO]);
-  }, []);
+  }, [initialApplesCount, initialOrangesCount]);
 
   const handleDrop = (e, basket) => {
     e.preventDefault();
-    const fruitId = parseInt(e.dataTransfer.getData('fruitId'));
+    const fruitId = e.dataTransfer.getData('fruitId');
     const fruitType = e.dataTransfer.getData('fruitType');
-    const newFruit = { type: fruitType, id: fruitId, basket: basket };
-    setDraggedFruits(prevDraggedFruits => [...prevDraggedFruits, newFruit]);
+    const fromBasket = e.dataTransfer.getData('fromBasket');
+
     if (basket === 1) {
-      setBasket1(prevBasket1 => ({
-        ...prevBasket1,
-        [fruitType]: [...prevBasket1[fruitType], fruitId]
-      }));
-      if (fruitType === 'apples') {
-        setApplesCount(prevCount => prevCount - 1);
-      } else if (fruitType === 'oranges') {
-        setOrangesCount(prevCount => prevCount - 1);
+      if (fromBasket === "basket2") {
+        setBasket2(prev => ({ ...prev, [fruitType]: prev[fruitType].filter(id => id !== fruitId) }));
+      } else {
+        if (fruitType === 'apples') {
+          setAllApples(prev => prev.filter(id => id !== fruitId));
+        } else if (fruitType === 'oranges') {
+          setAllOranges(prev => prev.filter(id => id !== fruitId));
+        }
       }
-    } else {
-      setBasket2(prevBasket2 => ({
-        ...prevBasket2,
-        [fruitType]: [...prevBasket2[fruitType], fruitId]
-      }));
+      setBasket1(prev => ({ ...prev, [fruitType]: [...prev[fruitType], fruitId] }));
+    } else if (basket === 2) {
+      if (fromBasket === "basket1") {
+        setBasket1(prev => ({ ...prev, [fruitType]: prev[fruitType].filter(id => id !== fruitId) }));
+      } else {
+        if (fruitType === 'apples') {
+          setAllApples(prev => prev.filter(id => id !== fruitId));
+        } else if (fruitType === 'oranges') {
+          setAllOranges(prev => prev.filter(id => id !== fruitId));
+        }
+      }
+      setBasket2(prev => ({ ...prev, [fruitType]: [...prev[fruitType], fruitId] }));
+    } else if (basket === 'original') {
+      if (fromBasket === "basket1") {
+        setBasket1(prev => ({ ...prev, [fruitType]: prev[fruitType].filter(id => id !== fruitId) }));
+      } else if (fromBasket === "basket2") {
+        setBasket2(prev => ({ ...prev, [fruitType]: prev[fruitType].filter(id => id !== fruitId) }));
+      }
       if (fruitType === 'apples') {
-        setApplesCount(prevCount => prevCount - 1);
+        setAllApples(prev => [...prev, fruitId]);
       } else if (fruitType === 'oranges') {
-        setOrangesCount(prevCount => prevCount - 1);
+        setAllOranges(prev => [...prev, fruitId]);
       }
     }
   };
 
   const handleSubmit = () => {
     setSubmitted(true);
-    const totalApples = basket1.apples.length + basket2.apples.length;
-    const totalOranges = basket1.oranges.length + basket2.oranges.length;
-    if (totalApples !== 0 || totalOranges !== 0) {
-      const basket1PercentageApples = ((basket1.apples.length / totalApples) * 100).toFixed(2);
-      const basket1PercentageOranges = ((basket1.oranges.length / totalOranges) * 100).toFixed(2);
-      const basket2PercentageApples = ((basket2.apples.length / totalApples) * 100).toFixed(2);
-      const basket2PercentageOranges = ((basket2.oranges.length / totalOranges) * 100).toFixed(2);
-      if (basket1PercentageApples === randomPercentageApples.basket1 && basket1PercentageOranges === randomPercentageOranges.basket1 &&
-        basket2PercentageApples === randomPercentageApples.basket2 && basket2PercentageOranges === randomPercentageOranges.basket2) {
-        setCorrect(true);
-      } else {
-        setCorrect(false);
-        setAttempts(attempts + 1);
-      }
+    const basket1PercentageApples = ((basket1.apples.length / initialApplesCount) * 100).toFixed(2);
+    const basket1PercentageOranges = ((basket1.oranges.length / initialOrangesCount) * 100).toFixed(2);
+    const basket2PercentageApples = ((basket2.apples.length / initialApplesCount) * 100).toFixed(2);
+    const basket2PercentageOranges = ((basket2.oranges.length / initialOrangesCount) * 100).toFixed(2);
+
+    if (
+      basket1PercentageApples === randomPercentageApples.basket1 &&
+      basket1PercentageOranges === randomPercentageOranges.basket1 &&
+      basket2PercentageApples === randomPercentageApples.basket2 &&
+      basket2PercentageOranges === randomPercentageOranges.basket2
+    ) {
+      setCorrect(true);
+    } else {
+      setCorrect(false);
+      setAttempts(attempts + 1);
     }
   };
 
-  const handleDragStart = (e, fruitType, index) => {
-    e.dataTransfer.setData('fruitId', index);
-    e.dataTransfer.setData('fruitType', fruitType);
-  };
-
   const handleTryAgain = () => {
-    setApplesCount(basket1.apples.length + basket2.apples.length);
-    setOrangesCount(basket1.oranges.length + basket2.oranges.length);
+    setApplesCount(initialApplesCount);
+    setOrangesCount(initialOrangesCount);
     setBasket1({ apples: [], oranges: [] });
     setBasket2({ apples: [], oranges: [] });
+    setAllApples(Array.from({ length: initialApplesCount }, (_, index) => `apple-${index}`));
+    setAllOranges(Array.from({ length: initialOrangesCount }, (_, index) => `orange-${index}`));
     setSubmitted(false);
     setCorrect(false);
-    setDraggedFruits([]);
+  };
+
+  const handleDragStart = (e, fruitType, index, fromBasket) => {
+    e.dataTransfer.setData('fruitId', index);
+    e.dataTransfer.setData('fruitType', fruitType);
+    e.dataTransfer.setData('fromBasket', fromBasket);
   };
 
   return (
     <div className="container">
       <h2 style={{ marginBottom: '20px' }}>{questionPrompt}</h2>
       <div className="fruits-count">
-        <div>Apples left: {applesCount}</div>
-        <div>Grapes left: {orangesCount}</div>
+        <div>Apples left: {allApples.length}</div>
+        <div>Grapes left: {allOranges.length}</div>
       </div>
       <div className="generated-percentage">
         <div>
@@ -119,145 +138,159 @@ function FruitPercentageAdvanced({ customData }) {
       <div className="baskets">
         <div className="basket" onDrop={(e) => handleDrop(e, 1)} onDragOver={(e) => e.preventDefault()}>
           <div className="basket-label"></div>
-          {draggedFruits.map((fruit, index) => (
-            fruit.basket === 1 && (fruit.type === 'apples' || fruit.type === 'oranges') && <div key={index} className="dragged-fruit">{fruit.type === 'apples' ? '🍎' : '🍇'}</div>
+          {basket1.apples.map((fruitId, index) => (
+            <div key={index} className="apple" draggable onDragStart={(e) => handleDragStart(e, 'apples', fruitId, 'basket1')}>
+              🍎
+            </div>
+          ))}
+          {basket1.oranges.map((fruitId, index) => (
+            <div key={index} className="orange" draggable onDragStart={(e) => handleDragStart(e, 'oranges', fruitId, 'basket1')}>
+              🍇
+            </div>
           ))}
         </div>
         <div className="basket" onDrop={(e) => handleDrop(e, 2)} onDragOver={(e) => e.preventDefault()}>
           <div className="basket-label"></div>
-          {draggedFruits.map((fruit, index) => (
-            fruit.basket === 2 && (fruit.type === 'apples' || fruit.type === 'oranges') && <div key={index} className="dragged-fruit">{fruit.type === 'apples' ? '🍎' : '🍇'}</div>
+          {basket2.apples.map((fruitId, index) => (
+            <div key={index} className="apple" draggable onDragStart={(e) => handleDragStart(e, 'apples', fruitId, 'basket2')}>
+              🍎
+            </div>
+          ))}
+          {basket2.oranges.map((fruitId, index) => (
+            <div key={index} className="orange" draggable onDragStart={(e) => handleDragStart(e, 'oranges', fruitId, 'basket2')}>
+              🍇
+            </div>
+          ))}
+        </div>
+        </div>
+      <div className="original">
+        <div className="apples" onDrop={(e) => handleDrop(e, 'original')} onDragOver={(e) => e.preventDefault()}>
+          {allApples.map((fruitId, index) => (
+            <div key={index} className="apple" draggable onDragStart={(e) => handleDragStart(e, 'apples', fruitId, 'original')}>
+              🍎
+            </div>
+          ))}
+        </div>
+        <div className="oranges" onDrop={(e) => handleDrop(e, 'original')} onDragOver={(e) => e.preventDefault()}>
+          {allOranges.map((fruitId, index) => (
+            <div key={index} className="orange" draggable onDragStart={(e) => handleDragStart(e, 'oranges', fruitId, 'original')}>
+              🍇
+            </div>
           ))}
         </div>
       </div>
       {submitted && (
         <div className="result">
-          {correct ? 'Correct!' : (
+          {correct ? (
             <div>
-                <div>Your Percentage for Basket 1 - Apples: {(basket1.apples.length / (basket1.apples.length + basket2.apples.length) * 100).toFixed(2)}%</div>
-                <div>Your Percentage for Basket 1 - Grapes: {(basket1.oranges.length / (basket1.oranges.length + basket2.oranges.length) * 100).toFixed(2)}%</div>
-                <div>Your Percentage for Basket 2 - Apples: {(basket2.apples.length / (basket1.apples.length + basket2.apples.length) * 100).toFixed(2)}%</div>
-                <div>Your Percentage for Basket 2 - Grapes: {(basket2.oranges.length / (basket1.oranges.length + basket2.oranges.length) * 100).toFixed(2)}%</div>
-                {attempts < 2 && (
-                  <button className="try-again-button" style={{marginLeft:"120px"}} onClick={handleTryAgain}>Retry</button>
-                )}
-              </div>
+              <h3>Correct!</h3>
+              <button className="try-again-button" onClick={handleTryAgain}>Next Question</button>
+            </div>
+          ) : (
+            <div>
+              <h3>Incorrect</h3>
+              <p style={{ color: 'black' }}>Your Percentage for Basket 1 - Apples: {(basket1.apples.length / initialApplesCount * 100).toFixed(2)}%</p>
+              <p style={{ color: 'black' }}>Your Percentage for Basket 1 - Grapes: {(basket1.oranges.length / initialOrangesCount * 100).toFixed(2)}%</p>
+              <p style={{ color: 'black' }}>Your Percentage for Basket 2 - Apples: {(basket2.apples.length / initialApplesCount * 100).toFixed(2)}%</p>
+              <p style={{ color: 'black' }}>Your Percentage for Basket 2 - Grapes: {(basket2.oranges.length / initialOrangesCount * 100).toFixed(2)}%</p>
+            </div>
           )}
         </div>
       )}
-      <div className="fruits">
-        <div className="apples" onDrop={(e) => handleDrop(e, 1)} onDragOver={(e) => e.preventDefault()}>
-          {Array.from({ length: applesCount }).map((_, index) => (
-            <div
-              key={index}
-              className="apple"
-              draggable
-              onDragStart={(e) => handleDragStart(e, 'apples', index)}
-            >🍎
-            </div>
-          ))}
-        </div>
-        <div className="oranges" onDrop={(e) => handleDrop(e, 2)} onDragOver={(e) => e.preventDefault()}>
-          {Array.from({ length: orangesCount }).map((_, index) => (
-            <div
-              key={index}
-              className="orange"
-              draggable
-              onDragStart={(e) => handleDragStart(e, 'oranges', index)}
-            >🍇
-            </div>
-          ))}
-        </div>
-      </div>
-      {(applesCount === 0 && orangesCount === 0) && (
-        <button className="submit-button" onClick={handleSubmit}>
-          Check answer
-        </button>
+      {allApples.length === 0 && allOranges.length === 0 && (
+        <button className="submit-button" onClick={handleSubmit}>Check Answer</button>
       )}
-      {attempts >= 2 && (
-        <button className="try-again-button">Continue</button>
+      {attempts < 2 && (
+        <button className="try-again-button" onClick={handleTryAgain}>Try Again</button>
       )}
+      <style>
+        {`
+          .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .fruits-count {
+            margin-top: 20px;
+            margin-bottom: 20px;
+          }
+
+          .generated-percentage {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            margin-bottom: 10px;
+            margin-top: 20px;
+          }
+
+          .baskets {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            margin-bottom: 40px;
+          }
+
+          .basket {
+            width: 280px;
+            height: 190px;
+            background-color: transparent;
+            border: 3px solid black;
+            display: flex;
+            flex-wrap: wrap; /* Added to allow multiple rows */
+            justify-content: center;
+            align-items: center;
+          }          
+
+          .basket-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+
+          .original {
+            margin-top: 40px;
+          }
+
+          .original h3 {
+            margin-bottom: 10px;
+          }
+
+          .apples, .oranges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .apple, .orange {
+            font-size: 24px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+          }
+
+          .level-button, .submit-button, .try-again-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #10b3cf;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 40px;
+          }  
+
+          .level-button, .submit-button {
+            margin-bottom: 40px;
+          }
+
+          .level-button:hover, .submit-button:hover, .try-again-button:hover {
+            background-color: #002ead;
+            transition: 0.7s;
+          }
+        `}
+      </style>
     </div>
   );
 }
 
 export default FruitPercentageAdvanced;
-
-// CSS Styles
-const styles = `
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.apples-count {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.generated-percentage {
-  display: flex;
-  justify-content: space-around;
-  width: 90%;
-  margin-bottom: 10px;
-  margin-top: 20px;
-}
-
-.baskets {
-  display: flex;
-  justify-content: space-around;
-  width: 90%;
-  margin-bottom: 40px;
-}
-
-.basket {
-  width: 280px;
-  height: 190px;
-  background-color: transparent;
-  border: 3px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.apples, .oranges {
-  display: flex;
-  justify-content: center;
-}
-
-.apple, .orange {
-  font-size: 24px;
-  margin-right: 5px;
-  cursor: pointer;
-}
-
-.level-button, .submit-button, .try-again-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #10b3cf;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 40px;
-}  
-
-.level-button, .submit-button {
-  margin-bottom: 40px;
-}
-
-.level-button:hover, .submit-button:hover, .try-again-button:hover {
-  background-color: #002ead;
-  transition: 0.7s;
-}
-
-.basket .dragged-fruit {
-  font-size: 24px; 
-}
-`;
-
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);

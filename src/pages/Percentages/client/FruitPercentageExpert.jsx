@@ -40,44 +40,91 @@ export default function FruitPercentageExpert({ customData }) {
     setRandomPercentageOranges(possiblePercentagesO[indexO]);
   }, []);
 
+  // const handleDrop = (e, basket) => {
+  //   e.preventDefault();
+  //   const fruitId = parseInt(e.dataTransfer.getData('fruitId'));
+  //   const fruitType = e.dataTransfer.getData('fruitType');
+  //   const newFruit = { type: fruitType, id: fruitId, basket: basket };
+  //   setDraggedFruits(prevDraggedFruits => [...prevDraggedFruits, newFruit]);
+  //   if (basket === 1) {
+  //     setBasket1(prevBasket1 => ({
+  //       ...prevBasket1,
+  //       [fruitType]: [...prevBasket1[fruitType], fruitId]
+  //     }));
+  //     if (fruitType === 'apples') {
+  //       setApplesCount(prevCount => prevCount - 1);
+  //     } else if (fruitType === 'oranges') {
+  //       setOrangesCount(prevCount => prevCount - 1);
+  //     }
+  //   } else if (basket === 2) {
+  //     setBasket2(prevBasket2 => ({
+  //       ...prevBasket2,
+  //       [fruitType]: [...prevBasket2[fruitType], fruitId]
+  //     }));
+  //     if (fruitType === 'apples') {
+  //       setApplesCount(prevCount => prevCount - 1);
+  //     } else if (fruitType === 'oranges') {
+  //       setOrangesCount(prevCount => prevCount - 1);
+  //     }
+  //   } else {
+  //     setBasket3(prevBasket3 => ({
+  //       ...prevBasket3,
+  //       [fruitType]: [...prevBasket3[fruitType], fruitId]
+  //     }));
+  //     if (fruitType === 'apples') {
+  //       setApplesCount(prevCount => prevCount - 1);
+  //     } else if (fruitType === 'oranges') {
+  //       setOrangesCount(prevCount => prevCount - 1);
+  //     }
+  //   }
+  // };  
+
   const handleDrop = (e, basket) => {
     e.preventDefault();
     const fruitId = parseInt(e.dataTransfer.getData('fruitId'));
     const fruitType = e.dataTransfer.getData('fruitType');
-    const newFruit = { type: fruitType, id: fruitId, basket: basket };
-    setDraggedFruits(prevDraggedFruits => [...prevDraggedFruits, newFruit]);
+    const fromBasket = parseInt(e.dataTransfer.getData('fromBasket'));
+  
+    // If fruit is dragged from another basket, remove it from that basket
+    if (fromBasket !== basket) {
+      let sourceBasket;
+      if (fromBasket === 1) {
+        sourceBasket = basket1;
+      } else if (fromBasket === 2) {
+        sourceBasket = basket2;
+      } else {
+        sourceBasket = basket3;
+      }
+      const updatedFruits = sourceBasket[fruitType].filter(id => id !== fruitId);
+      if (fromBasket === 1) {
+        setBasket1(prevBasket1 => ({ ...prevBasket1, [fruitType]: updatedFruits }));
+      } else if (fromBasket === 2) {
+        setBasket2(prevBasket2 => ({ ...prevBasket2, [fruitType]: updatedFruits }));
+      } else {
+        setBasket3(prevBasket3 => ({ ...prevBasket3, [fruitType]: updatedFruits }));
+      }
+    }
+  
+    // Add the dragged fruit to the target basket
+    setDraggedFruits(prevDraggedFruits => [...prevDraggedFruits, { type: fruitType, id: fruitId, basket: basket }]);
     if (basket === 1) {
       setBasket1(prevBasket1 => ({
         ...prevBasket1,
         [fruitType]: [...prevBasket1[fruitType], fruitId]
       }));
-      if (fruitType === 'apples') {
-        setApplesCount(prevCount => prevCount - 1);
-      } else if (fruitType === 'oranges') {
-        setOrangesCount(prevCount => prevCount - 1);
-      }
     } else if (basket === 2) {
       setBasket2(prevBasket2 => ({
         ...prevBasket2,
         [fruitType]: [...prevBasket2[fruitType], fruitId]
       }));
-      if (fruitType === 'apples') {
-        setApplesCount(prevCount => prevCount - 1);
-      } else if (fruitType === 'oranges') {
-        setOrangesCount(prevCount => prevCount - 1);
-      }
     } else {
       setBasket3(prevBasket3 => ({
         ...prevBasket3,
         [fruitType]: [...prevBasket3[fruitType], fruitId]
       }));
-      if (fruitType === 'apples') {
-        setApplesCount(prevCount => prevCount - 1);
-      } else if (fruitType === 'oranges') {
-        setOrangesCount(prevCount => prevCount - 1);
-      }
     }
   };  
+  
 
   const handleSubmit = () => {
     setSubmitted(true);
