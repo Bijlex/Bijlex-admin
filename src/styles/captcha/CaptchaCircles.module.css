@@ -1,0 +1,66 @@
+.captchaContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    /* Full height to center vertically */
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    /* Adjust as needed */
+    gap: 5px;
+    /* Adjust as needed */
+    margin-top: 20px;
+}
+
+.gridSquare {
+    width: 100px;
+    /* Adjust as needed */
+    height: 100px;
+    /* Adjust as needed */
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-size: 300px 300px;
+    /* Adjust based on your image size */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    /* Smooth transition for shadow and transform */
+}
+
+.selected {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Add shadow */
+    transform: scale(1.05);
+    /* Slightly increase size to bring to front */
+}
+
+.messageContainer {
+    height: 30px;
+    /* Reserve space for the message */
+    margin-top: 20px;
+}
+
+.message {
+    font-size: 18px;
+}
+
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
+}
+
+.button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+}
