@@ -222,6 +222,7 @@ const BijlexHome = () => {
     try {
       const response = await axios.get(
         "https://bijlex-backend.onrender.com/exercises/getByALHP",
+        // "http://localhost:3500/exercises/getByALHP",
         {
           params: {
             chapter: chapter,
@@ -238,9 +239,12 @@ const BijlexHome = () => {
             ? JSON.parse(response.data.customData)
             : response.data.customData;
         const sortedData = response.data.sort(customSort);
+        console.log(sortedData)
         setQuestions(sortedData);
       } else {
+        setQuestions([])
         addFullscreenConfirmationDialog("No Data Found", "Ok");
+        removeDialog(loadingDialogId)
       }
     } catch (error) {
       removeDialog(loadingDialogId);
