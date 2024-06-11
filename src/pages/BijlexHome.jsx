@@ -61,6 +61,10 @@ import EditOrderPopup from "../components/general/EditOrderPopup";
 import { customSort } from "../utlis/general";
 import CreateTimerQuestions from "./Arithmetic/admin/CreateTimerQuestions";
 import TimerQuestions from "./Arithmetic/client/TimerQuestions";
+import CreateMatchingBoxes from "./Matching/admin/CreateMatchingBoxes";
+import MatchingBoxes from "./Matching/client/MatchingBoxes";
+import CreateSimplifyFractions from "./Fractions/admin/CreateSimplifyFractions";
+import SimplifyFractions from "./Fractions/client/SimplifyFractions";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -147,6 +151,8 @@ const BijlexHome = () => {
     "fruit-percentage-advanced": CreateFruitPercentageAdvanced,
     "fruit-percentage-expert": CreateFruitPercentageExpert,
     "timer-arithmetic-questions": CreateTimerQuestions,
+    "matching-boxes": CreateMatchingBoxes,
+    "simplify-fractions": CreateSimplifyFractions,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -175,6 +181,8 @@ const BijlexHome = () => {
     "fruit-percentage-advanced": FruitPercentageAdvanced,
     "fruit-percentage-expert": FruitPercentageExpert,
     "timer-arithmetic-questions": TimerQuestions,
+    "matching-boxes": MatchingBoxes,
+    "simplify-fractions": SimplifyFractions,
   };
   const {
     addDialog,
@@ -1115,6 +1123,28 @@ const BijlexHome = () => {
             <span>Timer Arithmetic Questions Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("timer-arithmetic-questions")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>27</span>
+            <span>---</span>
+            <span>Matching Boxes Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("matching-boxes")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>28</span>
+            <span>---</span>
+            <span>Simplify Fractions Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("simplify-fractions")}
               className="question_select_btn"
             >
               Select

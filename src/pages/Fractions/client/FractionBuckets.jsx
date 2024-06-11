@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 function Bucket({ fraction, total }) {
-  const height = `${(fraction * 100).toFixed(2)}%`; // Calculates the height of the water based on the fraction
+  // Convert fraction to a number by replacing the comma with a period
+  const numericFraction = parseFloat(fraction.replace(",", "."));
+  const height = `${(numericFraction * 100).toFixed(2)}%`; // Calculates the height of the water based on the fraction
 
   return (
     <div
@@ -63,7 +65,7 @@ function FractionBuckets({ customData, preview }) {
         shuffledFractions.map((fraction, index) => ({
           id: index,
           fraction: fraction,
-          evaluatedFraction: parseFloat(eval(fraction)),
+          evaluatedFraction: evaluateFraction(fraction),
           matched: false,
         }))
       );
@@ -85,6 +87,15 @@ function FractionBuckets({ customData, preview }) {
     return array;
   };
 
+  const evaluateFraction = (fraction) => {
+    const value = parseFloat(eval(fraction));
+    const formattedValue = value.toFixed(3);
+    const result = formattedValue.endsWith("0")
+      ? value.toFixed(2)
+      : formattedValue;
+    return result.replace(".", ",");
+  };
+
   const handleDragStart = (e, fraction) => {
     e.dataTransfer.setData("fraction", fraction);
   };
@@ -103,7 +114,7 @@ function FractionBuckets({ customData, preview }) {
 
   const checkAnswers = () => {
     const results = answers.map((answer, index) => {
-      return parseFloat(eval(answer)) === buckets[index].evaluatedFraction;
+      return parseFloat(eval(answer)) === parseFloat(buckets[index].evaluatedFraction.replace(",", "."));
     });
     setBuckets(
       buckets.map((bucket, index) => ({ ...bucket, matched: results[index] }))
@@ -148,7 +159,7 @@ function FractionBuckets({ customData, preview }) {
             <div
               style={{ marginTop: "5px", fontSize: "16px", fontWeight: "bold" }}
             >
-              {bucket.evaluatedFraction.toFixed(2)}
+              {bucket.evaluatedFraction}
             </div>
             <div
               onDrop={(e) => handleDrop(index, e)}
