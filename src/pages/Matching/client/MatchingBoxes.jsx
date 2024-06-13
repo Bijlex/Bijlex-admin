@@ -75,7 +75,7 @@ function MatchingBoxes({ customData, preview }) {
   return (
     <div ref={containerRef} style={{ textAlign: "center", position: "relative" }}>
       <h2>{questionPrompt}</h2>
-      <SVGCanvas lines={userLines} containerRef={containerRef} numBoxes={numBoxes} />
+      <SVGCanvas lines={userLines} containerRef={containerRef} numBoxes={numBoxes} leftInputs={leftInputs} rightInputs={rightInputs}/>
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {leftInputs.map((input, index) => (

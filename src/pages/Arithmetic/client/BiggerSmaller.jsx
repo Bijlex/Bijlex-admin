@@ -19,17 +19,8 @@ function BiggerSmaller({ customData }) {
     };
 
     const checkAnswer = () => {
-        const num1 = customData?.number1;
-        const num2 = customData?.number2;
-        let isCorrect = false;
-
-        if (selectedSign === '<' && num1 < num2) {
-            isCorrect = true;
-        } else if (selectedSign === '>' && num1 > num2) {
-            isCorrect = true;
-        } else if (selectedSign === '=' && num1 === num2) {
-            isCorrect = true;
-        }
+        const correctSign = customData?.correctSign;
+        const isCorrect = selectedSign === correctSign;
 
         setMessage(isCorrect ? 'Correct!' : 'Incorrect!');
         if (!isCorrect) {
@@ -115,17 +106,15 @@ function BiggerSmaller({ customData }) {
             </button>
             {message && (
                 <>
-                    {message === 'Incorrect!' && (
-                        <div>
-                            <div style={{ fontSize: '20px', color: 'red', marginBottom: '20px' }}>
-                                {message}
-                            </div>
-                            <button style={buttonStyle} onClick={reset}>Reset</button>
-                        </div>
-                    )}
                     <div style={{ fontSize: '20px', color: message === 'Correct!' ? 'green' : 'red', marginTop: '20px' }}>
                         {message}
                     </div>
+                    {message === 'Incorrect!' && (
+                        <div>
+                            <button style={buttonStyle} onClick={reset}>Reset</button>
+                        </div>
+                    )}
+                    
                 </>
             )}
         </div>
