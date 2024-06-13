@@ -69,6 +69,8 @@ import BiggerSmaller from "./Arithmetic/client/BiggerSmaller";
 import CreateBiggerSmaller from "./Arithmetic/admin/CreateBiggerSmaller";
 import CreateCaptchaImages from "./Captcha/admin/CreateCaptchaImages";
 import CaptchaImages from "./Captcha/client/CaptchaImages";
+import CreateMatchingImages from "./Matching/admin/CreateMatchingImages";
+import MatchingImages from "./Matching/client/MatchingImages";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -159,6 +161,7 @@ const BijlexHome = () => {
     "simplify-fractions": CreateSimplifyFractions,
     "bigger-smaller": CreateBiggerSmaller,
     "captcha-images": CreateCaptchaImages,
+    "matching-images": CreateMatchingImages,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -191,6 +194,7 @@ const BijlexHome = () => {
     "simplify-fractions": SimplifyFractions,
     "bigger-smaller": BiggerSmaller,
     "captcha-images": CaptchaImages,
+    "matching-images": MatchingImages,
   };
   const {
     addDialog,
@@ -1150,6 +1154,17 @@ const BijlexHome = () => {
           <div className="question_model_card">
             <span>28</span>
             <span>---</span>
+            <span>Matching Boxes Images Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("matching-images")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>29</span>
+            <span>---</span>
             <span>Simplify Fractions Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("simplify-fractions")}
@@ -1159,7 +1174,7 @@ const BijlexHome = () => {
             </button>
           </div>
           <div className="question_model_card">
-            <span>29</span>
+            <span>30</span>
             <span>---</span>
             <span>Bigger Smaller Exercise</span>
             <button
@@ -1170,7 +1185,7 @@ const BijlexHome = () => {
             </button>
           </div>
           <div className="question_model_card">
-            <span>30</span>
+            <span>31</span>
             <span>---</span>
             <span>Captcha 9 Images Exercise</span>
             <button
