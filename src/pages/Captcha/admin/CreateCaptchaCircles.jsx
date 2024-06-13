@@ -4,26 +4,21 @@ import { documentIcon } from "../../../constants/icons.jsx";
 import styles from "../../../styles/captcha/CreateCaptchaCircles.module.css";
 
 function CreateCaptchaCircles({ setCustomData, customData }) {
-  const [selectedSquares, setSelectedSquares] = useState(
-    customData?.selectedSquares || []
-  );
-  const [questionPrompt, setQuestionPrompt] = useState(
-    customData?.questionPrompt || ""
-  );
-  const [imageFile, setImageFile] = useState(customData?.imageFile || null);
+  const [selectedSquares, setSelectedSquares] = useState(customData?.selectedSquares || []);
+  const [questionPrompt, setQuestionPrompt] = useState(customData?.questionPrompt || "");
+  const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     setQuestionPrompt(customData?.questionPrompt || "");
     setSelectedSquares(customData?.selectedSquares || []);
-    setImageFile(customData?.imageFile || null);
   }, [customData]);
 
   useEffect(() => {
     if (imageFile) {
       const url = URL.createObjectURL(imageFile);
       setImageUrl(url);
-      return () => URL.revokeObjectURL(url); // Clean up the URL object when the component unmounts or imageFile changes
+      return () => URL.revokeObjectURL(url);
     }
   }, [imageFile]);
 
@@ -41,19 +36,32 @@ function CreateCaptchaCircles({ setCustomData, customData }) {
   const handleSquareClick = (squareId) => {
     setSelectedSquares((prev) => {
       if (prev.includes(squareId)) {
-        return prev.filter((id) => id !== squareId); // Deselect the square
+        return prev.filter((id) => id !== squareId);
       }
-      return [...prev, squareId]; // Select the square
+      return [...prev, squareId];
     });
   };
 
   const saveExercise = async () => {
-    const newCustomData = {
-      questionPrompt: questionPrompt,
-      imageFile: imageFile, // Include image file in custom data
-      selectedSquares: selectedSquares, // Pass the selected squares
+    if (!imageFile) {
+      alert("Please select an image file before saving.");
+      return;
+    }
+
+    // Convert image file to Base64
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    reader.onloadend = () => {
+      const base64Image = reader.result;
+      localStorage.setItem("captchaImage", base64Image);
+
+      const newCustomData = {
+        questionPrompt: questionPrompt,
+        imagePath: "captchaImage", // Use the key for localStorage
+        selectedSquares: selectedSquares,
+      };
+      setCustomData(newCustomData);
     };
-    setCustomData(newCustomData);
   };
 
   return (
@@ -86,9 +94,7 @@ function CreateCaptchaCircles({ setCustomData, customData }) {
                 return (
                   <div
                     key={i}
-                    className={`${styles.gridSquare} ${
-                      selectedSquares.includes(i) ? styles.selected : ""
-                    }`}
+                    className={`${styles.gridSquare} ${selectedSquares.includes(i) ? styles.selected : ""}`}
                     onClick={() => handleSquareClick(i)}
                     style={{
                       backgroundImage: `url(${imageUrl})`,

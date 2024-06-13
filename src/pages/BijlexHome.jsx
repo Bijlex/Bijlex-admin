@@ -65,6 +65,10 @@ import CreateMatchingBoxes from "./Matching/admin/CreateMatchingBoxes";
 import MatchingBoxes from "./Matching/client/MatchingBoxes";
 import CreateSimplifyFractions from "./Fractions/admin/CreateSimplifyFractions";
 import SimplifyFractions from "./Fractions/client/SimplifyFractions";
+import BiggerSmaller from "./Arithmetic/client/BiggerSmaller";
+import CreateBiggerSmaller from "./Arithmetic/admin/CreateBiggerSmaller";
+import CreateCaptchaImages from "./Captcha/admin/CreateCaptchaImages";
+import CaptchaImages from "./Captcha/client/CaptchaImages";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -153,6 +157,8 @@ const BijlexHome = () => {
     "timer-arithmetic-questions": CreateTimerQuestions,
     "matching-boxes": CreateMatchingBoxes,
     "simplify-fractions": CreateSimplifyFractions,
+    "bigger-smaller": CreateBiggerSmaller,
+    "captcha-images": CreateCaptchaImages,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -183,6 +189,8 @@ const BijlexHome = () => {
     "timer-arithmetic-questions": TimerQuestions,
     "matching-boxes": MatchingBoxes,
     "simplify-fractions": SimplifyFractions,
+    "bigger-smaller": BiggerSmaller,
+    "captcha-images": CaptchaImages,
   };
   const {
     addDialog,
@@ -1145,6 +1153,28 @@ const BijlexHome = () => {
             <span>Simplify Fractions Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("simplify-fractions")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>29</span>
+            <span>---</span>
+            <span>Bigger Smaller Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("bigger-smaller")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>30</span>
+            <span>---</span>
+            <span>Captcha 9 Images Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("captcha-images")}
               className="question_select_btn"
             >
               Select

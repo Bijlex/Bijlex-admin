@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/captcha/CaptchaCircles.module.css";
 
-const CaptchaCircles = ({ customData }) => {
+const CaptchaImages = ({ customData }) => {
   const [selectedSquares, setSelectedSquares] = useState([]);
   const [message, setMessage] = useState(null);
-  const questionPrompt = customData?.questionPrompt || "No prompt provided";
   const [attempts, setAttempts] = useState(0);
 
-  const imageUrl = localStorage.getItem(customData?.imagePath); // Retrieve the image data from localStorage
+  const questionPrompt = customData?.questionPrompt || "No prompt provided";
+  const images = customData?.images || [];
 
   const handleSquareClick = (squareId) => {
     setSelectedSquares((prev) => {
@@ -36,23 +36,17 @@ const CaptchaCircles = ({ customData }) => {
     <div className={styles.captchaContainer}>
       <h2>{questionPrompt}</h2>
       <div className={styles.gridContainer}>
-        {Array.from({ length: 9 }, (_, i) => {
-          const row = Math.floor(i / 3);
-          const col = i % 3;
-          const backgroundPosition = `-${col * 100}px -${row * 100}px`;
-
-          return (
-            <div
-              key={i}
-              className={`${styles.gridSquare} ${selectedSquares.includes(i) ? styles.selected : ""}`}
-              onClick={() => handleSquareClick(i)}
-              style={{
-                backgroundImage: `url(${imageUrl})`,
-                backgroundPosition,
-              }}
-            />
-          );
-        })}
+        {Array.from({ length: 9 }, (_, i) => (
+          <div
+            key={i}
+            className={`${styles.gridSquare} ${selectedSquares.includes(i) ? styles.selected : ""}`}
+            onClick={() => handleSquareClick(i)}
+            style={{
+              backgroundImage: `url(${images[i]})`,
+              backgroundSize: "cover",
+            }}
+          />
+        ))}
       </div>
       <button className={styles.button} onClick={checkAnswers}>
         Check Answer
@@ -74,4 +68,4 @@ const CaptchaCircles = ({ customData }) => {
   );
 };
 
-export default CaptchaCircles;
+export default CaptchaImages;
