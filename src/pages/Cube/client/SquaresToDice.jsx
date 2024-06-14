@@ -7,6 +7,8 @@ function SquaresToDice({ customData }) {
     );
     const [allSquaresFilled, setAllSquaresFilled] = useState(false);
     const [resultMessage, setResultMessage] = useState('');
+    const [attemptCount, setAttemptCount] = useState(0);
+    const [showHint, setShowHint] = useState(false);
 
     useEffect(() => {
         const allFilled = squareValues.every(square => square.value !== '');
@@ -15,8 +17,8 @@ function SquaresToDice({ customData }) {
 
     const handleSquareChange = (id, event) => {
         const value = event.target.value;
-        setSquareValues((prevValues) => {
-            const newValues = prevValues.map(square => 
+        setSquareValues(prevValues => {
+            const newValues = prevValues.map(square =>
                 square.id === id ? { ...square, value: value } : square
             );
             return newValues;
@@ -49,6 +51,10 @@ function SquaresToDice({ customData }) {
             setResultMessage("Correct!");
         } else {
             setResultMessage("Incorrect, try again.");
+            setAttemptCount(prev => prev + 1);
+            if (attemptCount === 0) {
+                setShowHint(true);
+            }
         }
     };
 
@@ -65,71 +71,96 @@ function SquaresToDice({ customData }) {
             <h2 style={{ marginBottom: '20px' }}>{questionPrompt}</h2>
             <div
                 style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 100px)',
-                    gridTemplateRows: 'repeat(4, 100px)',
-                    gap: '0px',
+                    position: 'relative',
                     marginBottom: '30px',
+                    width: '100%', // Ensures the container spans full width
+                    display: 'flex',
+                    justifyContent: 'center', // Centers items horizontally
+                    alignItems: 'center', // Centers items vertically
                 }}
             >
-                {[
-                    null, 0, null,
-                    1, 2, 3,
-                    null, 4, null,
-                    null, 5, null,
-                ].map((index, idx) => (
-                    <div
-                        key={idx}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 100px)',
+                        gridTemplateRows: 'repeat(4, 100px)',
+                        gap: '0px',
+                    }}
+                >
+                    {[
+                        null, 0, null,
+                        1, 2, 3,
+                        null, 4, null,
+                        null, 5, null,
+                    ].map((index, idx) => (
                         <div
+                            key={idx}
                             style={{
-                                width: '100px',
-                                height: '100px',
                                 display: 'flex',
+                                flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                border: index !== null ? '1px solid #000' : 'none',
-                                backgroundColor: index !== null ? '#fff' : 'transparent',
                             }}
                         >
-                            {index !== null ? (
-                                squares[index].value ? (
-                                    <div
-                                        style={{
-                                            width: '80%',
-                                            height: '80%',
-                                            fontSize: '16px',
-                                            textAlign: 'center',
-                                            lineHeight: '80px',
-                                        }}
-                                    >
-                                        {squares[index].value}
-                                    </div>
-                                ) : (
-                                    <input
-                                        type="number"
-                                        value={squareValues[index].value}
-                                        onChange={(e) => handleSquareChange(squareValues[index].id, e)}
-                                        style={{
-                                            width: '80%',
-                                            height: '80%',
-                                            fontSize: '16px',
-                                            textAlign: 'center',
-                                            border: 'none',
-                                            outline: 'none',
-                                        }}
-                                    />
-                                )
-                            ) : null}
+                            <div
+                                style={{
+                                    width: '100px',
+                                    height: '100px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: index !== null ? '1px solid #000' : 'none',
+                                    backgroundColor: index !== null ? '#fff' : 'transparent',
+                                }}
+                            >
+                                {index !== null ? (
+                                    squares[index].value ? (
+                                        <div
+                                            style={{
+                                                width: '80%',
+                                                height: '80%',
+                                                fontSize: '16px',
+                                                textAlign: 'center',
+                                                lineHeight: '80px',
+                                            }}
+                                        >
+                                            {squares[index].value}
+                                        </div>
+                                    ) : (
+                                        <input
+                                            type="number"
+                                            value={squareValues[index].value}
+                                            onChange={(e) => handleSquareChange(squareValues[index].id, e)}
+                                            style={{
+                                                width: '80%',
+                                                height: '80%',
+                                                fontSize: '16px',
+                                                textAlign: 'center',
+                                                border: 'none',
+                                                outline: 'none',
+                                            }}
+                                        />
+                                    )
+                                ) : null}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+                {showHint && attemptCount === 1 && (
+                    <img
+                        src="/images/SquaresToDice/dice.png"
+                        alt="Hint"
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: 'calc(100% - 200px)', // Adjust the position here
+                            transform: 'translate(-50%, -50%)',
+                            width: '200px',
+                            height: '150px',
+                            zIndex: 1, // Ensures the image is above the squares grid
+                        }}
+                    />
+                )}
             </div>
             {allSquaresFilled && (
                 <button

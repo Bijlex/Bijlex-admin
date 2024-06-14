@@ -12,7 +12,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
   const [rightInputs, setRightInputs] = useState(customData?.rightInputs || []);
   const containerRef = useRef(null);
 
-  // Function to handle box click and connect lines
   const handleBoxClick = (boxId) => {
     if (selectedBox !== null) {
       if (boxId !== selectedBox) {
@@ -28,7 +27,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
     }
   };
 
-  // Reset state when customData changes
   useEffect(() => {
     setQuestionPrompt(customData?.questionPrompt || "");
     setLeftNumBoxes(customData?.leftNumBoxes || 2);
@@ -38,12 +36,10 @@ function CreateMatchingImages({ setCustomData, customData }) {
     setLines(customData?.lines || []);
   }, [customData]);
 
-  // Handle change in question prompt input
   const handleQuestionPromptChange = (event) => {
     setQuestionPrompt(event.target.value);
   };
 
-  // Handle text input change in boxes
   const handleInputChange = (event, index, side) => {
     const value = event.target.value;
     const newInputs = side === "left" ? [...leftInputs] : [...rightInputs];
@@ -51,7 +47,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
     side === "left" ? setLeftInputs(newInputs) : setRightInputs(newInputs);
   };
 
-  // Handle image upload change in boxes
   const handleImageUpload = (event, index, side) => {
     const file = event.target.files[0];
     if (file) {
@@ -65,7 +60,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
     }
   };
 
-  // Save the exercise data
   const saveExercise = async () => {
     const exerciseData = {
       questionPrompt,
@@ -78,25 +72,22 @@ function CreateMatchingImages({ setCustomData, customData }) {
     setCustomData(exerciseData);
   };
 
-  // Handle change in number of boxes on the left side
   const handleLeftNumBoxesChange = (event) => {
     const newNumBoxes = parseInt(event.target.value);
     setLeftNumBoxes(newNumBoxes);
-    setLines([]); // Reset lines when the number of boxes changes
+    setLines([]);
     setLeftInputs(new Array(newNumBoxes).fill({ text: "", image: "" }));
   };
 
-  // Handle change in number of boxes on the right side
   const handleRightNumBoxesChange = (event) => {
     const newNumBoxes = parseInt(event.target.value);
     setRightNumBoxes(newNumBoxes);
-    setLines([]); // Reset lines when the number of boxes changes
+    setLines([]);
     setRightInputs(new Array(newNumBoxes).fill({ text: "", image: "" }));
   };
 
   return (
     <div ref={containerRef} style={{ textAlign: "center", position: "relative" }}>
-      {/* Question prompt input */}
       <label style={{ marginTop: "20px" }}>Question Prompt:</label>
       <input
         type="text"
@@ -112,7 +103,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
         }}
       />
 
-      {/* Number of boxes selection for left and right sides */}
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px", marginTop: "20px" }}>
         <div>
           <label>Left Side:</label>
@@ -148,10 +138,8 @@ function CreateMatchingImages({ setCustomData, customData }) {
         </div>
       </div>
 
-      {/* Display boxes for left and right sides */}
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {/* Left side boxes */}
           {leftInputs.map((input, index) => (
             <div key={`leftInput${index}`} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
               <div
@@ -162,12 +150,14 @@ function CreateMatchingImages({ setCustomData, customData }) {
                   width: "100px",
                   height: "100px",
                   border: "1px solid black",
-                  padding: "20px",
+                  padding: "0px",
                   margin: "10px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   overflow: "hidden",
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
                 }}
                 onClick={() => handleBoxClick(`left${index}`)}
               >
@@ -175,10 +165,12 @@ function CreateMatchingImages({ setCustomData, customData }) {
                   <img
                     src={leftInputs[index].image}
                     alt={`Box ${index + 1}`}
-                    style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "cover" }}
+                    style={{ width: "100px", height: "100px", objectFit: "cover" }}
                   />
                 ) : (
-                  leftInputs[index]?.text || `Box ${index + 1}`
+                  <div style={{ padding: "5px", textAlign: "center" }}>
+                    {leftInputs[index]?.text || `Box ${index + 1}`}
+                  </div>
                 )}
               </div>
               <input
@@ -198,7 +190,6 @@ function CreateMatchingImages({ setCustomData, customData }) {
           ))}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {/* Right side boxes */}
           {rightInputs.map((input, index) => (
             <div key={`rightInput${index}`} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
               <div
@@ -209,12 +200,14 @@ function CreateMatchingImages({ setCustomData, customData }) {
                   width: "100px",
                   height: "100px",
                   border: "1px solid black",
-                  padding: "20px",
+                  padding: "0px",
                   margin: "10px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   overflow: "hidden",
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
                 }}
                 onClick={() => handleBoxClick(`right${index}`)}
               >
@@ -222,10 +215,12 @@ function CreateMatchingImages({ setCustomData, customData }) {
                   <img
                     src={rightInputs[index].image}
                     alt={`Box ${index + 1}`}
-                    style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "cover" }}
+                    style={{ width: "100px", height: "100px", objectFit: "cover" }}
                   />
                 ) : (
-                  rightInputs[index]?.text || `Box ${index + 1}`
+                  <div style={{ padding: "5px", textAlign: "center" }}>
+                    {rightInputs[index]?.text || `Box ${index + 1}`}
+                  </div>
                 )}
               </div>
               <input
@@ -238,87 +233,85 @@ function CreateMatchingImages({ setCustomData, customData }) {
                 type="text"
                 value={rightInputs[index]?.text || ""}
                 onChange={(event) => handleInputChange(event, index, "right")}
-                placeholder={`Box ${index + 
-                    1}`}
-                    style={{ marginLeft: "10px", width: "100px" }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-    
-          {/* SVG Canvas for drawing lines */}
-          <SVGCanvas lines={lines} containerRef={containerRef} leftNumBoxes={leftNumBoxes} rightNumBoxes={rightNumBoxes} />
-    
-          {/* Save button */}
-          <SvgBtn
-            handleClick={saveExercise}
-            SvgIcon={documentIcon}
-            text={"Make Exercise"}
-            style={{ marginBottom: "30px", alignSelf: "center" }}
-          />
-        </div>
-      );
-    }
-    
-    function SVGCanvas({ lines, containerRef, leftNumBoxes, rightNumBoxes }) {
-      const [containerOffset, setContainerOffset] = useState({ left: 0, top: 0 });
-    
-      // Update container offset on scroll
-      useEffect(() => {
-        const updateContainerOffset = () => {
-          if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            setContainerOffset({ left: rect.left + window.scrollX, top: rect.top + window.scrollY });
-          }
-        };
-    
-        updateContainerOffset();
-        window.addEventListener("scroll", updateContainerOffset);
-    
-        return () => {
-          window.removeEventListener("scroll", updateContainerOffset);
-        };
-      }, [containerRef]);
-    
-      // Calculate canvas height based on the number of boxes
-      const canvasHeight = Math.max(leftNumBoxes, rightNumBoxes) * 140; // Adjust the multiplier based on the height of each box and margin
-    
-      return (
-        <svg
-          viewBox={`0 0 1000 ${canvasHeight}`}
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: canvasHeight, pointerEvents: "none" }}
-        >
-          {/* Draw lines between connected boxes */}
-          {lines.map((line, idx) => {
-            const startBox = document.getElementById(line.from);
-            const endBox = document.getElementById(line.to);
-    
-            if (!startBox || !endBox) return null; // Exit early if boxes are not found
-    
-            const startRect = startBox.getBoundingClientRect();
-            const endRect = endBox.getBoundingClientRect();
-    
-            const x1 = startRect.left + startRect.width / 2 + window.scrollX - containerOffset.left;
-            const y1 = startRect.top + startRect.height / 2 + window.scrollY - containerOffset.top;
-            const x2 = endRect.left + endRect.width / 2 + window.scrollX - containerOffset.left;
-            const y2 = endRect.top + endRect.height / 2 + window.scrollY - containerOffset.top;
-    
-            return (
-              <line
-                key={idx}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="green"
-                strokeWidth="2"
+                placeholder={`Box ${index + 1}`}
+                style={{ marginLeft: "10px", width: "100px" }}
               />
-            );
-          })}
-        </svg>
-      );
-    }
-    
-    export default CreateMatchingImages;
-    
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* SVG Canvas for drawing lines */}
+      <SVGCanvas lines={lines} containerRef={containerRef} leftNumBoxes={leftNumBoxes} rightNumBoxes={rightNumBoxes} />
+
+      {/* Save button */}
+      <SvgBtn
+        handleClick={saveExercise}
+        SvgIcon={documentIcon}
+        text={"Make Exercise"}
+        style={{ marginBottom: "30px", alignSelf: "center" }}
+      />
+    </div>
+  );
+}
+
+function SVGCanvas({ lines, containerRef, leftNumBoxes, rightNumBoxes }) {
+  const [containerOffset, setContainerOffset] = useState({ left: 0, top: 0 });
+
+  // Update container offset on scroll
+  useEffect(() => {
+    const updateContainerOffset = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerOffset({ left: rect.left + window.scrollX, top: rect.top + window.scrollY });
+      }
+    };
+
+    updateContainerOffset();
+    window.addEventListener("scroll", updateContainerOffset);
+
+    return () => {
+      window.removeEventListener("scroll", updateContainerOffset);
+    };
+  }, [containerRef]);
+
+  // Calculate canvas height based on the number of boxes
+  const canvasHeight = Math.max(leftNumBoxes, rightNumBoxes) * 140; // Adjust the multiplier based on the height of each box and margin
+
+  return (
+    <svg
+      viewBox={`0 0 1000 ${canvasHeight}`}
+      style={{ position: "absolute", top: 0, left: 0, width: "100%", height: canvasHeight, pointerEvents: "none" }}
+    >
+      {/* Draw lines between connected boxes */}
+      {lines.map((line, idx) => {
+        const startBox = document.getElementById(line.from);
+        const endBox = document.getElementById(line.to);
+
+        if (!startBox || !endBox) return null; // Exit early if boxes are not found
+
+        const startRect = startBox.getBoundingClientRect();
+        const endRect = endBox.getBoundingClientRect();
+
+        const x1 = startRect.left + startRect.width / 2 + window.scrollX - containerOffset.left;
+        const y1 = startRect.top + startRect.height / 2 + window.scrollY - containerOffset.top;
+        const x2 = endRect.left + endRect.width / 2 + window.scrollX - containerOffset.left;
+        const y2 = endRect.top + endRect.height / 2 + window.scrollY - containerOffset.top;
+
+        return (
+          <line
+            key={idx}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="green"
+            strokeWidth="2"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+export default CreateMatchingImages;

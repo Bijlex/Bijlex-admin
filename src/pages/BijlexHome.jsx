@@ -71,6 +71,8 @@ import CreateCaptchaImages from "./Captcha/admin/CreateCaptchaImages";
 import CaptchaImages from "./Captcha/client/CaptchaImages";
 import CreateMatchingImages from "./Matching/admin/CreateMatchingImages";
 import MatchingImages from "./Matching/client/MatchingImages";
+import CreateTaxiExercise from "./Arithmetic/admin/CreateTaxiExercise";
+import TaxiExercise from "./Arithmetic/client/TaxiExercise";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -162,6 +164,7 @@ const BijlexHome = () => {
     "bigger-smaller": CreateBiggerSmaller,
     "captcha-images": CreateCaptchaImages,
     "matching-images": CreateMatchingImages,
+    "taxi-exercise": CreateTaxiExercise,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -195,6 +198,7 @@ const BijlexHome = () => {
     "bigger-smaller": BiggerSmaller,
     "captcha-images": CaptchaImages,
     "matching-images": MatchingImages,
+    "taxi-exercise": TaxiExercise,
   };
   const {
     addDialog,
@@ -1190,6 +1194,17 @@ const BijlexHome = () => {
             <span>Captcha 9 Images Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("captcha-images")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>32</span>
+            <span>---</span>
+            <span>Taxi Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("taxi-exercise")}
               className="question_select_btn"
             >
               Select
