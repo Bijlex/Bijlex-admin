@@ -73,6 +73,10 @@ import CreateMatchingImages from "./Matching/admin/CreateMatchingImages";
 import MatchingImages from "./Matching/client/MatchingImages";
 import CreateTaxiExercise from "./Arithmetic/admin/CreateTaxiExercise";
 import TaxiExercise from "./Arithmetic/client/TaxiExercise";
+import CreateDiagonalTrapezium from "./Diagonals/admin/CreateDiagonalTrapezium";
+import DiagonalTrapezium from "./Diagonals/client/DiagonalTrapezium";
+import CreateDiagonalsParallelogram from "./Diagonals/admin/CreateDiagonalsParallelogram";
+import DiagonalsParallelogram from "./Diagonals/client/DiagonalsParallelogram";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -165,6 +169,8 @@ const BijlexHome = () => {
     "captcha-images": CreateCaptchaImages,
     "matching-images": CreateMatchingImages,
     "taxi-exercise": CreateTaxiExercise,
+    "diagonals-trapezium": CreateDiagonalTrapezium,
+    "diagonals-parallelogram": CreateDiagonalsParallelogram,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -199,6 +205,8 @@ const BijlexHome = () => {
     "captcha-images": CaptchaImages,
     "matching-images": MatchingImages,
     "taxi-exercise": TaxiExercise,
+    "diagonals-trapezium": DiagonalTrapezium,
+    "diagonals-parallelogram": DiagonalsParallelogram,
   };
   const {
     addDialog,
@@ -1205,6 +1213,28 @@ const BijlexHome = () => {
             <span>Taxi Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("taxi-exercise")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>33</span>
+            <span>---</span>
+            <span>Diagonals Trapezium Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("diagonals-trapezium")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>34</span>
+            <span>---</span>
+            <span>Diagonals Parallelogram Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("diagonals-parallelogram")}
               className="question_select_btn"
             >
               Select
