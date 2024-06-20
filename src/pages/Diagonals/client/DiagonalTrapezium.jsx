@@ -7,10 +7,34 @@ const CELL_SIZE = 35;
 // Define the trapezium points with the wider base at the bottom
 const trapeziumPoints = [
   { x: 4 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-left
-  { x: (4 + 4) * CELL_SIZE, y: 2 * CELL_SIZE }, // top-right
-  { x: (2 + 8) * CELL_SIZE, y: (2 + 5) * CELL_SIZE }, // bottom-right
-  { x: 2 * CELL_SIZE, y: (2 + 5) * CELL_SIZE } // bottom-left
+  { x: 8 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-right
+  { x: 10 * CELL_SIZE, y: 7 * CELL_SIZE }, // bottom-right
+  { x: 2 * CELL_SIZE, y: 7 * CELL_SIZE }  // bottom-left
 ];
+
+const correctDiagonals = [
+  [trapeziumPoints[0].x, trapeziumPoints[0].y, trapeziumPoints[2].x, trapeziumPoints[2].y], // top-left to bottom-right
+  [trapeziumPoints[1].x, trapeziumPoints[1].y, trapeziumPoints[3].x, trapeziumPoints[3].y], // top-right to bottom-left
+  [trapeziumPoints[2].x, trapeziumPoints[2].y, trapeziumPoints[0].x, trapeziumPoints[0].y], // bottom-right to top-left
+  [trapeziumPoints[3].x, trapeziumPoints[3].y, trapeziumPoints[1].x, trapeziumPoints[1].y]  // bottom-left to top-right
+];
+
+const styles = {
+  app: { display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' },
+  gridContainer: { display: 'flex', alignItems: 'center', marginBottom: '20px' },
+  buttonsContainer: { display: 'flex', flexDirection: 'column', marginLeft: '20px' },
+  button: {
+    marginTop: '20px',
+    padding: '10px 20px',
+    fontSize: '16px',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    marginBottom: '10px'
+  },
+  message: { marginTop: '20px', fontSize: '18px', fontWeight: 'bold' }
+};
 
 const DiagonalTrapezium = ({ customData }) => {
   const [lines, setLines] = useState([]);
@@ -21,18 +45,13 @@ const DiagonalTrapezium = ({ customData }) => {
   const [tool, setTool] = useState(null); // 'pencil' or 'eraser'
   const questionPrompt = customData?.questionPrompt || "No prompt provided";
 
-  const colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown'];
-
-  const snapToGrid = (value) => {
-    return Math.round(value / CELL_SIZE) * CELL_SIZE;
-  };
+  const snapToGrid = (value) => Math.round(value / CELL_SIZE) * CELL_SIZE;
 
   const handleMouseDown = (e) => {
     if (tool === 'pencil') {
       const { x, y } = e.target.getStage().getPointerPosition();
       const snappedX = snapToGrid(x);
       const snappedY = snapToGrid(y);
-
       if (!startPoint) {
         setStartPoint({ x: snappedX, y: snappedY });
       } else {
@@ -71,14 +90,8 @@ const DiagonalTrapezium = ({ customData }) => {
     }
   };
 
-  // Define the correct diagonals for the trapezium with the wider base at the bottom
-  const correctDiagonals = [
-    [trapeziumPoints[0].x, trapeziumPoints[0].y, trapeziumPoints[2].x, trapeziumPoints[2].y], // top-left to bottom-right
-    [trapeziumPoints[1].x, trapeziumPoints[1].y, trapeziumPoints[3].x, trapeziumPoints[3].y]  // top-right to bottom-left
-  ];
-
   const isCloseEnough = (points1, points2) => {
-    const tolerance = 5; // adjust tolerance as needed
+    const tolerance = 5;
     for (let i = 0; i < points1.length; i++) {
       if (Math.abs(points1[i] - points2[i]) > tolerance) {
         return false;
@@ -88,24 +101,17 @@ const DiagonalTrapezium = ({ customData }) => {
   };
 
   const checkDiagonals = () => {
-    if (lines.length < 2) {
-      setMessage('Too few lines');
+    if (lines.length !== 2) {
+      setMessage('Please draw exactly two diagonals');
       setAttempts(attempts + 1);
       return;
     }
 
-    if (lines.length > 2) {
-      setMessage('Too many lines');
-      setAttempts(attempts + 1);
-      return;
-    }
+    const matchedLines = lines.map(line => {
+      return correctDiagonals.some(correctLine => isCloseEnough(line.points, correctLine));
+    });
 
-    // Check if both correct diagonals are drawn
-    const matchedLines = correctDiagonals.every(correctLine =>
-      lines.some(line => isCloseEnough(line.points, correctLine))
-    );
-
-    if (matchedLines) {
+    if (matchedLines.every(matched => matched)) {
       setMessage('Correct');
     } else {
       setMessage('Incorrect');
@@ -166,7 +172,7 @@ const DiagonalTrapezium = ({ customData }) => {
               />
             )}
             {lines.map((line, i) => (
-              <Line key={i} points={line.points} stroke={colors[i % colors.length]} strokeWidth={4} />
+              <Line key={i} points={line.points} stroke={['red', 'blue', 'green', 'orange', 'purple', 'brown'][i % 6]} strokeWidth={4} />
             ))}
           </Layer>
         </Stage>
@@ -187,48 +193,11 @@ const DiagonalTrapezium = ({ customData }) => {
       </div>
       <button style={{ ...styles.button, backgroundColor: 'green' }} onClick={checkDiagonals}>Check answer</button>
       {message && <div style={styles.message}>{message}</div>}
-      {(message === 'Incorrect' || message === 'Too few lines' || message === 'Too many lines') && attempts < 2 && (
-        <button style={{ ...styles.button, backgroundColor: 'green' }} onClick={reset}>Retry</button>
-      )}
-      {attempts >= 2 && (
-        <button style={{ ...styles.button, backgroundColor: 'green' }} onClick={() => setMessage('Continue to the next question.')}>Continue</button>
+      {(message === 'Incorrect' || message === 'Please draw exactly two diagonals') && attempts < 2 && (
+        <button style={{ ...styles.button, backgroundColor: 'orange' }} onClick={reset}>Try Again</button>
       )}
     </div>
   );
-};
-
-const styles = {
-  app: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '50px'
-  },
-  gridContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px'
-  },
-  buttonsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: '20px'
-  },
-  button: {
-    marginTop: '20px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginBottom: '10px'
-  },
-  message: {
-    marginTop: '20px',
-    fontSize: '18px',
-    fontWeight: 'bold'
-  }
 };
 
 export default DiagonalTrapezium;

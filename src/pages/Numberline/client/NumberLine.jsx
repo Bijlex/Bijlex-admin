@@ -2,38 +2,63 @@ import React, { useEffect, useState } from "react";
 import styles from "../../../styles/numberline/numberline.module.css";
 import { useMessage } from "../../../contexts/MessageContext";
 
-const NumberLine = ({ customData, preview = false }) => {
-  const [answers, setAnswers] = useState(customData?.answers || []);
+const NumberLine = ({ customData }) => {
+  const [answers, setAnswers] = useState(customData?.inputValues || []);
   const [userInputs, setUserInputs] = useState({});
-  const { addDialog, removeDialog, addFullscreenConfirmationDialog } =
-    useMessage();
+  const [allNumbersPlaced, setAllNumbersPlaced] = useState(false); // State to track if all numbers are placed
+  const [showMessage, setShowMessage] = useState(false); // State to control display of message
+  const [isCorrect, setIsCorrect] = useState(false); // State to track correctness
+  const { addDialog, removeDialog } = useMessage();
+
   const formatNumber = (number) => {
     return number.toString().replace(".", ",");
   };
 
-  // Function to handle user input change
-  const handleInputChange = (index, value) => {
-    setUserInputs({
-      ...userInputs,
-      [index]: value.trim(), // Trim whitespace
-    });
+  const parseFraction = (fraction) => {
+    const [numerator, denominator] = fraction.split("/").map(Number);
+    return numerator / denominator;
   };
-  // Function to check answers
-  const checkAnswers = () => {
-    const allCorrect = answers.every(
-      (answer, index) => parseFloat(userInputs[index]) === answer
-    );
 
-    if (allCorrect) {
-      setUserInputs({});
-      addFullscreenConfirmationDialog("Correct! Goed gedaan!", "Ok");
-    } else {
-      addFullscreenConfirmationDialog("Onjuist. Probeer het opnieuw!", "Ok");
-    }
+  const handleInputChange = (index, value) => {
+    const updatedUserInputs = {
+      ...userInputs,
+      [index]: value.trim(),
+    };
+    setUserInputs(updatedUserInputs);
+
+    // Check if all numbers have been placed
+    const allPlaced =
+      Object.keys(updatedUserInputs).length === answers.length &&
+      Object.values(updatedUserInputs).every((input) => input !== "");
+    setAllNumbersPlaced(allPlaced);
   };
+
+  const checkAnswers = () => {
+    const allCorrect = answers.every((answer, index) => {
+      const parsedAnswer = answer.includes("/")
+        ? parseFraction(answer)
+        : parseFloat(answer);
+      const parsedInput = userInputs[index]?.includes("/")
+        ? parseFraction(userInputs[index])
+        : parseFloat(userInputs[index]);
+      return parsedInput === parsedAnswer;
+    });
+
+    setIsCorrect(allCorrect);
+    setShowMessage(true);
+  };
+
   useEffect(() => {
-    setAnswers(customData.answers);
+    setAnswers(customData.inputValues);
   }, [customData]);
+
+  useEffect(() => {
+    // Check if all input fields have been filled
+    const allPlaced =
+      Object.keys(userInputs).length === answers.length &&
+      Object.values(userInputs).every((input) => input !== "");
+    setAllNumbersPlaced(allPlaced);
+  }, [userInputs, answers]);
 
   return (
     <div className={styles.number_line}>
@@ -47,15 +72,14 @@ const NumberLine = ({ customData, preview = false }) => {
           ></div>
         ))}
       </div>
-      <p className={styles.instructions}>{customData.prompt}</p>
+      <p className={styles.instructions}>{customData.questionPrompt}</p>
       <div className={styles.numbers_list}>
         {answers.length > 0 &&
           answers.map((number, index) => (
-            // Making numbers draggable
             <span
               key={index}
               className={`${styles.number} ${
-                Object.keys(userInputs).some((key) => userInputs[key] == number)
+                Object.values(userInputs).includes(number)
                   ? styles.activeNumber
                   : ""
               }`}
@@ -68,37 +92,49 @@ const NumberLine = ({ customData, preview = false }) => {
             </span>
           ))}
       </div>
-      {answers.map((position, index) => (
-        <div
-          key={index}
-          data-number={position}
-          className={styles.arrow_and_input}
-          style={{ left: `${4 * position + 50}%` }}
-        >
-          <input
-            type="text"
-            className={`${styles.input_field} ${
-              userInputs[index] ? styles.haveNumber : ""
-            }`}
-            data-test={userInputs[index]}
-            value={userInputs[index] && formatNumber(userInputs[index])}
-            placeholder=". . . ."
-            onDrop={(e) => {
-              e.preventDefault();
-              const data = e.dataTransfer.getData("text");
-              setUserInputs({ ...userInputs, [index]: data });
-            }}
-            onDragOver={(e) => e.preventDefault()} // Necessary to allow drop
-            onChange={(e) => handleInputChange(index, e.target.value)}
-          />
-          <div className={styles.arrow} />
-        </div>
-      ))}
-      {!preview && (
-        <button className={styles.check_button} onClick={checkAnswers}>
-          Controleer
-        </button>
-      )}
+      {answers.map((answer, index) => {
+        const position = answer.includes("/")
+          ? parseFraction(answer)
+          : parseFloat(answer);
+        return (
+          <div
+            key={index}
+            data-number={position}
+            className={styles.arrow_and_input}
+            style={{ left: `${4 * position + 50}%` }}
+          >
+            <input
+              type="text"
+              className={`${styles.input_field} ${
+                userInputs[index] ? styles.haveNumber : ""
+              }`}
+              data-test={userInputs[index]}
+              value={userInputs[index] && formatNumber(userInputs[index])}
+              placeholder=". . . ."
+              onDrop={(e) => {
+                e.preventDefault();
+                const data = e.dataTransfer.getData("text");
+                handleInputChange(index, data);
+              }}
+              onDragOver={(e) => e.preventDefault()}
+              onChange={(e) => handleInputChange(index, e.target.value)}
+            />
+            <div className={styles.arrow} />
+          </div>
+        );
+      })}
+      <div className={styles.button_and_message}>
+        {allNumbersPlaced && (
+          <button className={styles.check_button} onClick={checkAnswers}>
+            Controleer
+          </button>
+        )}
+        {showMessage && (
+          <p className={`${styles.message} ${isCorrect ? styles.correct : styles.incorrect}`}>
+            {isCorrect ? "Correct! Goed gedaan!" : "Onjuist. Probeer het opnieuw!"}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
