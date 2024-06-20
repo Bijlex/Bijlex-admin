@@ -77,6 +77,12 @@ import CreateDiagonalTrapezium from "./Diagonals/admin/CreateDiagonalTrapezium";
 import DiagonalTrapezium from "./Diagonals/client/DiagonalTrapezium";
 import CreateDiagonalsParallelogram from "./Diagonals/admin/CreateDiagonalsParallelogram";
 import DiagonalsParallelogram from "./Diagonals/client/DiagonalsParallelogram";
+import CreateSlotMachine from "./Arithmetic/admin/CreateSlotMachine";
+import SlotMachine from "./Arithmetic/client/SlotMachine";
+import CreateSlotMachine2 from "./Arithmetic/admin/CreateSlotMachine2";
+import SlotMachine2 from "./Arithmetic/client/SlotMachine2";
+import CreateDuoLingo from "./Dragging-Exercises/admin/CreateDuoLingo";
+import DuoLingo from "./Dragging-Exercises/client/DuoLingo";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -171,6 +177,9 @@ const BijlexHome = () => {
     "taxi-exercise": CreateTaxiExercise,
     "diagonals-trapezium": CreateDiagonalTrapezium,
     "diagonals-parallelogram": CreateDiagonalsParallelogram,
+    "slot-machine": CreateSlotMachine,
+    "slot-machine2": CreateSlotMachine2,
+    "duo-lingo": CreateDuoLingo,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -207,6 +216,9 @@ const BijlexHome = () => {
     "taxi-exercise": TaxiExercise,
     "diagonals-trapezium": DiagonalTrapezium,
     "diagonals-parallelogram": DiagonalsParallelogram,
+    "slot-machine": SlotMachine,
+    "slot-machine2": SlotMachine2,
+    "duo-lingo": DuoLingo,
   };
   const {
     addDialog,
@@ -1235,6 +1247,42 @@ const BijlexHome = () => {
             <span>Diagonals Parallelogram Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("diagonals-parallelogram")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>35</span>
+            <span>---</span>
+            <span>Slot Machine Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("slot-machine")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+
+          <div className="question_model_card">
+            <span>36</span>
+            <span>---</span>
+            <span>Slot Machine Exercise 2</span>
+            <button
+              onClick={() => handleQuestionModelClick("slot-machine2")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+
+          <div className="question_model_card">
+            <span>37</span>
+            <span>---</span>
+            <span>DuoLingo Exercise 
+            </span>
+            <button
+              onClick={() => handleQuestionModelClick("duo-lingo")}
               className="question_select_btn"
             >
               Select
