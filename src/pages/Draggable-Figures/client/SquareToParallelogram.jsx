@@ -31,7 +31,23 @@ function SquareToParallelogram({ customData }) {
         newCorners[index] = { x: boundedX, y: boundedY };
         setCorners(newCorners);
         setIsCorrect(null); 
-    };    
+    };
+
+    const orientation = (p, q, r) => {
+        const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+        if (val === 0) return 0; // collinear
+        return (val > 0) ? 1 : 2; // clock or counterclock wise
+    };
+
+    const doIntersect = (p1, q1, p2, q2) => {
+        const o1 = orientation(p1, q1, p2);
+        const o2 = orientation(p1, q1, q2);
+        const o3 = orientation(p2, q2, p1);
+        const o4 = orientation(p2, q2, q1);
+
+        if (o1 !== o2 && o3 !== o4) return true;
+        return false;
+    };
 
     const checkAnswer = () => {
         const correctCorners = [
@@ -40,17 +56,17 @@ function SquareToParallelogram({ customData }) {
             { x: 80, y: 250 },
             { x: 280, y: 250 },
         ];
-    
+
         const sortedCorners = corners.slice().sort((a, b) => {
             if (a.x !== b.x) return a.x - b.x;
             return a.y - b.y;
         });
-    
+
         const sortedCorrectCorners = correctCorners.slice().sort((a, b) => {
             if (a.x !== b.x) return a.x - b.x;
             return a.y - b.y;
         });
-    
+
         const isCorrectAnswer = sortedCorners.every((corner, index) => {
             const correctCorner = sortedCorrectCorners[index];
             return (
@@ -58,12 +74,15 @@ function SquareToParallelogram({ customData }) {
                 Math.abs(corner.y - correctCorner.y) < 5
             );
         });
-    
-        setIsCorrect(isCorrectAnswer);
-        if (!isCorrectAnswer) {
+
+        const intersects = doIntersect(corners[0], corners[1], corners[2], corners[3]) ||
+                           doIntersect(corners[0], corners[2], corners[1], corners[3]);
+
+        setIsCorrect(isCorrectAnswer && !intersects);
+        if (!(isCorrectAnswer && !intersects)) {
             setAttempts(attempts + 1);
         }
-    };    
+    };
 
     const reset = () => {
         setCorners([

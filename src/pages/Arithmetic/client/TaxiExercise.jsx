@@ -7,6 +7,8 @@ function TaxiExercise({ customData }) {
     const [finalPrice, setFinalPrice] = useState(parseFloat(customData?.finalPrice) || 0);
     const [selectedOption, setSelectedOption] = useState("Final Price");
     const [isGenerated, setIsGenerated] = useState(false);
+    const [formulaInput, setFormulaInput] = useState("");
+    const [isFormulaCorrect, setIsFormulaCorrect] = useState(null);
 
     useEffect(() => {
         setStartingPrice(parseFloat(customData?.startingPrice) || 0);
@@ -18,6 +20,10 @@ function TaxiExercise({ customData }) {
     const handleInputChange = (setter) => (e) => {
         setter(parseFloat(e.target.value) || 0);
         setIsGenerated(false);
+    };
+
+    const handleFormulaChange = (e) => {
+        setFormulaInput(e.target.value);
     };
 
     const generateValue = () => {
@@ -43,6 +49,12 @@ function TaxiExercise({ customData }) {
                 break;
         }
         setIsGenerated(true);
+    };
+
+    const checkFormula = () => {
+        const trimmedInput = formulaInput.replace(/\s+/g, '');
+        const correctAnswers = ["y=ax+b", "y=a*x+b"];
+        setIsFormulaCorrect(correctAnswers.includes(trimmedInput.toLowerCase()));
     };
 
     const renderFieldsAboveButton = () => {
@@ -127,7 +139,7 @@ function TaxiExercise({ customData }) {
             <h2 style={{ marginBottom: '30px', color: 'black' }}>{customData?.questionPrompt || "No question prompt provided"}</h2>
             <div style={{
                 width: '300px',
-                height: '420px', // Adjusted minimum height to accommodate space below button
+                minHeight: '420px',
                 backgroundColor: 'black',
                 color: 'white',
                 padding: '20px',
@@ -164,6 +176,47 @@ function TaxiExercise({ customData }) {
                     Generate {selectedOption}
                 </button>
                 {renderFieldBelowButton()}
+            </div>
+            <div style={{ width: '100%', marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '300px' }}>
+                    <label htmlFor="formulaInput" style={{ color: 'black', minWidth: '120px' }}>Enter Formula:</label>
+                    <input
+                        id="formulaInput"
+                        type="text"
+                        value={formulaInput}
+                        onChange={handleFormulaChange}
+                        style={{
+                            width: '120px',
+                            padding: '5px',
+                            fontSize: '16px',
+                            textAlign: 'right',
+                            backgroundColor: 'white',
+                            color: 'black',
+                            border: '1px solid black',
+                            borderRadius: '4px'
+                        }}
+                    />
+                </div>
+                <button
+                    onClick={checkFormula}
+                    style={{
+                        backgroundColor: 'green',
+                        color: 'white',
+                        border: 'none',
+                        padding: '10px 20px',
+                        fontSize: '16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginTop: '10px'
+                    }}
+                >
+                    Check Answer
+                </button>
+                {isFormulaCorrect !== null && (
+                    <p style={{ color: isFormulaCorrect ? 'green' : 'red', marginTop: '10px' }}>
+                        {isFormulaCorrect ? 'Correct!' : 'Incorrect. Try again!'}
+                    </p>
+                )}
             </div>
         </div>
     );
