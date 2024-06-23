@@ -5,6 +5,7 @@ const StarExercise = ({ customData }) => {
   const [selectedColor, setSelectedColor] = useState('red');
   const [starLines, setStarLines] = useState([]);
   const [resultMessage, setResultMessage] = useState('');
+  const [attempts, setAttempts] = useState(0);
   const questionPrompt = customData?.questionPrompt || "No prompt provided";
 
   const calculateStarPoints = (centerX, centerY, innerRadius, outerRadius, points) => {
@@ -34,7 +35,7 @@ const StarExercise = ({ customData }) => {
   }
 
   const handleLineClick = (id) => {
-    if (id === 1 || id === 2 || id === 3) return;
+    if (resultMessage === "Incorrect!" || id === 1 || id === 2 || id === 3) return;
     setStarLines(lines =>
       lines.map(line => {
         if (line.id === id) {
@@ -57,7 +58,15 @@ const StarExercise = ({ customData }) => {
       }
       return false;
     });
-    setResultMessage(isCorrect ? "Correct!" : "Incorrect, try again.");
+    setResultMessage(isCorrect ? "Correct!" : "Incorrect!");
+    if (!isCorrect) {
+      setAttempts(attempts + 1);
+    }
+  };
+
+  const reset = () => {
+    setStarLines(starLines.map(line => ({ ...line, color: line.id === 1 ? 'red' : line.id === 2 ? 'blue' : line.id === 3 ? 'yellow' : 'black' })));
+    setResultMessage('');
   };
 
   return (
@@ -70,7 +79,7 @@ const StarExercise = ({ customData }) => {
             align-items: center;
             justify-content: center;
             height: 100vh;
-            margin-top: -50px; // Adjust as needed to center vertically
+            margin-top: -40px; // Adjust as needed to center vertically
           }
           .radio-label {
             margin: 10px;
@@ -86,7 +95,7 @@ const StarExercise = ({ customData }) => {
             height: 24px; // Reserve space for the message
             visibility: ${resultMessage ? 'visible' : 'hidden'};
           }
-          .check-button {
+          .check-button, .retry-button {
             background-color: green;
             color: white;
             border: none;
@@ -96,8 +105,19 @@ const StarExercise = ({ customData }) => {
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
           }
-          .check-button:hover {
+          .check-button:hover, .retry-button:hover {
             background-color: darkgreen;
+          }
+          .disabled {
+            pointer-events: none;
+            opacity: 0.6; // To visually indicate the disabled state
+          }
+          .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100px; // Fixed height for the button container
           }
         `}
       </style>
@@ -132,14 +152,14 @@ const StarExercise = ({ customData }) => {
             /> Yellow
           </label>
         </div>
-        <Stage width={300} height={300}>
+        <Stage width={300} height={300} className={resultMessage === "Incorrect!" ? "disabled" : ""}>
           <Layer>
             {starLines.map(line => (
               <Line
                 key={line.id}
                 points={line.points}
                 stroke={line.color}
-                strokeWidth={5}
+                strokeWidth={8}
                 lineCap="round"
                 lineJoin="round"
                 onClick={() => handleLineClick(line.id)}
@@ -147,12 +167,22 @@ const StarExercise = ({ customData }) => {
             ))}
           </Layer>
         </Stage>
+        <button onClick={checkAnswer} className={`check-button ${resultMessage === "Incorrect!" ? "disabled" : ""}`}>
+            Check Answer
+          </button>
         <div className="result-message">
           {resultMessage}
         </div>
-        <button onClick={checkAnswer} className="check-button">
-          Check Answer
-        </button>
+        <div className="button-wrapper">
+          {resultMessage === "Incorrect!" && (
+            <button onClick={reset} className="retry-button">
+              Retry
+            </button>
+          )}
+          {resultMessage === "Incorrect!" && attempts >= 2 && (
+            <button className="check-button">Continue</button>
+          )}
+        </div>
       </div>
     </>
   );

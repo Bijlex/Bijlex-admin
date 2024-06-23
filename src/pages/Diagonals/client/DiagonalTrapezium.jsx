@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Stage, Layer, Line, Rect } from 'react-konva';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faEraser } from '@fortawesome/free-solid-svg-icons';
 
 const GRID_SIZE = 12;
 const CELL_SIZE = 35;
@@ -31,9 +33,25 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  message: { marginTop: '20px', fontSize: '18px', fontWeight: 'bold' }
+  message: { marginTop: '20px', fontSize: '18px', fontWeight: 'bold' },
+  disabled: {
+    pointerEvents: 'none',
+    opacity: '0.6',
+  },
+  stage: {
+    opacity: '1', // Initial opacity for stage
+  },
+  rect: {
+    opacity: '1', // Initial opacity for grid squares
+  },
+  line: {
+    opacity: '1', // Initial opacity for lines
+  }
 };
 
 const DiagonalTrapezium = ({ customData }) => {
@@ -43,6 +61,8 @@ const DiagonalTrapezium = ({ customData }) => {
   const [message, setMessage] = useState('');
   const [attempts, setAttempts] = useState(0);
   const [tool, setTool] = useState(null); // 'pencil' or 'eraser'
+  const [disabled, setDisabled] = useState(false); // State to manage disabling the component
+
   const questionPrompt = customData?.questionPrompt || "No prompt provided";
 
   const snapToGrid = (value) => Math.round(value / CELL_SIZE) * CELL_SIZE;
@@ -82,13 +102,15 @@ const DiagonalTrapezium = ({ customData }) => {
   const handleMouseClick = (e) => {
     if (tool === 'eraser') {
       const { x, y } = e.target.getStage().getPointerPosition();
+
       const newLines = lines.filter(line => {
         const [x1, y1, x2, y2] = line.points;
         return distanceToSegment(x, y, x1, y1, x2, y2) >= CELL_SIZE / 2;
       });
+
       setLines(newLines);
     }
-  };
+  };  
 
   const isCloseEnough = (points1, points2) => {
     const tolerance = 5;
@@ -104,6 +126,7 @@ const DiagonalTrapezium = ({ customData }) => {
     if (lines.length !== 2) {
       setMessage('Please draw exactly two diagonals');
       setAttempts(attempts + 1);
+      setDisabled(true); // Disable the component
       return;
     }
 
@@ -116,6 +139,7 @@ const DiagonalTrapezium = ({ customData }) => {
     } else {
       setMessage('Incorrect');
       setAttempts(attempts + 1);
+      setDisabled(true); // Disable the component
     }
   };
 
@@ -124,6 +148,7 @@ const DiagonalTrapezium = ({ customData }) => {
     setMessage('');
     setStartPoint(null);
     setPreviewPoint(null);
+    setDisabled(false); // Enable the component
   };
 
   return (
@@ -136,7 +161,7 @@ const DiagonalTrapezium = ({ customData }) => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onClick={handleMouseClick}
-          style={{ cursor: tool === 'eraser' ? 'pointer' : 'default' }}
+          style={{ cursor: tool === 'eraser' ? 'pointer' : 'default', ...styles.stage, ...(disabled ? { opacity: '0.6' } : {}) }}
         >
           <Layer>
             {Array.from({ length: GRID_SIZE }).map((_, row) =>
@@ -148,6 +173,7 @@ const DiagonalTrapezium = ({ customData }) => {
                   width={CELL_SIZE}
                   height={CELL_SIZE}
                   stroke="lightgrey"
+                  style={{ ...styles.rect, ...(disabled ? { opacity: '0.6' } : {}) }}
                 />
               ))
             )}
@@ -162,6 +188,7 @@ const DiagonalTrapezium = ({ customData }) => {
               stroke="black"
               strokeWidth={4}
               closed
+              style={{ ...styles.line, ...(disabled ? { opacity: '0.6' } : {}) }}
             />
             {startPoint && previewPoint && (
               <Line
@@ -169,6 +196,7 @@ const DiagonalTrapezium = ({ customData }) => {
                 stroke="blue"
                 strokeWidth={4}
                 dash={[10, 5]}
+                style={{ ...styles.line, ...(disabled ? { opacity: '0.6' } : {}) }}
               />
             )}
             {lines.map((line, i) => (
@@ -178,23 +206,31 @@ const DiagonalTrapezium = ({ customData }) => {
         </Stage>
         <div style={styles.buttonsContainer}>
           <button
-            style={{ ...styles.button, backgroundColor: tool === 'pencil' ? 'blue' : 'green' }}
+            style={{ ...styles.button, backgroundColor: tool === 'pencil' ? 'blue' : 'green', ...(disabled ? { opacity: '0.6' } : {})}}
             onClick={() => setTool('pencil')}
+            disabled={disabled} // Disable the button when disabled
           >
+            <FontAwesomeIcon icon={faPencil} style={{ marginRight: '8px' }} />
             Pencil
           </button>
           <button
-            style={{ ...styles.button, backgroundColor: tool === 'eraser' ? 'blue' : 'green' }}
+            style={{ ...styles.button, backgroundColor: tool === 'eraser' ? 'blue' : 'green', ...(disabled ? { opacity: '0.6' } : {}) }}
             onClick={() => setTool('eraser')}
+            disabled={disabled} // Disable the button when disabled
           >
+            <FontAwesomeIcon icon={faEraser} style={{ marginRight: '8px' }} />
             Eraser
           </button>
         </div>
       </div>
-      <button style={{ ...styles.button, backgroundColor: 'green' }} onClick={checkDiagonals}>Check answer</button>
-      {message && <div style={styles.message}>{message}</div>}
-      {(message === 'Incorrect' || message === 'Please draw exactly two diagonals') && attempts < 2 && (
-        <button style={{ ...styles.button, backgroundColor: 'orange' }} onClick={reset}>Try Again</button>
+      <button style={{ ...styles.button, backgroundColor: 'green', ...(disabled ? { opacity: '0.6' } : {}) }} onClick={checkDiagonals} disabled={disabled}>
+        Check answer
+      </button>
+      {message && <div style={{ ...styles.message, ...(disabled ? { opacity: '0.6' } : {}) }}>{message}</div>}
+      {(message === 'Incorrect' || message === 'Please draw exactly two diagonals') && (
+        <button style={{ ...styles.button, backgroundColor: 'green' }} onClick={reset}>
+          Retry
+        </button>
       )}
     </div>
   );
