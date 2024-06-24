@@ -85,6 +85,8 @@ import CreateDuoLingo from "./Dragging-Exercises/admin/CreateDuoLingo";
 import DuoLingo from "./Dragging-Exercises/client/DuoLingo";
 import CreateTrueStatements from "./TrueFalse/admin/CreateTrueStatements";
 import TrueStatements from "./TrueFalse/client/TrueStatements";
+import CreateTrainExercise from "./Arithmetic/admin/CreateTrainExercise";
+import TrainExercise from "./Arithmetic/client/TrainExercise";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -183,6 +185,7 @@ const BijlexHome = () => {
     "slot-machine2": CreateSlotMachine2,
     "duo-lingo": CreateDuoLingo,
     "true-statements": CreateTrueStatements,
+    "train-exercise": CreateTrainExercise,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -223,6 +226,7 @@ const BijlexHome = () => {
     "slot-machine2": SlotMachine2,
     "duo-lingo": DuoLingo,
     "true-statements": TrueStatements,
+    "train-exercise": TrainExercise,
   };
   const {
     addDialog,
@@ -1295,6 +1299,17 @@ const BijlexHome = () => {
             <span>True Statements Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("true-statements")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>39</span>
+            <span>GET-GRO-901</span>
+            <span>Train Exercise</span>
+            <button
+              onClick={() => handleQuestionModelClick("train-exercise")}
               className="question_select_btn"
             >
               Select
