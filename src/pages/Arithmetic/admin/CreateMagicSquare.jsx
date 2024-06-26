@@ -2,7 +2,21 @@ import React, { useEffect, useState } from "react";
 import SvgBtn from "../../../components/general/buttons/SvgBtn";
 import { documentIcon } from "../../../constants/icons.jsx";
 
-const CreateKnapsackExercise = ({ setCustomData, customData }) => {
+const CreateMagicSquare = ({ setCustomData, customData }) => {
+  const [questionPrompt, setQuestionPrompt] = useState(
+    customData?.questionPrompt || ""
+  );
+  const [items, setItems] = useState(
+    customData?.items || [
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+    ]
+  );
+  const [itemsLimit, setItemsLimit] = useState(customData?.itemsLimit || "");
+  const [priceLimit, setPriceLimit] = useState(customData?.priceLimit || "");
 
   useEffect(() => {
     setItems(
@@ -32,7 +46,26 @@ const CreateKnapsackExercise = ({ setCustomData, customData }) => {
       itemsLimit,
       priceLimit,
     };
-    setCustomData(customData);
+/**
+       N1   |s1|   N2  = A1  
+       s2 -- +  -- s3 
+       N3   |s4|   N4  = A2
+        = ----------=----       
+       A3          A4
+
+       hidden answers is from 1 to 8
+       1 - 4 is N1 - N4
+       5 -8  is A1 -A4
+  
+ */
+    const bigSquares = [0, 1, 2, 3];
+    const smallSquares = ['+', '-', '-', '*'];
+    const answers = [ 4, 6, 3, 0];
+    const hiddenIndices = [4, 6]; // You can change these values as needed
+    
+    const fakeData = {bigSquares, smallSquares, answers, hiddenIndices }
+   
+    setCustomData(fakeData);
   };
 
   return (
@@ -45,6 +78,16 @@ const CreateKnapsackExercise = ({ setCustomData, customData }) => {
         alignItems: "center",
       }}
     >
+      <div>
+        <table >
+          <tr> 
+            <td>number 1</td>
+            <td>Sign 1</td>
+            <td>Number 2</td>
+             <to>answer 1</to>
+          </tr>
+        </table>
+      </div>
       <label style={{ marginBottom: "10px" }}>
         Question Prompt:
         <input
@@ -152,4 +195,4 @@ const CreateKnapsackExercise = ({ setCustomData, customData }) => {
   );
 };
 
-export default CreateKnapsackExercise;
+export default CreateMagicSquare;
