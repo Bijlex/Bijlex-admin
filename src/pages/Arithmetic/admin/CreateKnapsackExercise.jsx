@@ -3,6 +3,20 @@ import SvgBtn from "../../../components/general/buttons/SvgBtn";
 import { documentIcon } from "../../../constants/icons.jsx";
 
 const CreateKnapsackExercise = ({ setCustomData, customData }) => {
+  const [questionPrompt, setQuestionPrompt] = useState(
+    customData?.questionPrompt || ""
+  );
+  const [items, setItems] = useState(
+    customData?.items || [
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+      { name: "", price: "" },
+    ]
+  );
+  const [itemsLimit, setItemsLimit] = useState(customData?.itemsLimit || "");
+  const [priceLimit, setPriceLimit] = useState(customData?.priceLimit || "");
 
   useEffect(() => {
     setItems(
