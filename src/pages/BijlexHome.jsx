@@ -87,7 +87,9 @@ import CreateTrueStatements from "./TrueFalse/admin/CreateTrueStatements";
 import TrueStatements from "./TrueFalse/client/TrueStatements";
 import CreateTrainExercise from "./Arithmetic/admin/CreateTrainExercise";
 import TrainExercise from "./Arithmetic/client/TrainExercise";
+import MagicSquare from "./Arithmetic/client/MagicSquare";
 
+import CreateMagicSquare from "./Arithmetic/admin/CreateMagicSquare";
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
   const [mode, setMode] = useState("");
@@ -186,6 +188,8 @@ const BijlexHome = () => {
     "duo-lingo": CreateDuoLingo,
     "true-statements": CreateTrueStatements,
     "train-exercise": CreateTrainExercise,
+    
+    "magic-square": CreateMagicSquare,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -227,6 +231,7 @@ const BijlexHome = () => {
     "duo-lingo": DuoLingo,
     "true-statements": TrueStatements,
     "train-exercise": TrainExercise,
+    "magic-square": MagicSquare,
   };
   const {
     addDialog,
@@ -1271,6 +1276,7 @@ const BijlexHome = () => {
               Select
             </button>
           </div>
+          
           <div className="question_model_card">
             <span>36</span>
             <span>---</span>
@@ -1310,6 +1316,19 @@ const BijlexHome = () => {
             <span>Train Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("train-exercise")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>40</span>
+            <span>---</span>
+            <span>Magic Square Exercise</span>
+            <button
+              onClick={() =>
+                handleQuestionModelClick("magic-square")
+              }
               className="question_select_btn"
             >
               Select
