@@ -1355,7 +1355,7 @@ const BijlexHome = () => {
             </button>
           </div>
           <div className="question_model_card">
-            <span>40</span>
+            <span>42</span>
             <span>PRO-AAA-925</span>
             <span>Magic Square Exercise</span>
             <button
@@ -1368,7 +1368,7 @@ const BijlexHome = () => {
             </button>
           </div>
           <div className="question_model_card">
-            <span>41</span>
+            <span>43</span>
             <span>---</span>
             <span>Divisible Number Exercise</span>
             <button
