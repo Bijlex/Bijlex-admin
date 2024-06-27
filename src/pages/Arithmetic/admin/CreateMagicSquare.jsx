@@ -1,71 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import SvgBtn from "../../../components/general/buttons/SvgBtn";
 import { documentIcon } from "../../../constants/icons.jsx";
+import { map } from 'lodash';
 
 const CreateMagicSquare = ({ setCustomData, customData }) => {
-  const [questionPrompt, setQuestionPrompt] = useState(
-    customData?.questionPrompt || ""
-  );
-  const [items, setItems] = useState(
-    customData?.items || [
-      { name: "", price: "" },
-      { name: "", price: "" },
-      { name: "", price: "" },
-      { name: "", price: "" },
-      { name: "", price: "" },
-    ]
-  );
-  const [itemsLimit, setItemsLimit] = useState(customData?.itemsLimit || "");
-  const [priceLimit, setPriceLimit] = useState(customData?.priceLimit || "");
+  const [bigSquares, setBigSquares] = useState(customData?.bigSquares || "");
+  const [smallSquares, setSmallSquares] = useState(customData?.smallSquares || "");
+  const [answers, setAnswers] = useState(customData?.answers || "");
+  const [hiddenIndices, setHiddenIndices] = useState(customData?.hiddenIndices || "");
+  const [questionPrompt, setQuestionPrompt] = useState(customData?.questionPrompt || "");
 
   useEffect(() => {
-    setItems(
-      customData?.items || [
-        { name: "", price: "" },
-        { name: "", price: "" },
-        { name: "", price: "" },
-        { name: "", price: "" },
-        { name: "", price: "" },
-      ]
-    );
+    setBigSquares(customData?.bigSquares || "");
+    setSmallSquares(customData?.smallSquares || "");
+    setAnswers(customData?.answers || "");
+    setHiddenIndices(customData?.hiddenIndices || "");
     setQuestionPrompt(customData?.questionPrompt || "");
-    setItemsLimit(customData?.itemsLimit || "");
-    setPriceLimit(customData?.priceLimit || "");
   }, [customData]);
 
-  const handleItemChange = (index, field, value) => {
-    const newItems = [...items];
-    newItems[index][field] = value;
-    setItems(newItems);
+  const handleBigSquaresChange = (e) => {
+    setBigSquares(e.target.value);
+  };
+
+  const handleSmallSquaresChange = (e) => {
+    setSmallSquares(e.target.value);
+  };
+
+  const handleAnswersChange = (e) => {
+    setAnswers(e.target.value);
+  };
+
+  const handleHiddenIndicesChange = (e) => {
+    setHiddenIndices(e.target.value);
   };
 
   const saveExercise = async () => {
     const customData = {
+      bigSquares,
+      smallSquares,
+      answers,
+      hiddenIndices,
       questionPrompt,
-      items,
-      itemsLimit,
-      priceLimit,
     };
-/**
-       N1   |s1|   N2  = A1  
-       s2 -- +  -- s3 
-       N3   |s4|   N4  = A2
-        = ----------=----       
-       A3          A4
 
-       hidden answers is from 1 to 8
-       1 - 4 is N1 - N4
-       5 -8  is A1 -A4
-  
- */
-    const bigSquares = [0, 1, 2, 3];
-    const smallSquares = ['+', '-', '-', '*'];
-    const answers = [ 4, 6, 3, 0];
-    const hiddenIndices = [4, 6]; // You can change these values as needed
-    
-    const fakeData = {bigSquares, smallSquares, answers, hiddenIndices }
-   
-    setCustomData(fakeData);
+    setCustomData(customData);
   };
 
   return (
@@ -78,16 +56,6 @@ const CreateMagicSquare = ({ setCustomData, customData }) => {
         alignItems: "center",
       }}
     >
-      <div>
-        <table >
-          <tr> 
-            <td>number 1</td>
-            <td>Sign 1</td>
-            <td>Number 2</td>
-             <to>answer 1</to>
-          </tr>
-        </table>
-      </div>
       <label style={{ marginBottom: "10px" }}>
         Question Prompt:
         <input
@@ -100,96 +68,91 @@ const CreateMagicSquare = ({ setCustomData, customData }) => {
             padding: "8px",
             fontSize: "16px",
             border: "1px solid #ccc",
+            borderRadius: "4px ",
+            marginBottom: "20px",
+          }}
+        />
+      </label>
+
+      <label style={{ marginBottom: "10px" }}>
+        Big Squares:
+        <textarea
+          value={bigSquares}
+          onChange={handleBigSquaresChange}
+          placeholder="Enter big squares values (comma-separated)"
+          style={{
+            width: "400px",
+            height: "100px",
+            padding: "8px",
+            fontSize: "16px",
+            border: "1px solid #ccc",
             borderRadius: "4px",
             marginBottom: "20px",
           }}
         />
       </label>
-      {items.map((item, index) => (
-        <div
-          key={index}
+
+      <label style={{ marginBottom: "10px" }}>
+        Small Squares (operators):
+        <textarea
+          value={smallSquares}
+          onChange={handleSmallSquaresChange}
+          placeholder="Enter small squares operators (comma-separated)"
           style={{
-            marginBottom: "10px",
-            display: "flex",
-            justifyContent: "center",
+            width: "400px",
+            height: "50px",
+            padding: "8px",
+            fontSize: "16px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            marginBottom: "20px",
           }}
-        >
-          <label style={{ marginRight: "10px" }}>
-            Item {index + 1} Name:
-            <input
-              type="text"
-              value={item.name}
-              onChange={(e) => handleItemChange(index, "name", e.target.value)}
-              placeholder="Enter item name"
-              style={{
-                padding: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-            />
-          </label>
-          <label>
-            Price:
-            <input
-              type="number"
-              value={item.price}
-              onChange={(e) => handleItemChange(index, "price", e.target.value)}
-              placeholder="Enter item price"
-              style={{
-                padding: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-            />
-          </label>
-        </div>
-      ))}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          margin: "20px 0",
-        }}
-      >
-        <label style={{ marginRight: "10px" }}>
-          Number of Items Limit:
-          <input
-            type="number"
-            value={itemsLimit}
-            onChange={(e) => setItemsLimit(e.target.value)}
-            placeholder="Enter the limit on number of items"
-            style={{
-              padding: "8px",
-              fontSize: "16px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </label>
-        <label>
-          Price Limit:
-          <input
-            type="number"
-            value={priceLimit}
-            onChange={(e) => setPriceLimit(e.target.value)}
-            placeholder="Enter the price limit"
-            style={{
-              padding: "8px",
-              fontSize: "16px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </label>
-      </div>
+        />
+      </label>
+
+      <label style={{ marginBottom: "10px" }}>
+        Answers:
+        <textarea
+          value={answers}
+          onChange={handleAnswersChange}
+          placeholder=" Enter answers (comma-separated)"
+          style={{
+            width: "400px",
+            height: "50px",
+            padding: "8px",
+            fontSize: "16px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            marginBottom: "20px",
+          }}
+        />
+      </label>
+
+      <label style={{ marginBottom: "10px" }}>
+        Hidden Indices:
+        <input
+          type="text"
+          value={hiddenIndices}
+          onChange={handleHiddenIndicesChange}
+          placeholder="Enter hidden indices (comma-separated)"
+          style={{
+            width: "400px",
+            padding: "8px",
+            fontSize: "16px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            marginBottom: "2 0px",
+          }}
+        />
+      </label>
+
+  
+     
       <SvgBtn
         handleClick={saveExercise}
         SvgIcon={documentIcon}
         text={"Make Exercise"}
-        style={{ marginBottom: "30px", alignSelf: "center" }} // Center button, adjust margin if needed
+        style={{ marginBottom: "30px", alignSelf: "center" }}
       />
     </div>
   );
