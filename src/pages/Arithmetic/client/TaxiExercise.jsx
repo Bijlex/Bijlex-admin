@@ -7,7 +7,11 @@ function TaxiExercise({ customData }) {
     const [finalPrice, setFinalPrice] = useState(parseFloat(customData?.finalPrice) || 0);
     const [selectedOption, setSelectedOption] = useState("Final Price");
     const [isGenerated, setIsGenerated] = useState(false);
-    const [formulaInput, setFormulaInput] = useState("");
+
+    const [yValue, setYValue] = useState("");
+    const [aValue, setAValue] = useState("");
+    const [xValue, setXValue] = useState("");
+    const [bValue, setBValue] = useState("");
     const [isFormulaCorrect, setIsFormulaCorrect] = useState(null);
 
     useEffect(() => {
@@ -20,10 +24,6 @@ function TaxiExercise({ customData }) {
     const handleInputChange = (setter) => (e) => {
         setter(parseFloat(e.target.value) || 0);
         setIsGenerated(false);
-    };
-
-    const handleFormulaChange = (e) => {
-        setFormulaInput(e.target.value);
     };
 
     const generateValue = () => {
@@ -52,9 +52,11 @@ function TaxiExercise({ customData }) {
     };
 
     const checkFormula = () => {
-        const trimmedInput = formulaInput.replace(/\s+/g, '');
-        const correctAnswers = ["y=ax+b", "y=a*x+b"];
-        setIsFormulaCorrect(correctAnswers.includes(trimmedInput.toLowerCase()));
+        if (yValue === "Final Price" && aValue === "Price/km" && xValue === "Distance (km)" && bValue === "Starting Price") {
+            setIsFormulaCorrect(true);
+        } else {
+            setIsFormulaCorrect(false);
+        }
     };
 
     const renderFieldsAboveButton = () => {
@@ -134,6 +136,27 @@ function TaxiExercise({ customData }) {
         </div>
     );
 
+    const dropdownOptions = [
+        { label: "Starting Price", value: "Starting Price" },
+        { label: "Distance (km)", value: "Distance (km)" },
+        { label: "Price/km", value: "Price/km" },
+        { label: "Final Price", value: "Final Price" },
+    ];
+
+    const renderDropdown = (label, selectedValue, onChange) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '300px' }}>
+            <label htmlFor={label} style={{ color: 'black', minWidth: '120px', marginLeft: '50px' }}>{label}</label>
+            <select id={label} value={selectedValue} onChange={onChange} style={{ color: 'black', padding: '5px', borderRadius: '4px', minWidth: '120px', marginRight: '100px' }}>
+                <option value="">Select</option>
+                {dropdownOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+        </div>
+    );
+
     return (
         <div style={{ padding: '50px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
             <h2 style={{ marginBottom: '30px', color: 'black' }}>{customData?.questionPrompt || "No question prompt provided"}</h2>
@@ -178,25 +201,10 @@ function TaxiExercise({ customData }) {
                 {renderFieldBelowButton()}
             </div>
             <div style={{ width: '100%', marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '300px' }}>
-                    <label htmlFor="formulaInput" style={{ color: 'black', minWidth: '120px' }}>Enter Formula:</label>
-                    <input
-                        id="formulaInput"
-                        type="text"
-                        value={formulaInput}
-                        onChange={handleFormulaChange}
-                        style={{
-                            width: '120px',
-                            padding: '5px',
-                            fontSize: '16px',
-                            textAlign: 'right',
-                            backgroundColor: 'white',
-                            color: 'black',
-                            border: '1px solid black',
-                            borderRadius: '4px'
-                        }}
-                    />
-                </div>
+                {renderDropdown("y =", yValue, (e) => setYValue(e.target.value))}
+                {renderDropdown("a =", aValue, (e) => setAValue(e.target.value))}
+                {renderDropdown("x =", xValue, (e) => setXValue(e.target.value))}
+                {renderDropdown("b =", bValue, (e) => setBValue(e.target.value))}
                 <button
                     onClick={checkFormula}
                     style={{

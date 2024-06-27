@@ -87,6 +87,10 @@ import CreateTrueStatements from "./TrueFalse/admin/CreateTrueStatements";
 import TrueStatements from "./TrueFalse/client/TrueStatements";
 import CreateTrainExercise from "./Arithmetic/admin/CreateTrainExercise";
 import TrainExercise from "./Arithmetic/client/TrainExercise";
+import CreateCountColorFigures from "./Figures/admin/CreateCountColorFigures";
+import CountColorFigures from "./Figures/client/CountColorFigures";
+import CreateDivideShapes from "./Figures/admin/CreateDivideShapes";
+import DivideShapes from "./Figures/client/DivideShapes";
 
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
@@ -186,6 +190,8 @@ const BijlexHome = () => {
     "duo-lingo": CreateDuoLingo,
     "true-statements": CreateTrueStatements,
     "train-exercise": CreateTrainExercise,
+    "count-color-figures": CreateCountColorFigures,
+    "divide-shapes": CreateDivideShapes,
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -227,6 +233,8 @@ const BijlexHome = () => {
     "duo-lingo": DuoLingo,
     "true-statements": TrueStatements,
     "train-exercise": TrainExercise,
+    "count-color-figures": CountColorFigures,
+    "divide-shapes": DivideShapes,
   };
   const {
     addDialog,
@@ -923,7 +931,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>5</span>
-            <span>WIB-BRK-901</span>
+            <span>PRO-AAA-938</span>
             <span>Fraction Buckets Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("fraction-buckets")}
@@ -990,7 +998,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>11</span>
-            <span>BIL-EVE-901</span>
+            <span>PRO-AAA-952</span>
             <span>Parallel Cube Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("parallel-cube")}
@@ -1001,7 +1009,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>12</span>
-            <span>LEN-MAA-900</span>
+            <span>PRO-AAA-951</span>
             <span>Squares To Dice Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("squares-to-dice")}
@@ -1012,7 +1020,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>13</span>
-            <span>FIG-BAS-905</span>
+            <span>PRO-AAA-950</span>
             <span>Circle To Oval Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("circle-to-oval")}
@@ -1023,7 +1031,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>14</span>
-            <span>FIG-BAS-902</span>
+            <span>PRO-AAA-949</span>
             <span>Diagonals Square Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("diagonals-square")}
@@ -1034,7 +1042,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>15</span>
-            <span>FIG-BAS-902</span>
+            <span>PRO-AAA-948</span>
             <span>Diagonals Rectangle Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("diagonals-rectangle")}
@@ -1045,7 +1053,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>16</span>
-            <span>FIG-BAS-906</span>
+            <span>PRO-AAA-947</span>
             <span>Square To Parallelogram Exercise</span>
             <button
               onClick={() =>
@@ -1058,7 +1066,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>17</span>
-            <span>FIG-BAS-906</span>
+            <span>PRO-AAA-946</span>
             <span>Square To Rhombus Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("square-to-rhombus")}
@@ -1069,7 +1077,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>18</span>
-            <span>FIG-BAS-906</span>
+            <span>PRO-AAA-945</span>
             <span>Square To Rectangle Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("square-to-rectangle")}
@@ -1080,7 +1088,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>19</span>
-            <span>FIG-BAS-906</span>
+            <span>PRO-AAA-944</span>
             <span>Square To Trapezium Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("square-to-trapezium")}
@@ -1091,7 +1099,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>20</span>
-            <span>FIG-BAS-906</span>
+            <span>PRO-AAA-943</span>
             <span>Square To Quadrilateral Exercise</span>
             <button
               onClick={() =>
@@ -1104,7 +1112,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>21</span>
-            <span>FIG-BAS-904</span>
+            <span>PRO-AAA-942</span>
             <span>Captcha Circles Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("captcha-circles")}
@@ -1115,7 +1123,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>22</span>
-            <span>FIG-BAS-907</span>
+            <span>PRO-AAA-941</span>
             <span>Pie Chart Story Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("pie-chart-story")}
@@ -1163,7 +1171,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>26</span>
-            <span>WIB-BEW-901</span>
+            <span>PRO-AAA-935</span>
             <span>Timer Arithmetic Questions Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("timer-arithmetic-questions")}
@@ -1262,7 +1270,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>35</span>
-            <span>---</span>
+            <span>PRO-AAA-921</span>
             <span>Slot Machine Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("slot-machine")}
@@ -1273,7 +1281,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>36</span>
-            <span>---</span>
+            <span>PRO-AAA-922</span>
             <span>Slot Machine Exercise 2</span>
             <button
               onClick={() => handleQuestionModelClick("slot-machine2")}
@@ -1284,7 +1292,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>37</span>
-            <span>---</span>
+            <span>PRO-AAA-923</span>
             <span>DuoLingo Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("duo-lingo")}
@@ -1306,10 +1314,32 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>39</span>
-            <span>GET-GRO-901</span>
+            <span>PRO-AAA-940</span>
             <span>Train Exercise</span>
             <button
               onClick={() => handleQuestionModelClick("train-exercise")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>40</span>
+            <span>PRO-AAA-924</span>
+            <span>Count Color Figures</span>
+            <button
+              onClick={() => handleQuestionModelClick("count-color-figures")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>41</span>
+            <span>---</span>
+            <span>Divide Shapes into Quadrangles</span>
+            <button
+              onClick={() => handleQuestionModelClick("divide-shapes")}
               className="question_select_btn"
             >
               Select

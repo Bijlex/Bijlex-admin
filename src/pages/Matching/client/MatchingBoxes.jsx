@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArcherContainer, ArcherElement } from "react-archer";
 
-function MatchingBoxes({ customData, preview }) {
+function MatchingBoxes({ customData, preview = false }) {
   const { questionPrompt, numBoxes, leftInputs, rightInputs, lines: correctLines } = customData;
   const [userLines, setUserLines] = useState([]);
   const [selectedBox, setSelectedBox] = useState(null);

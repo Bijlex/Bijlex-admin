@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from "../../../styles/train/Train.module.css";
 
-function TrainExercise() {
-  const [number, setNumber] = useState(null);
+function TrainExercise({ customData }) {
+  const [number, setNumber] = useState(customData?.inputNumber || null);
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState(null);
   const [trainMoving, setTrainMoving] = useState(false);
@@ -11,9 +11,9 @@ function TrainExercise() {
   const [respondedInTime, setRespondedInTime] = useState(true);
   const [message, setMessage] = useState('');
 
-  const generateNumber = () => {
-    const newNumber = Math.floor(Math.random() * 100) + 1;
-    setNumber(newNumber);
+  const { inputNumber, operations } = customData;
+
+  const startTrain = () => {
     setUserAnswer('');
     setIsCorrect(null);
     setMessage('');  
@@ -56,11 +56,18 @@ function TrainExercise() {
   }, [userAnswer]);  
 
   const computeValue = (initialValue) => {
-    let value = initialValue;
-    value = value * 10; 
-    value = value / 100; 
-    value = value * 1000; 
-    value = value * 10; 
+    let value = parseFloat(initialValue);
+    operations.forEach(op => {
+      if (op.startsWith('*')) {
+        value *= parseFloat(op.slice(1));
+      } else if (op.startsWith('/')) {
+        value /= parseFloat(op.slice(1));
+      } else if (op.startsWith('+')) {
+        value += parseFloat(op.slice(1));
+      } else if (op.startsWith('-')) {
+        value -= parseFloat(op.slice(1));
+      }
+    });
     return value;
   };
 
@@ -71,10 +78,10 @@ function TrainExercise() {
   const Train = ({ moving }) => (
     <section className={styles.stage}>
       <div className={`${styles.train} ${moving ? styles.moveTrain : ''}`}>
-        <div className={styles.wagon}><span>* 10</span></div>
-        <div className={styles.wagon}><span>* 1000</span></div>
-        <div className={styles.wagon}><span>: 100</span></div>
-        <div className={styles.wagon}><span>* 10</span></div>
+        <div className={styles.wagon}><span>{operations[0]}</span></div>
+        <div className={styles.wagon}><span>{operations[1]}</span></div>
+        <div className={styles.wagon}><span>{operations[2]}</span></div>
+        <div className={styles.wagon}><span>{operations[3]}</span></div>
         <div className={styles.locomotive}>
           <div className={styles.cabin}></div>
           <div className={styles.motor}></div>
@@ -85,9 +92,9 @@ function TrainExercise() {
 
   return (
     <div className={styles.container}>
-      <button onClick={generateNumber}>Begin met oefenen</button>
+      <h2 style={{ marginBottom: '30px', color: 'black' }}>{customData?.questionPrompt || "No question prompt provided"}</h2>
+      <button onClick={startTrain}>Begin met oefenen</button>
       <h2>Gegenereerd nummer: {number !== null ? number : 'Geen'}</h2>
-      <p>Voer het antwoord in nadat de waarde door alle treinwagons is gegaan, te beginnen met de locomotief.</p>
       <input
         type="number"
         value={userAnswer}
