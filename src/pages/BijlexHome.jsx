@@ -91,7 +91,11 @@ import CreateCountColorFigures from "./Figures/admin/CreateCountColorFigures";
 import CountColorFigures from "./Figures/client/CountColorFigures";
 import CreateDivideShapes from "./Figures/admin/CreateDivideShapes";
 import DivideShapes from "./Figures/client/DivideShapes";
+import MagicSquare from "./Arithmetic/client/MagicSquare";
 
+import CreateMagicSquare from "./Arithmetic/admin/CreateMagicSquare";
+import CreateDivisibleNumber from "./Arithmetic/admin/CreateDivisibleNumber";
+import DivisibleNumber from "./Arithmetic/client/DivisibleNumber";
 const BijlexHome = () => {
   const [currentSelect, setCurrentSelect] = useState("level");
   const [mode, setMode] = useState("");
@@ -192,6 +196,8 @@ const BijlexHome = () => {
     "train-exercise": CreateTrainExercise,
     "count-color-figures": CreateCountColorFigures,
     "divide-shapes": CreateDivideShapes,
+    "magic-square": CreateMagicSquare,
+    "divisible-number": CreateDivisibleNumber, 
   };
   const exerciseComponents = {
     "table-exercise": TableExercise,
@@ -235,6 +241,8 @@ const BijlexHome = () => {
     "train-exercise": TrainExercise,
     "count-color-figures": CountColorFigures,
     "divide-shapes": DivideShapes,
+    "magic-square": MagicSquare,
+    "divisible-number": DivisibleNumber,
   };
   const {
     addDialog,
@@ -1279,6 +1287,7 @@ const BijlexHome = () => {
               Select
             </button>
           </div>
+          
           <div className="question_model_card">
             <span>36</span>
             <span>PRO-AAA-922</span>
@@ -1340,6 +1349,32 @@ const BijlexHome = () => {
             <span>Divide Shapes into Quadrangles</span>
             <button
               onClick={() => handleQuestionModelClick("divide-shapes")}
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>40</span>
+            <span>PRO-AAA-925</span>
+            <span>Magic Square Exercise</span>
+            <button
+              onClick={() =>
+                handleQuestionModelClick("magic-square")
+              }
+              className="question_select_btn"
+            >
+              Select
+            </button>
+          </div>
+          <div className="question_model_card">
+            <span>41</span>
+            <span>---</span>
+            <span>Divisible Number Exercise</span>
+            <button
+              onClick={() =>
+                handleQuestionModelClick("divisible-number")
+              }
               className="question_select_btn"
             >
               Select

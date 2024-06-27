@@ -80,6 +80,7 @@ const DropSpace = ({ onDrop, expectedAnswer, checkAnswers }) => {
   const [droppedAnswer, setDroppedAnswer] = useState(null);
   const [backgroundColor, setBackgroundColor] = useState('transparent');
   const [{ isOver }, drop] = useDrop(() => ({
+    
     accept: 'answer',
     drop: (item, monitor) => {
       onDrop(item.answer);
@@ -103,25 +104,32 @@ const DropSpace = ({ onDrop, expectedAnswer, checkAnswers }) => {
   );
 };
 
-const StudentApp = ({ text, answers, correctText }) => {
+const StudentApp = ({ text, answers = [], correctText }) => {
+  // Map the answers before the return statement
+  const answerBlocks = answers.map((answer, index) => (
+    <AnswerBlock key={index} answer={answer.trim()} />
+  ));
+
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
         <Paragraph text={text} correctText={correctText} />
-        {answers.map((answer, index) => (
-          <AnswerBlock key={index} answer={answer.trim()} />
-        ))}
+        {answerBlocks}
       </DndProvider>
-    </div>
+    </div>  
   );
 };
 
-const DuoLingo = () => {
-  const text = ['The', '?', 'brown', '?', '?', 'over', ' the', '?', '?'];
-  const answers = ['quick', 'fox', 'jumps', 'lazy', 'dog'];
-  const correctText = ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'];
-  const [checkAnswers, setCheckAnswers] = useState(false);
 
+
+
+
+const DuoLingo = ({customData}) => {
+  const text = customData?.text ?? '';
+  const answers = customData?.answers ?? [];
+  const correctText = customData?.correctText ?? '';
+  const [checkAnswers, setCheckAnswers] = useState(false);
+  
   return (
     <div style={styles.body}>
       <StudentApp text={text} answers={answers} correctText={correctText} />
