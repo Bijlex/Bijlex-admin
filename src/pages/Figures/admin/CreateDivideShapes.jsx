@@ -6,12 +6,37 @@ import { documentIcon } from "../../../constants/icons.jsx";
 const GRID_SIZE = 12;
 const CELL_SIZE = 35;
 
-const parallelogramPoints = [
-  { x: 2 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-left
-  { x: 8 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-right (increased x value to make it wider)
-  { x: 10 * CELL_SIZE, y: 5 * CELL_SIZE }, // bottom-right (decreased y value to make it shorter)
-  { x: 4 * CELL_SIZE, y: 5 * CELL_SIZE } // bottom-left (decreased y value to make it shorter)
-];
+const shapes = {
+  parallelogram: [
+    { x: 2 * CELL_SIZE, y: 3 * CELL_SIZE }, // top-left
+    { x: 8 * CELL_SIZE, y: 3 * CELL_SIZE }, // top-right
+    { x: 10 * CELL_SIZE, y: 6 * CELL_SIZE }, // bottom-right
+    { x: 4 * CELL_SIZE, y: 6 * CELL_SIZE } // bottom-left
+  ],
+  trapezium: [
+    { x: 2 * CELL_SIZE, y: 7 * CELL_SIZE }, // bottom-left
+    { x: 10 * CELL_SIZE, y: 7 * CELL_SIZE }, // bottom-right
+    { x: 8 * CELL_SIZE, y: 3 * CELL_SIZE }, // top-right
+    { x: 4 * CELL_SIZE, y: 3 * CELL_SIZE } // top-left
+  ],
+  rhombus: [
+    { x: 6 * CELL_SIZE, y: 1 * CELL_SIZE }, // top
+    { x: 10 * CELL_SIZE, y: 5 * CELL_SIZE }, // right
+    { x: 6 * CELL_SIZE, y: 9 * CELL_SIZE }, // bottom
+    { x: 2 * CELL_SIZE, y: 5 * CELL_SIZE } // left
+  ],
+  triangle: [
+    { x: 6 * CELL_SIZE, y: 1 * CELL_SIZE }, // top
+    { x: 10 * CELL_SIZE, y: 9 * CELL_SIZE }, // bottom-right
+    { x: 2 * CELL_SIZE, y: 9 * CELL_SIZE } // bottom-left
+  ],
+  rectangle: [
+    { x: 3 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-left
+    { x: 9 * CELL_SIZE, y: 2 * CELL_SIZE }, // top-right
+    { x: 9 * CELL_SIZE, y: 8 * CELL_SIZE }, // bottom-right
+    { x: 3 * CELL_SIZE, y: 8 * CELL_SIZE } // bottom-left
+  ]
+};
 
 const styles = {
   app: { display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' },
@@ -38,10 +63,12 @@ function CreateDivideShapes({ setCustomData, customData }) {
   const [previewPoint, setPreviewPoint] = useState(null);
   const [tool, setTool] = useState(null); // 'pencil' or 'eraser'
   const [gridCount, setGridCount] = useState(1);
+  const [selectedShape, setSelectedShape] = useState(customData?.shape || "parallelogram");
 
   useEffect(() => {
     setQuestionPrompt(customData?.questionPrompt || "");
     setLines(customData?.lines || {});
+    setSelectedShape(customData?.shape || "parallelogram");
   }, [customData]);
 
   const saveExercise = async () => {
@@ -57,7 +84,7 @@ function CreateDivideShapes({ setCustomData, customData }) {
       }));
     });
 
-    const customData = { questionPrompt, gridCount, lines: convertedLines };
+    const customData = { questionPrompt, gridCount, lines: convertedLines, shape: selectedShape };
     setCustomData(customData);
   };
 
@@ -124,18 +151,27 @@ function CreateDivideShapes({ setCustomData, customData }) {
               />
             ))
           )}
-          <Line
-            points={[
-              parallelogramPoints[0].x, parallelogramPoints[0].y,
-              parallelogramPoints[1].x, parallelogramPoints[1].y,
-              parallelogramPoints[2].x, parallelogramPoints[2].y,
-              parallelogramPoints[3].x, parallelogramPoints[3].y,
-              parallelogramPoints[0].x, parallelogramPoints[0].y
-            ]}
-            stroke="black"
-            strokeWidth={4}
-            closed
-          />
+          {selectedShape !== 'triangle' && (
+            <Line
+              points={[
+                ...shapes[selectedShape].flatMap(point => [point.x, point.y]),
+                shapes[selectedShape][0].x, shapes[selectedShape][0].y
+              ]}
+              stroke="black"
+              strokeWidth={4}
+              closed
+            />
+          )}
+          {selectedShape === 'triangle' && (
+            <Line
+              points={[
+                ...shapes[selectedShape].flatMap(point => [point.x, point.y])
+              ]}
+              stroke="black"
+              strokeWidth={4}
+              closed
+            />
+          )}
           {startPoint && previewPoint && (
             <Line
               points={[startPoint.x, startPoint.y, previewPoint.x, previewPoint.y]}
@@ -163,6 +199,22 @@ function CreateDivideShapes({ setCustomData, customData }) {
           placeholder="Enter the question prompt"
           style={{ width: '400px', padding: '8px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
         />
+      </div>
+      <div style={{ marginBottom: '20px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <label style={{ marginBottom: '5px' }}>Select Shape:</label>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {['parallelogram', 'trapezium', 'rhombus', 'triangle', 'rectangle'].map(shape => (
+            <label key={shape} style={{ marginRight: '10px' }}>
+              <input
+                type="radio"
+                value={shape}
+                checked={selectedShape === shape}
+                onChange={() => setSelectedShape(shape)}
+              />
+              {shape.charAt(0).toUpperCase() + shape.slice(1)}
+            </label>
+          ))}
+        </div>
       </div>
       <div style={{ marginBottom: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <label style={{ marginBottom: '5px' }}>Number of correct answers:</label>

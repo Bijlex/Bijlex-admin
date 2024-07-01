@@ -1345,7 +1345,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>41</span>
-            <span>---</span>
+            <span>PRO-AAA-974</span>
             <span>Divide Shapes into Quadrangles</span>
             <button
               onClick={() => handleQuestionModelClick("divide-shapes")}
@@ -1369,7 +1369,7 @@ const BijlexHome = () => {
           </div>
           <div className="question_model_card">
             <span>43</span>
-            <span>---</span>
+            <span>PRO-AAA-980</span>
             <span>Divisible Number Exercise</span>
             <button
               onClick={() =>
